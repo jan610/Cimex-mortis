@@ -1,2 +1,4 @@
 .exe
 .byc
+*.exe
+media/bytecode.byc
