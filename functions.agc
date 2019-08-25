@@ -248,11 +248,7 @@ endfunction
 
 `function PlayerControll(Player ref as Character,PlayerSpeed#,CameraDistance#)
 function PlayerControll(Player ref as Character,CameraDistance#) // player speed is in the Player character type
-	
-	if not GetObjectExists(11)
-		CreateObjectBox(11,2,2,2)
-	endif
-	
+		
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
@@ -320,8 +316,6 @@ function PlayerControll(Player ref as Character,CameraDistance#) // player speed
     rx# = Player.AngularVelocity.x + (rx# - Player.AngularVelocity.x) * (FrameTime#*3.0)
     rz# = Player.AngularVelocity.z + (rz# - Player.AngularVelocity.z) * (FrameTime#*3.0)
 	
-	SetObjectPosition(11,rx#,ry#,rz#)
-
     SetObjectLookAt(player.OID, rx#,ry#,rz#,0) 
     
     Player.AngularVelocity.x = rx#
