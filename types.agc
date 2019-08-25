@@ -10,9 +10,9 @@ Type HexCell
 endtype
 
 type vec3
-	x				as integer
-	y				as integer
-	z				as integer
+	x				as float
+	y				as float
+	z				as float
 endtype
 
 Type ArenaPiece
