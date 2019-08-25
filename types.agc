@@ -47,21 +47,6 @@ Type Character		// can be Player and Enemy
 	Life			as float
 endtype
 
-type player
-	OID				as integer
-	DiffuseIID		as integer
-	NormailIID		as integer
-	VShaderID		as integer
-	PShaderID		as integer
-	Position		as vec3
-	Rotation		as vec3
-	
-	Health			as float
-	Energy			as float
-	Attack			as float
-	speed			as float
-	
-endtype
 
 type PathGrid
 	Position 		as int3
