@@ -72,7 +72,8 @@ function Game()
 	do
 		Print( ScreenFPS() )
 		
-		PlayerControll(Player,8.0,10)
+`		PlayerControll(Player,8.0,10)
+		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
 		
 		if GetRawKeyReleased(27)
 			GameState=STATE_GAME_MENU
@@ -240,11 +241,18 @@ endfunction
 
 function PlayerInit(Player ref as Character)
 	Player.OID=CreateObjectBox(1,1,1)
+	Player.MaxSpeed = 8.0
 	SetCameraPosition(1,0,10,-10)
 	SetCameraLookAt(1,GetobjectX(Player.OID),GetobjectY(Player.OID),GetobjectZ(Player.OID),0)
 endfunction
 
-function PlayerControll(Player ref as Character,PlayerSpeed#,CameraDistance#)
+`function PlayerControll(Player ref as Character,PlayerSpeed#,CameraDistance#)
+function PlayerControll(Player ref as Character,CameraDistance#) // player speed is in the Player character type
+	
+	if not GetObjectExists(11)
+		CreateObjectBox(11,2,2,2)
+	endif
+	
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
@@ -255,20 +263,28 @@ function PlayerControll(Player ref as Character,PlayerSpeed#,CameraDistance#)
 	Cos0#=cos(CameraAngleY#)
 	
     if GetRawKeyState(KEY_W)
-		MoveZ1#=PlayerSpeed#*Sin90#
-		MoveX1#=PlayerSpeed#*Sin0#
+`		MoveZ1#=PlayerSpeed#*Sin90#
+`		MoveX1#=PlayerSpeed#*Sin0#
+		MoveZ1#=Player.MaxSpeed*Sin90#
+		MoveX1#=Player.MaxSpeed*Sin0#
     endif
     if GetRawKeyState(KEY_S)
-		MoveZ1#=-PlayerSpeed#*Sin90#
-		MoveX1#=-PlayerSpeed#*Sin0#
+`		MoveZ1#=-PlayerSpeed#*Sin90#
+`		MoveX1#=-PlayerSpeed#*Sin0#
+		MoveZ1#=-Player.MaxSpeed*Sin90#
+		MoveX1#=-Player.MaxSpeed*Sin0#
     endif
     if GetRawKeyState(KEY_A)
-		MoveZ2#=PlayerSpeed#*Sin0#
-		MoveX2#=-PlayerSpeed#*Sin90#
+`		MoveZ2#=PlayerSpeed#*Sin0#
+`		MoveX2#=-PlayerSpeed#*Sin90#
+		MoveZ2#=Player.MaxSpeed*Sin0#
+		MoveX2#=-Player.MaxSpeed*Sin90#
     endif
     if GetRawKeyState(KEY_D)
-		MoveZ2#=-PlayerSpeed#*Sin0#
-		MoveX2#=PlayerSpeed#*Sin90#
+`		MoveZ2#=-PlayerSpeed#*Sin0#
+`		MoveX2#=PlayerSpeed#*Sin90#
+		MoveZ2#=-Player.MaxSpeed*Sin0#
+		MoveX2#=Player.MaxSpeed*Sin90#
     endif
     
     MoveY#=0
@@ -288,4 +304,41 @@ function PlayerControll(Player ref as Character,PlayerSpeed#,CameraDistance#)
 	print(GetCameraX(1))
 	print(GetCameraY(1))
 	print(GetCameraZ(1))
+	
+	
+	// Player to look at mouse position
+	rx# = Get3DVectorXFromScreen(GetPointerX(),GetPointerY())
+    ry# = Get3DVectorYFromScreen(GetPointerX(),GetPointerY())
+    rz# = Get3DVectorZFromScreen(GetPointerX(),GetPointerY())
+ 
+    length# = -GetCameraY(1) / ry#
+ 
+    rx# = GetCameraX(1) + rx#*length#
+    ry# = Player.Position.y
+    rz# = GetCameraZ(1) + rz#*length#
+
+    rx# = Player.AngularVelocity.x + (rx# - Player.AngularVelocity.x) * (FrameTime#*3.0)
+    rz# = Player.AngularVelocity.z + (rz# - Player.AngularVelocity.z) * (FrameTime#*3.0)
+	
+	SetObjectPosition(11,rx#,ry#,rz#)
+
+    SetObjectLookAt(player.OID, rx#,ry#,rz#,0) 
+    
+    Player.AngularVelocity.x = rx#
+    Player.AngularVelocity.y = ry#
+    Player.AngularVelocity.z = rz#
+        	
 endfunction
+
+function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y coordinates.
+	Result = -1
+	WorldX# = Get3DVectorXFromScreen( X#, Y# ) * 800
+    WorldY# = Get3DVectorYFromScreen( X#, Y# ) * 800
+    WorldZ# = Get3DVectorZFromScreen( X#, Y# ) * 800
+    WorldX# = WorldX# + GetCameraX( 1 )
+    WorldY# = WorldY# + GetCameraY( 1 )
+    WorldZ# = WorldZ# + GetCameraZ( 1 )
+ 
+ 	Result=ObjectRayCast(0,getcamerax(1),getcameray(1),getcameraz(1), Worldx#,Worldy#,Worldz#)
+ 
+endfunction Result

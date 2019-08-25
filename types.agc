@@ -44,13 +44,11 @@ Type Character		// can be Player and Enemy
 	Position		as vec3
 	Rotation		as vec3
 	Velocity		as vec3
+	AngularVelocity	as vec3
 	Life			as float // Player Health
-endtype
-
-type Player
-	Character		as Character
 	Energy			as float
 	Attack			as float
+	MaxSpeed		as float
 endtype
 
 type PathGrid
