@@ -5,8 +5,8 @@ Type WorldMap
 endtype
 
 Type HexCell
-	ArenaPieces	as ArenaPiece[] // static object(s) for building the arena scene
-	Enemies			as enemy[]
+	ArenaPieces		as ArenaPiece[] // static object(s) for building the arena scene
+	Enemies			as Character[]
 endtype
 
 type int3
@@ -35,7 +35,7 @@ Type ArenaPiece
 	Rotation		as vec3
 endtype
 
-Type Enemy
+Type Character		// can be Player and Enemy
 	OID				as integer
 	DiffuseIID		as integer
 	NormalIID		as integer
@@ -43,6 +43,8 @@ Type Enemy
 	PShaderID		as integer
 	Position		as vec3
 	Rotation		as vec3
+	Velocity		as vec3
+	Life			as float
 endtype
 
 type player
