@@ -48,15 +48,15 @@ output_path=
 
 [projectfiles]
 FILE_0=main.agc;-1
-FILE_1=types.agc;-1
+FILE_1=functions.agc;-1
 FILE_2=constants.agc;-1
-FILE_3=functions.agc;-1
+FILE_3=types.agc;-1
 
 [files]
-FILE_NAME_0=0;main.agc;843;46
-FILE_NAME_1=0;types.agc;654;47
-FILE_NAME_2=0;constants.agc;112;48
-FILE_NAME_3=1;functions.agc;0;49
+FILE_NAME_0=0;main.agc;815;13
+FILE_NAME_1=0;functions.agc;0;19
+FILE_NAME_2=0;constants.agc;0;20
+FILE_NAME_3=1;types.agc;0;21
 
 [project]
 description=

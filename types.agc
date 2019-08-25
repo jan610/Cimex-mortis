@@ -21,8 +21,8 @@ Type ArenaPiece
 	NormalIID		as integer	// Normal map	
 	VShaderID		as integer
 	PShaderID		as integer
-	position		as vec3
-	rotation		as vec3
+	Position		as vec3
+	Rotation		as vec3
 endtype
 
 Type enemy
@@ -32,5 +32,5 @@ Type enemy
 	VShaderID		as integer
 	PShaderID		as integer
 	Position		as vec3
-	rotation		as vec3
+	Rotation		as vec3
 endtype
