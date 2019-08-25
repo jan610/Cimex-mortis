@@ -26,8 +26,13 @@ SetDefaultWrapV(1)
 #include "constants.agc"
 #include "functions.agc"
 
+GameState = -1
+
 do
 	Select GameState
+		case STATE_GAME_INTRO
+			GameState=IntroScreen()
+		endcase
 		case STATE_MAIN_MENU
 			GameState=MainMenu()
 		endcase

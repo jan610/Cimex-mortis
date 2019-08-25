@@ -68,3 +68,37 @@ function CentreTextToSprite(t as integer, s as integer)
 endfunction
 
 		
+function IntroScreen()
+	FadeTween = CreateTweenSprite(1)
+	SetTweenSpriteAlpha(FadeTween,0,255,TweenLinear())
+	IntroScreenIID = loadimage("Intro_Screen.png")
+	IntroScreenSID = CreateSprite(IntroScreenIID)
+	SetSpriteSize(IntroScreenSID,ScreenWidth(),ScreenHeight())
+	SetSpritePosition(IntroScreenSID,GetScreenBoundsLeft(),GetScreenBoundsTop())
+	PlayTweenSprite(FadeTween,IntroScreenSID,0)
+	while GetTweenSpritePlaying(FadeTween,IntroScreenSID)
+		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
+		sync()
+	endwhile
+	
+	while Not GetRawLastKey() and Not GetPointerPressed()
+		Sync()
+	endwhile
+	
+	DeleteTween(FadeTween)
+	FadeTween = CreateTweenSprite(1)
+	SetTweenSpriteAlpha(FadeTween,255,0,TweenLinear())
+	PlayTweenSprite(FadeTween,IntroScreenSID,0)
+	while GetTweenSpritePlaying(FadeTween,IntroScreenSID)
+		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
+		sync()
+	endwhile
+endfunction 0
+	
+function ScreenWidth()
+	result# = GetScreenBoundsRight() - GetScreenBoundsLeft()
+endfunction result#
+
+function ScreenHeight()
+	result# = GetScreenBoundsBottom() - GetScreenBoundsTop()
+endfunction result#
