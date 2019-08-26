@@ -396,6 +396,32 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 		MoveX2#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
     endif
     
+	 
+    if GetRawKeyState(KEY_SPACE)
+		Select player.state
+			
+			case STATE_FORWARD
+				MoveZ1#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+				MoveX1#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+			endcase
+			
+			case STATE_BACKWARD
+				MoveZ1#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+				MoveX1#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+			endcase
+					
+			case STATE_LEFT
+				MoveZ2#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+				MoveX2#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+			endcase
+			
+			case STATE_RIGHT
+				MoveZ2#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+				MoveX2#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+			endcase
+		endselect		
+    endif
+	
     MoveY#=0
 	Player.Character.Velocity.x=curvevalue((MoveX1#+MoveX2#)*FrameTime#,Player.Character.Velocity.x,3.0)
 	Player.Character.Velocity.y=curvevalue((MoveY#)*FrameTime#,Player.Character.Velocity.y,0.2)

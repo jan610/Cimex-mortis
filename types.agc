@@ -53,6 +53,7 @@ type Player
 	Attack			as float
 	OldGrid			as int2
 	Boost_TweenID	as integer
+	State 			as integer
 endtype
 
 type PathGrid
