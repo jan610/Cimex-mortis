@@ -76,12 +76,6 @@ function Game()
 		
 		if GetPointerPressed()
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
-		endif
-		
-		if GetRawMouseRightSTATE() 
-			player.State=STATE_SUCK
-		else
-			if player.State<>0 then player.state=0
 		endif	
 		
 		BulletUpdate(Bullets)
@@ -370,11 +364,6 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 endfunction
 
 function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
-	
-	if GetRawKeyPressed(32)
-		PlayTweenCustom(Player.Boost_TweenID,0.0)
-	endif
-	
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
@@ -386,6 +375,16 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	Sin0#=sin(CameraAngleY#)
 	Sin90#=sin(CameraAngleY#+90.0)
 	Cos0#=cos(CameraAngleY#)
+	
+	if GetRawKeyPressed(32)
+		PlayTweenCustom(Player.Boost_TweenID,0.0)
+	endif
+	
+	if GetRawMouseRightState() 
+		player.State=STATE_SUCK
+	else
+		player.state=0
+	endif
 	
 	if GetTweenCustomPlaying(player.Boost_TweenID)
 		print("Boost")
