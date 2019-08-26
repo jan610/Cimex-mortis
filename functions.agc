@@ -58,6 +58,9 @@ function Game()
 	Player as Player
 	PlayerInit(Player)
 	
+	global DebugOID
+	DebugOID=CreateObjectSphere(0.2,12,18)
+	
 	do
 		Print( ScreenFPS() )
 		
@@ -166,8 +169,8 @@ function PathSetCell(Grid ref as PathGrid[][], x as integer, y as integer, Targe
 endfunction
 
 function PathClear(Grid ref as PathGrid[][])
-	for x=1 to Grid.length-1
-		for y=1 to Grid[0].length-1
+	for x=0 to Grid.length
+		for y=0 to Grid[0].length
 			Grid[x,y].Position.x=0
 			Grid[x,y].Position.y=0
 			Grid[x,y].Number=0
@@ -180,19 +183,31 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2)
 	if Start.x>0 and Start.x<Grid.length and Start.y>0 and Start.y<Grid[0].length
 		local FrontierTemp as int2
 		local Frontier as int2[]
-		//~ local Neighbors as int2[3]
-//~ 
-		//~ Neighbors[0].x=1
-		//~ Neighbors[0].y=0
-		//~ 
-		//~ Neighbors[1].x=0
-		//~ Neighbors[1].y=1
-//~ 
-		//~ Neighbors[2].x=-1
-		//~ Neighbors[2].y=0
-		//~ 
-		//~ Neighbors[3].x=0
-		//~ Neighbors[3].y=-1
+		local Neighbors as int2[7]
+
+		Neighbors[0].x=1
+		Neighbors[0].y=0
+		
+		Neighbors[1].x=0
+		Neighbors[1].y=1
+
+		Neighbors[2].x=-1
+		Neighbors[2].y=0
+		
+		Neighbors[3].x=0
+		Neighbors[3].y=-1
+		
+		Neighbors[4].x=1
+		Neighbors[4].y=1
+		
+		Neighbors[5].x=1
+		Neighbors[5].y=-1
+
+		Neighbors[6].x=-1
+		Neighbors[6].y=1
+		
+		Neighbors[7].x=-1
+		Neighbors[7].y=-1
 
 		StartX=Start.x
 		StartY=Start.y
@@ -211,95 +226,95 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2)
 			y=Frontier[0].y
 			Frontier.remove(0)
 
-			if x>1 and x<Grid.length-1 and y>1 and y<Grid[0].length-1
-				if Mod((x+y),2)=1
-					if Grid[x+1,y].Visited=0
-						FrontierTemp.x=x+1
-						FrontierTemp.y=y
-						Frontier.insert(FrontierTemp)
-						Grid[x+1,y].Position.x=x
-						Grid[x+1,y].Position.y=y
-						Grid[x+1,y].Visited=1
-						Grid[x+1,y].Number=Grid[x,y].Number+1
-					endif
-					if Grid[x,y+1].Visited=0
-						FrontierTemp.x=x
-						FrontierTemp.y=y+1
-						Frontier.insert(FrontierTemp)
-						Grid[x,y+1].Position.x=x
-						Grid[x,y+1].Position.y=y
-						Grid[x,y+1].Visited=1
-						Grid[x,y+1].Number=Grid[x,y].Number+1
-					endif
-					if Grid[x-1,y].Visited=0
-						FrontierTemp.x=x-1
-						FrontierTemp.y=y
-						Frontier.insert(FrontierTemp)
-						Grid[x-1,y].Position.x=x
-						Grid[x-1,y].Position.y=y
-						Grid[x-1,y].Visited=1
-						Grid[x-1,y].Number=Grid[x,y].Number+1
-					endif
-					if Grid[x,y-1].Visited=0
-						FrontierTemp.x=x
-						FrontierTemp.y=y-1
-						Frontier.insert(FrontierTemp)
-						Grid[x,y-1].Position.x=x
-						Grid[x,y-1].Position.y=y
-						Grid[x,y-1].Visited=1
-						Grid[x,y-1].Number=Grid[x,y].Number+1
-					endif
-				else
-					if Grid[x,y-1].Visited=0
-						FrontierTemp.x=x
-						FrontierTemp.y=y-1
-						Frontier.insert(FrontierTemp)
-						Grid[x,y-1].Position.x=x
-						Grid[x,y-1].Position.y=y
-						Grid[x,y-1].Visited=1
-						Grid[x,y-1].Number=Grid[x,y].Number+1
-					endif
-					if Grid[x-1,y].Visited=0
-						FrontierTemp.x=x-1
-						FrontierTemp.y=y
-						Frontier.insert(FrontierTemp)
-						Grid[x-1,y].Position.x=x
-						Grid[x-1,y].Position.y=y
-						Grid[x-1,y].Visited=1
-						Grid[x-1,y].Number=Grid[x,y].Number+1
-					endif
-					if Grid[x,y+1].Visited=0
-						FrontierTemp.x=x
-						FrontierTemp.y=y+1
-						Frontier.insert(FrontierTemp)
-						Grid[x,y+1].Position.x=x
-						Grid[x,y+1].Position.y=y
-						Grid[x,y+1].Visited=1
-						Grid[x,y+1].Number=Grid[x,y].Number+1
-					endif
-					if Grid[x+1,y].Visited=0
-						FrontierTemp.x=x+1
-						FrontierTemp.y=y
-						Frontier.insert(FrontierTemp)
-						Grid[x+1,y].Position.x=x
-						Grid[x+1,y].Position.y=y
-						Grid[x+1,y].Visited=1
-						Grid[x+1,y].Number=Grid[x,y].Number+1
-					endif
-				endif
-				//~ for n=0 to Neighbors.length
-					//~ nx=x+Neighbors[n].x
-					//~ ny=y+Neighbors[n].y
-					//~ if Grid[nx,ny].Visited=0
-						//~ FrontierTemp.x=nx
-						//~ FrontierTemp.y=ny
+			if x>0 and x<Grid.length and y>0 and y<Grid[0].length
+				//~ if Mod((x+y),2)=1
+					//~ if Grid[x+1,y].Visited=0
+						//~ FrontierTemp.x=x+1
+						//~ FrontierTemp.y=y
 						//~ Frontier.insert(FrontierTemp)
-						//~ Grid[nx,ny].Position.x=x
-						//~ Grid[nx,ny].Position.y=y
-						//~ Grid[nx,ny].Visited=1
-						//~ Grid[nx,ny].Number=Grid[x,y].Number+1
+						//~ Grid[x+1,y].Position.x=x
+						//~ Grid[x+1,y].Position.y=y
+						//~ Grid[x+1,y].Visited=1
+						//~ Grid[x+1,y].Number=Grid[x,y].Number+1
 					//~ endif
-				//~ next n
+					//~ if Grid[x,y+1].Visited=0
+						//~ FrontierTemp.x=x
+						//~ FrontierTemp.y=y+1
+						//~ Frontier.insert(FrontierTemp)
+						//~ Grid[x,y+1].Position.x=x
+						//~ Grid[x,y+1].Position.y=y
+						//~ Grid[x,y+1].Visited=1
+						//~ Grid[x,y+1].Number=Grid[x,y].Number+1
+					//~ endif
+					//~ if Grid[x-1,y].Visited=0
+						//~ FrontierTemp.x=x-1
+						//~ FrontierTemp.y=y
+						//~ Frontier.insert(FrontierTemp)
+						//~ Grid[x-1,y].Position.x=x
+						//~ Grid[x-1,y].Position.y=y
+						//~ Grid[x-1,y].Visited=1
+						//~ Grid[x-1,y].Number=Grid[x,y].Number+1
+					//~ endif
+					//~ if Grid[x,y-1].Visited=0
+						//~ FrontierTemp.x=x
+						//~ FrontierTemp.y=y-1
+						//~ Frontier.insert(FrontierTemp)
+						//~ Grid[x,y-1].Position.x=x
+						//~ Grid[x,y-1].Position.y=y
+						//~ Grid[x,y-1].Visited=1
+						//~ Grid[x,y-1].Number=Grid[x,y].Number+1
+					//~ endif
+				//~ else
+					//~ if Grid[x,y-1].Visited=0
+						//~ FrontierTemp.x=x
+						//~ FrontierTemp.y=y-1
+						//~ Frontier.insert(FrontierTemp)
+						//~ Grid[x,y-1].Position.x=x
+						//~ Grid[x,y-1].Position.y=y
+						//~ Grid[x,y-1].Visited=1
+						//~ Grid[x,y-1].Number=Grid[x,y].Number+1
+					//~ endif
+					//~ if Grid[x-1,y].Visited=0
+						//~ FrontierTemp.x=x-1
+						//~ FrontierTemp.y=y
+						//~ Frontier.insert(FrontierTemp)
+						//~ Grid[x-1,y].Position.x=x
+						//~ Grid[x-1,y].Position.y=y
+						//~ Grid[x-1,y].Visited=1
+						//~ Grid[x-1,y].Number=Grid[x,y].Number+1
+					//~ endif
+					//~ if Grid[x,y+1].Visited=0
+						//~ FrontierTemp.x=x
+						//~ FrontierTemp.y=y+1
+						//~ Frontier.insert(FrontierTemp)
+						//~ Grid[x,y+1].Position.x=x
+						//~ Grid[x,y+1].Position.y=y
+						//~ Grid[x,y+1].Visited=1
+						//~ Grid[x,y+1].Number=Grid[x,y].Number+1
+					//~ endif
+					//~ if Grid[x+1,y].Visited=0
+						//~ FrontierTemp.x=x+1
+						//~ FrontierTemp.y=y
+						//~ Frontier.insert(FrontierTemp)
+						//~ Grid[x+1,y].Position.x=x
+						//~ Grid[x+1,y].Position.y=y
+						//~ Grid[x+1,y].Visited=1
+						//~ Grid[x+1,y].Number=Grid[x,y].Number+1
+					//~ endif
+				//~ endif
+				for n=0 to Neighbors.length
+					nx=x+Neighbors[n].x
+					ny=y+Neighbors[n].y
+					if Grid[nx,ny].Visited=0
+						FrontierTemp.x=nx
+						FrontierTemp.y=ny
+						Frontier.insert(FrontierTemp)
+						Grid[nx,ny].Position.x=x
+						Grid[nx,ny].Position.y=y
+						Grid[nx,ny].Visited=1
+						Grid[nx,ny].Number=Grid[x,y].Number+1
+					endif
+				next n
 			endif
 		endwhile
 	endif
@@ -316,7 +331,10 @@ function PlayerControll(Player ref as Player,CameraDistance#) // player speed is
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
+	CameraY#=GetCameraY(1)
 	CameraZ#=GetCameraZ(1)
+	PointerX#=GetPointerX()
+	PointerY#=GetPointerY()
 	
 	Sin0#=sin(CameraAngleY#)
 	Sin90#=sin(CameraAngleY#+90.0)
@@ -354,24 +372,23 @@ function PlayerControll(Player ref as Player,CameraDistance#) // player speed is
 	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
 	
 	// Player to look at mouse position
-	rx# = Get3DVectorXFromScreen(GetPointerX(),GetPointerY())
-    ry# = Get3DVectorYFromScreen(GetPointerX(),GetPointerY())
-    rz# = Get3DVectorZFromScreen(GetPointerX(),GetPointerY())
- 
-    length# = -GetCameraY(1) / ry#
- 
-    rx# = GetCameraX(1) + rx#*length#
-    ry# = Player.Character.Position.y
-    rz# = GetCameraZ(1) + rz#*length#
+	Pointer3DX#=Get3DVectorXFromScreen(PointerX#,PointerY#)
+    Pointer3DY#=Get3DVectorYFromScreen(PointerX#,PointerY#)
+    Pointer3DZ#=Get3DVectorZFromScreen(PointerX#,PointerY#)
 
-    rx# = Player.Character.AngularVelocity.x + (rx# - Player.Character.AngularVelocity.x) * (FrameTime#*3.0)
-    rz# = Player.Character.AngularVelocity.z + (rz# - Player.Character.AngularVelocity.z) * (FrameTime#*3.0)
+    Length#=-CameraY#/Pointer3DY#
+
+    Pointer3DX#=CameraX#+Pointer3DX#*Length#
+    Pointer3DY#=Player.Character.Position.y
+    Pointer3DZ#=CameraZ#+Pointer3DZ#*Length#
+
+	DistX#=Pointer3DX#-Player.Character.Position.x
+	DistZ#=Pointer3DZ#-Player.Character.Position.z
 	
-    SetObjectLookAt(player.Character.OID, rx#,ry#,rz#,0) 
-    
-    Player.Character.AngularVelocity.x = rx#
-    Player.Character.AngularVelocity.y = ry#
-    Player.Character.AngularVelocity.z = rz#
+	NewAngle#=-atanfull(DistX#,DistZ#)
+	Player.Character.Rotation.y=CurveAngle(Player.Character.Rotation.y,NewAngle#,9.0)
+	
+	SetObjectRotation(Player.Character.OID,Player.Character.Rotation.x,Player.Character.Rotation.y,Player.Character.Rotation.z)
 endfunction
 
 function EnemyInit(Enemy ref as Character[])
@@ -388,9 +405,16 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
 	PlayerGrid.y=round(Player.Character.Position.z/GridSize)
 
-	PathClear(Grid) // TODO: only calculate if the player moves to a new cell
-	PathFinding(Grid, PlayerGrid)
+	// TODO: for each Enemy Cast ray to player and only calculate path if there is an obstacle detected else run straight to player
+	// only calculate if the player moves to a new cell
+	if PlayerGrid.x<>Player.OldGrid.x or PlayerGrid.y<>Player.OldGrid.y
+		Player.OldGrid.x=PlayerGrid.x
+		Player.OldGrid.y=PlayerGrid.y
+		PathClear(Grid)
+		PathFinding(Grid, PlayerGrid)
+	endif
 	
+	// Debugging Lines
 	for x=1 to Grid.length-1
 		for y=1 to Grid[0].length-1
 			linestartx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)

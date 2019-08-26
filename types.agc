@@ -53,6 +53,7 @@ type Player
 	Character		as Character
 	Energy			as float
 	Attack			as float
+	OldGrid			as int2
 endtype
 
 type PathGrid
