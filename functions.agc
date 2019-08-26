@@ -59,7 +59,7 @@ function Game()
 	PathInit(Grid, 1, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
-	Enemy as Character[0]
+	Enemy as Character[50]
 	EnemyInit(Enemy, Grid, GridSize)
 	
 	Bullets as Bullet[]
@@ -511,7 +511,6 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		next y
 	next x
 	
-	print(Enemy.length)
 	for Index=0 to Enemy.length
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)
 		EnemyGridZ=round(Enemy[Index].Position.z/GridSize)
@@ -612,7 +611,7 @@ function BulletUpdate(Bullets ref as Bullet[])
 	
 	print(Bullets.length)
 	for Index=0 to Bullets.length
-		UpdateTweenCustom(Bullets[Index].Velocity_Tween,GetFrameTime())
+		UpdateTweenCustom(Bullets[Index].Velocity_Tween,FrameTime#)
 		VelocityX#=GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)*FrameTime#
 		VelocityZ#=GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)*FrameTime#
 		Bullets[Index].Position.x=Bullets[Index].Position.x-VelocityX#
