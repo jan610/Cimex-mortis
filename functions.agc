@@ -59,7 +59,7 @@ function Game()
 	PathInit(Grid, 1, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
-	Enemy as Character[0]
+	Enemy as Character[50]
 	EnemyInit(Enemy, Grid, GridSize)
 	
 	Bullets as Bullet[]
@@ -76,12 +76,6 @@ function Game()
 		
 		if GetPointerPressed()
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
-		endif
-		
-		if GetRawMouseRightSTATE() 
-			player.State=STATE_SUCK
-		else
-			if player.State<>0 then player.state=0
 		endif	
 		
 		BulletUpdate(Bullets)
@@ -369,11 +363,6 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 endfunction
 
 function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
-	
-	if GetRawKeyPressed(32)
-		PlayTweenCustom(Player.Boost_TweenID,0.0)
-	endif
-	
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
@@ -385,6 +374,16 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	Sin0#=sin(CameraAngleY#)
 	Sin90#=sin(CameraAngleY#+90.0)
 	Cos0#=cos(CameraAngleY#)
+	
+	if GetRawKeyPressed(32)
+		PlayTweenCustom(Player.Boost_TweenID,0.0)
+	endif
+	
+	if GetRawMouseRightState() 
+		player.State=STATE_SUCK
+	else
+		player.state=0
+	endif
 	
 	if GetTweenCustomPlaying(player.Boost_TweenID)
 		print("Boost")
@@ -515,7 +514,6 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 `		next y
 `	next x
 	
-	print(Enemy.length)
 	for Index=0 to Enemy.length
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)
 		EnemyGridZ=round(Enemy[Index].Position.z/GridSize)
@@ -616,7 +614,7 @@ function BulletUpdate(Bullets ref as Bullet[])
 	
 	print(Bullets.length)
 	for Index=0 to Bullets.length
-		UpdateTweenCustom(Bullets[Index].Velocity_Tween,GetFrameTime())
+		UpdateTweenCustom(Bullets[Index].Velocity_Tween,FrameTime#)
 		VelocityX#=GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)*FrameTime#
 		VelocityZ#=GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)*FrameTime#
 		Bullets[Index].Position.x=Bullets[Index].Position.x-VelocityX#
