@@ -71,4 +71,5 @@ type Bullet
 	Rotation		as vec3
 	Velocity		as vec3
 	Time			as float
+	Velocity_Tween	as integer
 endtype
