@@ -9,7 +9,7 @@ Type HexCell
 	Enemies			as Character[]
 endtype
 
-type int3
+type int2
 	x				as integer
 	y				as integer
 endtype
@@ -46,13 +46,18 @@ Type Character		// can be Player and Enemy
 	Velocity		as vec3
 	AngularVelocity	as vec3
 	Life			as float // Player Health
+	MaxSpeed		as float 
+endtype
+
+type Player
+	Character		as Character
 	Energy			as float
 	Attack			as float
-	MaxSpeed		as float
+	OldGrid			as int2
 endtype
 
 type PathGrid
-	Position 		as int3
+	Position 		as int2
 	Visited 		as integer
 	Number			as integer
 endtype
