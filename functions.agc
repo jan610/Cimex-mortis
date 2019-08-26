@@ -476,12 +476,24 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			
 			NewAngle#=-atanfull(DistX#,DistZ#)
 			Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
-			
+
 			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
 			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
 
 			Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
 			Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
+			
+			OldEnemyX#=GetObjectX(Enemy[Index].OID)
+			OldEnemyY#=GetObjectY(Enemy[Index].OID)
+			OldEnemyZ#=GetObjectZ(Enemy[Index].OID)
+			
+			if ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)>0
+				Ray=0
+				//~ for Ray=0 to GetObjectRayCastNumHits()
+					Enemy[Index].Position.x=GetObjectRayCastSlideX(Ray)
+					Enemy[Index].Position.z=GetObjectRayCastSlideZ(Ray)
+				//~ next Ray
+			endif
 			
 			SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
 			SetObjectRotation(Enemy[Index].OID,Enemy[Index].Rotation.x,Enemy[Index].Rotation.y,Enemy[Index].Rotation.z)
