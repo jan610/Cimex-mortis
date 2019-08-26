@@ -16,9 +16,9 @@ SetSyncRate( 0, 0 ) // 30fps instead of 60 to save battery
 SetScissor( 0,0,0,0 ) // use the maximum available screen space, no black borders
 UseNewDefaultFonts( 1 ) // since version 2.0.22 we can use nicer default fonts
 
-SetShadowMappingMode(3) // built in shadows (for now at least)
+`SetShadowMappingMode(3) // built in shadows (for now at least)
 
-SetAntialiasMode(1)
+`SetAntialiasMode(1)
 SetDefaultWrapU(1)
 SetDefaultWrapV(1)
 

@@ -9,7 +9,7 @@ function MainMenu()
 		PointerY#=GetPointerY()
 		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
 			if GetPointerReleased()
-				GameState=STATE_GAME
+				GameState=STATE_GAME_MENU
 				exit
 			endif
 		endif
@@ -26,14 +26,15 @@ function MainMenu()
 endfunction GameState
 
 function GameMenu()
-	MainTID=CreateText("Main Menu")
+	MainTID=CreateText("Level Select")
 	SetTextSize(MainTID,12)
+	
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
 		if GetTextHitTest(MainTID,PointerX#,PointerY#)
 			if GetPointerReleased()
-				GameState=STATE_MAIN_MENU
+				GameState=STATE_GAME
 				exit
 			endif
 		endif
@@ -119,7 +120,7 @@ function IntroScreen()
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
 		sync()
 	endwhile
-endfunction 0
+endfunction STATE_MAIN_MENU
 	
 function ScreenWidth()
 	result# = GetScreenBoundsRight() - GetScreenBoundsLeft()
@@ -335,9 +336,16 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
 	SetCameraLookAt(1,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0)
+	Player.Boost_TweenID = CreateTweenCustom(0.3)
+	SetTweenCustomFloat1(Player.Boost_TweenID,100,0,TweenSmooth2())
 endfunction
 
 function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
+	
+	if GetRawMouseRightPressed()
+		PlayTweenCustom(Player.Boost_TweenID,0.0)
+	endif
+	
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
@@ -350,21 +358,28 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	Sin90#=sin(CameraAngleY#+90.0)
 	Cos0#=cos(CameraAngleY#)
 	
+	if GetTweenCustomPlaying(player.Boost_TweenID)
+		print("Boost")
+		UpdateTweenCustom(player.Boost_TweenID,GetFrameTime())
+	endif
+	
+	SpeedBoost# = GetTweenCustomFloat1(player.Boost_TweenID)
+	
     if GetRawKeyState(KEY_W)
-		MoveZ1#=Player.Character.MaxSpeed*Sin90#
-		MoveX1#=Player.Character.MaxSpeed*Sin0#
+		MoveZ1#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
+		MoveX1#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
     endif
     if GetRawKeyState(KEY_S)
-		MoveZ1#=-Player.Character.MaxSpeed*Sin90#
-		MoveX1#=-Player.Character.MaxSpeed*Sin0#
+		MoveZ1#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
+		MoveX1#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
     endif
     if GetRawKeyState(KEY_A)
-		MoveZ2#=Player.Character.MaxSpeed*Sin0#
-		MoveX2#=-Player.Character.MaxSpeed*Sin90#
+		MoveZ2#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
+		MoveX2#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
     endif
     if GetRawKeyState(KEY_D)
-		MoveZ2#=-Player.Character.MaxSpeed*Sin0#
-		MoveX2#=Player.Character.MaxSpeed*Sin90#
+		MoveZ2#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
+		MoveX2#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
     endif
     
     MoveY#=0
