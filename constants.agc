@@ -12,4 +12,7 @@
 #constant STATE_BACKWARD   2
 #constant STATE_LEFT       3
 #constant STATE_RIGHT      4
-
+#constant STATE_SUCK       5
+#constant SUCK_POWER       5
+#constant SUCK_DISTANCE    10
+#constant BOOST_AMMOUNT		4		  

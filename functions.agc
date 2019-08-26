@@ -78,13 +78,19 @@ function Game()
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1)
 		endif
 		
+		if GetRawMouseRightSTATE() 
+			player.State=STATE_SUCK
+		else
+			if player.State<>0 then player.state=0
+		endif	
+		
 		BulletUpdate(Bullets)
 
 		if GetRawKeyReleased(27)
 			GameState=STATE_GAME_MENU
 			exit
 		endif
-		
+		print (player.state)
 		Sync()
 	loop
 endfunction GameState
@@ -405,23 +411,23 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 		Select player.state
 			
 			case STATE_FORWARD
-				MoveZ1#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
-				MoveX1#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+				MoveZ1#=(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+				MoveX1#=(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
 			endcase
 			
 			case STATE_BACKWARD
-				MoveZ1#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
-				MoveX1#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+				MoveZ1#=-(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+				MoveX1#=-(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
 			endcase
 					
 			case STATE_LEFT
-				MoveZ2#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
-				MoveX2#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+				MoveZ2#=(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+				MoveX2#=-(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
 			endcase
 			
 			case STATE_RIGHT
-				MoveZ2#=-(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
-				MoveX2#=(4*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
+				MoveZ2#=-(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#)
+				MoveX2#=(BOOST_AMMOUNT*(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#)
 			endcase
 		endselect		
     endif
@@ -519,8 +525,14 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
 			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
 
-			Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
-			Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
+			//sucks all enemy around within a distance should be changed later to only suck ones infront
+			if player.state=STATE_SUCK and Distance(Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,enemy[Index].Position.x,enemy[Index].Position.y,enemy[Index].Position.z)<=SUCK_DISTANCE
+				Enemy[Index].Position.x=Enemy[Index].Position.x-SUCK_POWER*EnemyDirX#
+				Enemy[Index].Position.z=Enemy[Index].Position.z-SUCK_POWER*EnemyDirZ#	
+			else	
+				Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
+				Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
+			endif
 			
 			OldEnemyX#=GetObjectX(Enemy[Index].OID)
 			OldEnemyY#=GetObjectY(Enemy[Index].OID)
@@ -538,6 +550,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			SetObjectRotation(Enemy[Index].OID,Enemy[Index].Rotation.x,Enemy[Index].Rotation.y,Enemy[Index].Rotation.z)
 		endif
 	next Index
+	
 endfunction
 
 function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y coordinates.
@@ -602,3 +615,4 @@ function BulletUpdate(Bullets ref as Bullet[])
 		endif
 	next Index
 endfunction
+
