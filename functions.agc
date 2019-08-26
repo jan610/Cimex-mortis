@@ -616,7 +616,11 @@ function BulletUpdate(Bullets ref as Bullet[])
 		SetObjectShaderConstantByName(Bullets[Index].OID,"start",Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z, 0)
 		SetObjectShaderConstantByName(Bullets[Index].OID,"end",Bullets[Index].Position.x+VelocityX#*BulletLength,Bullets[Index].Position.y,Bullets[Index].Position.z+VelocityZ#*BulletLength, 0)
 	
-		if Timer()>Bullets[Index].Time
+`		if Timer()>Bullets[Index].Time
+`			DeleteObject(Bullets[Index].OID)
+`			Bullets.remove(Index)
+`		endif
+		if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween)
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 		endif
