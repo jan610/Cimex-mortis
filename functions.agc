@@ -75,7 +75,7 @@ function Game()
 		EnemyControll(Enemy, Player, Grid, GridSize)
 		
 		if GetPointerPressed()
-			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1)
+			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
 		endif
 		
 		if GetRawMouseRightSTATE() 
@@ -91,6 +91,10 @@ function Game()
 			exit
 		endif
 		print (player.state)
+		print("Energy:"+str(Player.Energy))
+		print("Attack:"+str(Player.Attack))
+		print("Life:"+str(Player.Character.Life))
+		print("mov-speed:"+str(Player.Character.MaxSpeed))
 		Sync()
 	loop
 endfunction GameState
@@ -357,6 +361,7 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	Player.Character.Position.x=32
 	Player.Character.Position.y=0
 	Player.Character.Position.z=32
+	Player.Attack = 0.9
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
 	SetCameraLookAt(1,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0)
@@ -565,7 +570,7 @@ function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y 
  	Result=ObjectRayCast(0,getcamerax(1),getcameray(1),getcameraz(1), Worldx#,Worldy#,Worldz#)
 endfunction Result
 
-function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer)
+function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer,Attack as float)
 	local MaxSpeed as float
 	MaxSpeed = 9
 	
@@ -589,7 +594,7 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	TempBullet.NormalIID=NormalIID
 	TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
 	TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
-	TempBullet.Velocity_Tween = CreateTweenCustom(0.9)
+	TempBullet.Velocity_Tween = CreateTweenCustom(Attack)
 	SetTweenCustomFloat1(TempBullet.Velocity_Tween,TempBullet.Velocity.x,0,TweenEaseIn2())
 	SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
 	PlayTweenCustom(TempBullet.Velocity_Tween,0.0)
