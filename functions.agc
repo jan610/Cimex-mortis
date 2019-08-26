@@ -47,21 +47,16 @@ function Game()
 	local GridSize
 	GridSize=1
 	
-	Grid as PathGrid[64,64]
-	
-	for x=0 to Grid.length
-		for y=0 to Grid[0].length
-			Wall=0 // -1 is a wall
-			PathSetCell(Grid,x,y,0,0,0,Wall)
-		next y
-	next x
-	
 	Player as Player
 	PlayerInit(Player,10)
 	
 	local PlayerGrid as int2
 	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
 	PlayerGrid.y=round(Player.Character.Position.z/GridSize)
+	
+	Grid as PathGrid[64,64]
+	
+	PathInit(Grid, 1, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
 	Enemy as Character[50]
@@ -166,6 +161,19 @@ function Wrap(Value#,Min#,Max#)
 	if Value#>Max# then Value#=Min#
 	if Value#<Min# then Value#=Max#
 endfunction Value#
+
+function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integer)
+	local y as float
+	y=0.5
+	for x=0 to Grid.length
+		for z=0 to Grid[0].length
+			Index=ObjectSphereCast(0,x*GridSize,y*GridSize,z*GridSize,x*GridSize,y*GridSize,z*GridSize,ScanSize)
+			if GetObjectRayCastNumHits()>0
+				if GetObjectRayCastHitID(Index)>0 then PathSetCell(Grid,x,z,0,0,0,-1)
+			endif
+		next z
+	next x
+endfunction
 
 function PathSetCell(Grid ref as PathGrid[][], x as integer, y as integer, TargetX as integer, TargetY as integer, Number as integer, Visited as integer)
 	Grid[x,y].Position.x=TargetX
