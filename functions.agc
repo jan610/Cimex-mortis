@@ -185,17 +185,16 @@ function Wrap(Value#,Min#,Max#)
 endfunction Value#
 
 function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integer)
-	local y as float
-	y=0.5
-	for x=0 to Grid.length
-		for z=0 to Grid[0].length
-			// somehow marks the whole Grid as Obstacle/Wall
-			//~ HitOID=ObjectSphereCast(0,x*GridSize,y*GridSize,z*GridSize,x*GridSize,y*GridSize,z*GridSize,ScanSize)
-			//~ if GetObjectRayCastNumHits()>0
-				//~ if GetObjectRayCastHitID(0)>0 then PathSetCell(Grid,x,z,0,0,0,-1)
-			//~ endif
-		next z
-	next x
+	local gridy as float
+	gridy=0.5
+	for gridx=0 to Grid.length
+		for gridz=0 to Grid[0].length
+			HitOID=ObjectSphereCast(0,gridx*GridSize,gridy*GridSize,gridz*GridSize,gridx*GridSize,gridy*GridSize,gridz*GridSize,ScanSize)
+			if HitOID>0 
+				PathSetCell(Grid,gridx,gridz,0,0,0,-1)
+			endif
+		next gridz
+	next gridx
 endfunction
 
 function PathSetCell(Grid ref as PathGrid[][], x as integer, y as integer, TargetX as integer, TargetY as integer, Number as integer, Visited as integer)
@@ -506,15 +505,15 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	endif
 	
 	// Debugging Lines
-	for x=0 to Grid.length
-		for y=0 to Grid[0].length
-			linestartx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-			linestarty#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-			linesendx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
-			linesendy#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
-			DrawLine(linestartx#,linestarty#,linesendx#,linesendy#,MakeColor(255,255,255),MakeColor(0,0,255))
-		next y
-	next x
+`	for x=0 to Grid.length
+`		for y=0 to Grid[0].length
+`			linestartx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+`			linestarty#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+`			linesendx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
+`			linesendy#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
+`			DrawLine(linestartx#,linestarty#,linesendx#,linesendy#,MakeColor(255,255,255),MakeColor(0,0,255))
+`		next y
+`	next x
 	
 	print(Enemy.length)
 	for Index=0 to Enemy.length
