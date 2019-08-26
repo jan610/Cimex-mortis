@@ -62,11 +62,19 @@ function Game()
 	Enemy as Character[50]
 	EnemyInit(Enemy, Grid, GridSize)
 	
+	Bullets as Bullet[]
+	
 	do
 		Print( ScreenFPS() )
 		
 		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemy, Player, Grid, GridSize)
+		
+		if GetPointerPressed()
+			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y)
+		endif
+		
+		BulletUpdate(Bullets)
 
 		if GetRawKeyReleased(27)
 			GameState=STATE_GAME_MENU
@@ -167,10 +175,11 @@ function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integ
 	y=0.5
 	for x=0 to Grid.length
 		for z=0 to Grid[0].length
-			Index=ObjectSphereCast(0,x*GridSize,y*GridSize,z*GridSize,x*GridSize,y*GridSize,z*GridSize,ScanSize)
-			if GetObjectRayCastNumHits()>0
-				if GetObjectRayCastHitID(Index)>0 then PathSetCell(Grid,x,z,0,0,0,-1)
-			endif
+			// somehow marks the whole Grid as Obstacle/Wall
+			//~ HitOID=ObjectSphereCast(0,x*GridSize,y*GridSize,z*GridSize,x*GridSize,y*GridSize,z*GridSize,ScanSize)
+			//~ if GetObjectRayCastNumHits()>0
+				//~ if GetObjectRayCastHitID(0)>0 then PathSetCell(Grid,x,z,0,0,0,-1)
+			//~ endif
 		next z
 	next x
 endfunction
@@ -416,7 +425,7 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	DistZ#=Pointer3DZ#-Player.Character.Position.z
 	
 	NewAngle#=-atanfull(DistX#,DistZ#)
-	Player.Character.Rotation.y=CurveAngle(Player.Character.Rotation.y,NewAngle#,9.0)
+	Player.Character.Rotation.y=CurveAngle(Player.Character.Rotation.y,NewAngle#,6.0)
 	
 	SetObjectRotation(Player.Character.OID,Player.Character.Rotation.x,Player.Character.Rotation.y,Player.Character.Rotation.z)
 endfunction
@@ -513,3 +522,37 @@ function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y 
  	Result=ObjectRayCast(0,getcamerax(1),getcameray(1),getcameraz(1), Worldx#,Worldy#,Worldz#)
 endfunction Result
 
+function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float)
+	local MaxSpeed as float
+	MaxSpeed = 6
+	
+	local TempBullet as Bullet
+	TempBullet.OID=CreateObjectPlane(1,1)
+	SetObjectPosition(TempBullet.OID,X,Y,Z)
+	SetObjectRotation(TempBullet.OID,0,AngleY,0)
+	TempBullet.Position.x=X
+	TempBullet.Position.y=Y
+	TempBullet.Position.z=Z
+	TempBullet.Rotation.y=AngleY
+	//~ TempBullet.ShaderID=ShaderID
+	TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
+	TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
+	TempBullet.Time = Timer()+30
+	Bullets.insert(TempBullet)
+endfunction
+
+function BulletUpdate(Bullets ref as Bullet[])
+	FrameTime#=GetFrameTime()
+	local MaxTime as Float
+	print(Bullets.length)
+	for Index=0 to Bullets.length
+		Bullets[Index].Position.x=Bullets[Index].Position.x-Bullets[Index].Velocity.x*FrameTime#
+		Bullets[Index].Position.z=Bullets[Index].Position.z-Bullets[Index].Velocity.z*FrameTime#
+		SetObjectPosition(Bullets[Index].OID,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+	
+		if Timer()>Bullets[Index].Time
+			DeleteObject(Bullets[Index].OID)
+			Bullets.remove(Index)
+		endif
+	next Index
+endfunction

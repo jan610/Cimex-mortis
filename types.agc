@@ -29,8 +29,7 @@ Type ArenaPiece
 	OID				as integer	// Object ID for building the arena
 	DiffuseIID		as integer	// Diffuse map
 	NormalIID		as integer	// Normal map	
-	VShaderID		as integer
-	PShaderID		as integer
+	ShaderID		as integer
 	Position		as vec3
 	Rotation		as vec3
 endtype
@@ -39,8 +38,7 @@ Type Character		// can be Player and Enemy
 	OID				as integer
 	DiffuseIID		as integer
 	NormalIID		as integer
-	VShaderID		as integer
-	PShaderID		as integer
+	ShaderID		as integer
 	Position		as vec3
 	Rotation		as vec3
 	Velocity		as vec3
@@ -61,4 +59,15 @@ type PathGrid
 	Position 		as int2
 	Visited 		as integer
 	Number			as integer
+endtype
+
+type Bullet
+	OID				as integer
+	DiffuseIID		as integer
+	NormalIID		as integer
+	ShaderID		as integer
+	Position		as vec3
+	Rotation		as vec3
+	Velocity		as vec3
+	Time			as float
 endtype
