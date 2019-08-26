@@ -64,6 +64,10 @@ function Game()
 	
 	Bullets as Bullet[]
 	
+	// temporary ...help me do this in a nicer way please
+	BulletShaderID=LoadShader("shader/Line.vs","shader/Default.ps")
+	BulletDiffuseIID=LoadImage("bullet.png")
+	
 	do
 		Print( ScreenFPS() )
 		
@@ -71,7 +75,7 @@ function Game()
 		EnemyControll(Enemy, Player, Grid, GridSize)
 		
 		if GetPointerPressed()
-			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y)
+			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1)
 		endif
 		
 		BulletUpdate(Bullets)
@@ -522,33 +526,49 @@ function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y 
  	Result=ObjectRayCast(0,getcamerax(1),getcameray(1),getcameraz(1), Worldx#,Worldy#,Worldz#)
 endfunction Result
 
-function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float)
+function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer)
 	local MaxSpeed as float
-	MaxSpeed = 6
+	MaxSpeed = 9
 	
 	local TempBullet as Bullet
 	TempBullet.OID=CreateObjectPlane(1,1)
 	SetObjectPosition(TempBullet.OID,X,Y,Z)
 	SetObjectRotation(TempBullet.OID,0,AngleY,0)
+	SetObjectImage(TempBullet.OID,DiffuseIID,0)
+	//~ SetObjectNormalMap(TempBullet.OID,NormalIID)
+	SetObjectTransparency(TempBullet.OID,1)
+	SetObjectShader(TempBullet.OID,ShaderID)
+	SetObjectShaderConstantByName(TempBullet.OID,"thickness",0.2,0,0,0)
+	//~ SetObjectLightMode(TempBullet.OID,0)
+	//~ SetObjectCullMode(TempBullet.OID,0)
 	TempBullet.Position.x=X
 	TempBullet.Position.y=Y
 	TempBullet.Position.z=Z
 	TempBullet.Rotation.y=AngleY
-	//~ TempBullet.ShaderID=ShaderID
+	TempBullet.ShaderID=ShaderID
+	TempBullet.DiffuseIID=DiffuseIID
+	TempBullet.NormalIID=NormalIID
 	TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
 	TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
-	TempBullet.Time = Timer()+30
+	TempBullet.Time = Timer()+3
 	Bullets.insert(TempBullet)
 endfunction
 
 function BulletUpdate(Bullets ref as Bullet[])
 	FrameTime#=GetFrameTime()
 	local MaxTime as Float
+	local BulletLength as float
+	BulletLength = 2
+	
 	print(Bullets.length)
 	for Index=0 to Bullets.length
-		Bullets[Index].Position.x=Bullets[Index].Position.x-Bullets[Index].Velocity.x*FrameTime#
-		Bullets[Index].Position.z=Bullets[Index].Position.z-Bullets[Index].Velocity.z*FrameTime#
+		VelocityX#=Bullets[Index].Velocity.x*FrameTime#
+		VelocityZ#=Bullets[Index].Velocity.z*FrameTime#
+		Bullets[Index].Position.x=Bullets[Index].Position.x-VelocityX#
+		Bullets[Index].Position.z=Bullets[Index].Position.z-VelocityZ#
 		SetObjectPosition(Bullets[Index].OID,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+		SetObjectShaderConstantByName(Bullets[Index].OID,"start",Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z, 0)
+		SetObjectShaderConstantByName(Bullets[Index].OID,"end",Bullets[Index].Position.x+VelocityX#*BulletLength,Bullets[Index].Position.y,Bullets[Index].Position.z+VelocityZ#*BulletLength, 0)
 	
 		if Timer()>Bullets[Index].Time
 			DeleteObject(Bullets[Index].OID)
