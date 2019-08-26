@@ -596,6 +596,10 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	TempBullet.NormalIID=NormalIID
 	TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
 	TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
+	TempBullet.Velocity_Tween = CreateTweenCustom(0.9)
+	SetTweenCustomFloat1(TempBullet.Velocity_Tween,TempBullet.Velocity.x,0,TweenEaseIn2())
+	SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
+	PlayTweenCustom(TempBullet.Velocity_Tween,0.0)
 	TempBullet.Time = Timer()+3
 	Bullets.insert(TempBullet)
 endfunction
@@ -608,15 +612,22 @@ function BulletUpdate(Bullets ref as Bullet[])
 	
 	print(Bullets.length)
 	for Index=0 to Bullets.length
-		VelocityX#=Bullets[Index].Velocity.x*FrameTime#
-		VelocityZ#=Bullets[Index].Velocity.z*FrameTime#
+		UpdateTweenCustom(Bullets[Index].Velocity_Tween,GetFrameTime())
+		VelocityX#=GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)*FrameTime#
+		VelocityZ#=GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)*FrameTime#
 		Bullets[Index].Position.x=Bullets[Index].Position.x-VelocityX#
 		Bullets[Index].Position.z=Bullets[Index].Position.z-VelocityZ#
+`		Bullets[Index].Position.x=Bullets[Index].Position.x-GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)
+`		Bullets[Index].Position.z=Bullets[Index].Position.z-GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)
 		SetObjectPosition(Bullets[Index].OID,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
 		SetObjectShaderConstantByName(Bullets[Index].OID,"start",Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z, 0)
 		SetObjectShaderConstantByName(Bullets[Index].OID,"end",Bullets[Index].Position.x+VelocityX#*BulletLength,Bullets[Index].Position.y,Bullets[Index].Position.z+VelocityZ#*BulletLength, 0)
 	
-		if Timer()>Bullets[Index].Time
+`		if Timer()>Bullets[Index].Time
+`			DeleteObject(Bullets[Index].OID)
+`			Bullets.remove(Index)
+`		endif
+		if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween)
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 		endif
