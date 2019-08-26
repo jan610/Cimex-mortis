@@ -66,9 +66,6 @@ function Game()
 	Enemy as Character[50]
 	EnemyInit(Enemy, Grid, GridSize)
 	
-	global DebugOID
-	DebugOID=CreateObjectSphere(0.2,12,18)
-	
 	do
 		Print( ScreenFPS() )
 		
@@ -419,6 +416,7 @@ function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize)
 endfunction
 
 function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer)
+	FrameTime#=GetFrameTime()
 	PlayerGrid as int2
 	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
 	PlayerGrid.y=round(Player.Character.Position.z/GridSize)
@@ -435,8 +433,8 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	endif
 	
 	// Debugging Lines
-	for x=1 to Grid.length-1
-		for y=1 to Grid[0].length-1
+	for x=0 to Grid.length
+		for y=0 to Grid[0].length
 			linestartx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
 			linestarty#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
 			linesendx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
@@ -456,8 +454,8 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			NewAngle#=-atanfull(DistX#,DistZ#)
 			Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
 			
-			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*GetFrameTime()
-			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*GetFrameTime()
+			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
+			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
 
 			Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
 			Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
