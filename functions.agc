@@ -1,5 +1,3 @@
-
-
 function MainMenu()
 	PlayTID=CreateText("Play")
 	SetTextSize(PlayTID,12)
@@ -57,15 +55,15 @@ function Game()
 	Enemy as Character[50]
 	EnemyInit(Enemy)
 
-	Player as Character
+	Player as Player
 	PlayerInit(Player)
 	
 	do
 		Print( ScreenFPS() )
 		
-		PlayerControll(Player,8.0,10)
+		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemy, Player, Grid, 1)
-		
+
 		if GetRawKeyReleased(27)
 			GameState=STATE_GAME_MENU
 			exit
@@ -307,13 +305,14 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2)
 	endif
 endfunction
 
-function PlayerInit(Player ref as Character)
-	Player.OID=CreateObjectBox(1,1,1)
+function PlayerInit(Player ref as Player)
+	Player.Character.OID=CreateObjectBox(1,1,1)
+	Player.Character.MaxSpeed = 8.0
 	SetCameraPosition(1,0,10,-10)
-	SetCameraLookAt(1,GetobjectX(Player.OID),GetobjectY(Player.OID),GetobjectZ(Player.OID),0)
+	SetCameraLookAt(1,GetobjectX(Player.Character.OID),GetobjectY(Player.Character.OID),GetobjectZ(Player.Character.OID),0)
 endfunction
 
-function PlayerControll(Player ref as Character,PlayerSpeed#,CameraDistance#)
+function PlayerControll(Player ref as Player,CameraDistance#) // player speed is in the Player character type
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
@@ -324,35 +323,55 @@ function PlayerControll(Player ref as Character,PlayerSpeed#,CameraDistance#)
 	Cos0#=cos(CameraAngleY#)
 	
     if GetRawKeyState(KEY_W)
-		MoveZ1#=PlayerSpeed#*Sin90#
-		MoveX1#=PlayerSpeed#*Sin0#
+		MoveZ1#=Player.Character.MaxSpeed*Sin90#
+		MoveX1#=Player.Character.MaxSpeed*Sin0#
     endif
     if GetRawKeyState(KEY_S)
-		MoveZ1#=-PlayerSpeed#*Sin90#
-		MoveX1#=-PlayerSpeed#*Sin0#
+		MoveZ1#=-Player.Character.MaxSpeed*Sin90#
+		MoveX1#=-Player.Character.MaxSpeed*Sin0#
     endif
     if GetRawKeyState(KEY_A)
-		MoveZ2#=PlayerSpeed#*Sin0#
-		MoveX2#=-PlayerSpeed#*Sin90#
+		MoveZ2#=Player.Character.MaxSpeed*Sin0#
+		MoveX2#=-Player.Character.MaxSpeed*Sin90#
     endif
     if GetRawKeyState(KEY_D)
-		MoveZ2#=-PlayerSpeed#*Sin0#
-		MoveX2#=PlayerSpeed#*Sin90#
+		MoveZ2#=-Player.Character.MaxSpeed*Sin0#
+		MoveX2#=Player.Character.MaxSpeed*Sin90#
     endif
     
     MoveY#=0
-	Player.Velocity.x=curvevalue((MoveX1#+MoveX2#)*FrameTime#,Player.Velocity.x,3.0)
-	Player.Velocity.y=curvevalue((MoveY#)*FrameTime#,Player.Velocity.y,0.2)
-	Player.Velocity.z=curvevalue((MoveZ1#+MoveZ2#)*FrameTime#,Player.Velocity.z,3.0)
-	
-	Player.Position.x=Player.Position.x+Player.Velocity.x
-	Player.Position.y=Player.Position.y+Player.Velocity.y
-	Player.Position.z=Player.Position.z+Player.Velocity.z
-	SetObjectPosition(Player.OID,Player.Position.x,Player.Position.y,Player.Position.z)
+	Player.Character.Velocity.x=curvevalue((MoveX1#+MoveX2#)*FrameTime#,Player.Character.Velocity.x,3.0)
+	Player.Character.Velocity.y=curvevalue((MoveY#)*FrameTime#,Player.Character.Velocity.y,0.2)
+	Player.Character.Velocity.z=curvevalue((MoveZ1#+MoveZ2#)*FrameTime#,Player.Character.Velocity.z,3.0)
+
+	Player.Character.Position.x=Player.Character.Position.x+Player.Character.Velocity.x
+	Player.Character.Position.y=Player.Character.Position.y+Player.Character.Velocity.y
+	Player.Character.Position.z=Player.Character.Position.z+Player.Character.Velocity.z
+	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	
 	//~ SetCameraPosition(1,Player.Position.x+CameraDistance#*Sin0#,Player.Position.y+CameraDistance#,Player.Position.z+CameraDistance#*Cos0#)
 	//~ SetCameraLookAt(1,Player.Position.x,Player.Position.y,Player.Position.z,0)
-	SetCameraPosition(1,Player.Position.x,Player.Position.y+CameraDistance#,Player.Position.z-CameraDistance#)
+	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
+	
+	// Player to look at mouse position
+	rx# = Get3DVectorXFromScreen(GetPointerX(),GetPointerY())
+    ry# = Get3DVectorYFromScreen(GetPointerX(),GetPointerY())
+    rz# = Get3DVectorZFromScreen(GetPointerX(),GetPointerY())
+ 
+    length# = -GetCameraY(1) / ry#
+ 
+    rx# = GetCameraX(1) + rx#*length#
+    ry# = Player.Character.Position.y
+    rz# = GetCameraZ(1) + rz#*length#
+
+    rx# = Player.Character.AngularVelocity.x + (rx# - Player.Character.AngularVelocity.x) * (FrameTime#*3.0)
+    rz# = Player.Character.AngularVelocity.z + (rz# - Player.Character.AngularVelocity.z) * (FrameTime#*3.0)
+	
+    SetObjectLookAt(player.Character.OID, rx#,ry#,rz#,0) 
+    
+    Player.Character.AngularVelocity.x = rx#
+    Player.Character.AngularVelocity.y = ry#
+    Player.Character.AngularVelocity.z = rz#
 endfunction
 
 function EnemyInit(Enemy ref as Character[])
@@ -360,14 +379,14 @@ function EnemyInit(Enemy ref as Character[])
 		Enemy[Index].OID=CreateObjectBox(1,1,1)
 		Enemy[Index].Position.x=random(0,20)
 		Enemy[Index].Position.z=random(0,20)
-		Enemy[Index].Speed=random(10,50)/10.0
+		Enemy[Index].MaxSpeed=random(10,50)/10.0
 	next Index
 endfunction
 
-function EnemyControll(Enemy ref as Character[], Player ref as Character, Grid ref as PathGrid[][], GridSize as integer)
+function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer)
 	PlayerGrid as int2
-	PlayerGrid.x=round(Player.Position.x/GridSize)
-	PlayerGrid.y=round(Player.Position.z/GridSize)
+	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
+	PlayerGrid.y=round(Player.Character.Position.z/GridSize)
 
 	PathClear(Grid) // TODO: only calculate if the player moves to a new cell
 	PathFinding(Grid, PlayerGrid)
@@ -393,8 +412,8 @@ function EnemyControll(Enemy ref as Character[], Player ref as Character, Grid r
 			NewAngle#=-atanfull(DistX#,DistZ#)
 			Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
 			
-			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].Speed*GetFrameTime()
-			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].Speed*GetFrameTime()
+			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*GetFrameTime()
+			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*GetFrameTime()
 
 			Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
 			Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
@@ -404,3 +423,15 @@ function EnemyControll(Enemy ref as Character[], Player ref as Character, Grid r
 		endif
 	next Index
 endfunction
+
+function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y coordinates.
+	Result = -1
+	WorldX# = Get3DVectorXFromScreen( X#, Y# ) * 800
+    WorldY# = Get3DVectorYFromScreen( X#, Y# ) * 800
+    WorldZ# = Get3DVectorZFromScreen( X#, Y# ) * 800
+    WorldX# = WorldX# + GetCameraX( 1 )
+    WorldY# = WorldY# + GetCameraY( 1 )
+    WorldZ# = WorldZ# + GetCameraZ( 1 )
+ 
+ 	Result=ObjectRayCast(0,getcamerax(1),getcameray(1),getcameraz(1), Worldx#,Worldy#,Worldz#)
+endfunction Result

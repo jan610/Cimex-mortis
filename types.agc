@@ -44,8 +44,9 @@ Type Character		// can be Player and Enemy
 	Position		as vec3
 	Rotation		as vec3
 	Velocity		as vec3
+	AngularVelocity	as vec3
 	Life			as float // Player Health
-	Speed			as float 
+	MaxSpeed		as float 
 endtype
 
 type Player
