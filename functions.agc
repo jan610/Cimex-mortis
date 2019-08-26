@@ -336,3 +336,4 @@ function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y 
  	Result=ObjectRayCast(0,getcamerax(1),getcameray(1),getcameraz(1), Worldx#,Worldy#,Worldz#)
  
 endfunction Result
+
