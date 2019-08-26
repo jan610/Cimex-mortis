@@ -9,7 +9,7 @@ Type HexCell
 	Enemies			as Character[]
 endtype
 
-type int3
+type int2
 	x				as integer
 	y				as integer
 endtype
@@ -45,6 +45,7 @@ Type Character		// can be Player and Enemy
 	Rotation		as vec3
 	Velocity		as vec3
 	Life			as float // Player Health
+	Speed			as float 
 endtype
 
 type Player
@@ -54,7 +55,7 @@ type Player
 endtype
 
 type PathGrid
-	Position 		as int3
+	Position 		as int2
 	Visited 		as integer
 	Number			as integer
 endtype
