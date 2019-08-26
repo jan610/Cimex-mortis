@@ -356,7 +356,7 @@ endfunction
 
 function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
 	
-	if GetRawMouseRightPressed()
+	if GetRawKeyPressed(32)
 		PlayTweenCustom(Player.Boost_TweenID,0.0)
 	endif
 	
