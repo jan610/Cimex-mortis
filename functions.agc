@@ -59,7 +59,7 @@ function Game()
 	PathInit(Grid, 1, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
-	Enemy as Character[50]
+	Enemy as Character[0]
 	EnemyInit(Enemy, Grid, GridSize)
 	
 	Bullets as Bullet[]
@@ -511,6 +511,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		next y
 	next x
 	
+	print(Enemy.length)
 	for Index=0 to Enemy.length
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)
 		EnemyGridZ=round(Enemy[Index].Position.z/GridSize)
@@ -525,14 +526,20 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
 			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
 
-			//sucks all enemy around within a distance should be changed later to only suck ones infront
-			if player.state=STATE_SUCK and Distance(Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,enemy[Index].Position.x,enemy[Index].Position.y,enemy[Index].Position.z)<=SUCK_DISTANCE
+			EnemyDirVID=CreateVector3(Enemy[Index].Position.x-Player.Character.Position.x,0,Enemy[Index].Position.z-Player.Character.Position.z)
+			Length#=GetVector3Length(EnemyDirVID)
+			SetVector3(EnemyDirVID,GetVector3X(EnemyDirVID)/Length#,0,GetVector3Z(EnemyDirVID)/Length#)
+			LookDirVID=CreateVector3(sin(Player.Character.Rotation.y),0,cos(Player.Character.Rotation.y))
+			
+			if player.state=STATE_SUCK and GetVector3Dot(LookDirVID,EnemyDirVID)<-0.5 and Length#<=SUCK_DISTANCE
 				Enemy[Index].Position.x=Enemy[Index].Position.x-SUCK_POWER*EnemyDirX#
 				Enemy[Index].Position.z=Enemy[Index].Position.z-SUCK_POWER*EnemyDirZ#	
 			else	
 				Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
 				Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
 			endif
+			DeleteVector3(EnemyDirVID)
+			DeleteVector3(LookDirVID)
 			
 			OldEnemyX#=GetObjectX(Enemy[Index].OID)
 			OldEnemyY#=GetObjectY(Enemy[Index].OID)
