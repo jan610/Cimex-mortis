@@ -484,12 +484,12 @@ function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize)
 	for Index=0 to Enemy.length // Test
 		Enemy[Index].OID=CreateObjectBox(1,1,1)
 		repeat 
-			SpawnX#=random(1,63)
-			SpawnY#=random(1,63)
+			SpawnX#=random2(1,63)
+			SpawnY#=random2(1,63)
 			
 			SpawnGridX=round(SpawnX#/GridSize)
 			SpawnGridY=round(SpawnY#/GridSize)
-			if Grid[SpawnGridX,SpawnGridY].Number>0 then FoundSpawn=1
+			if Grid[SpawnGridX,SpawnGridY].Number<=0 then FoundSpawn=1
 		until FoundSpawn
 		Enemy[Index].Position.x=SpawnX#
 		Enemy[Index].Position.z=SpawnY#
