@@ -86,8 +86,8 @@ function Game()
 	BlurHSID=LoadFullScreenShader("shader/BlurH.ps")
 	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
 	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
-	SetShaderConstantByName(BlurHSID,"blurDir",8.0,0,0,0)
-	SetShaderConstantByName(BlurVSID,"blurDir",0.0,8.0,0,0)
+	SetShaderConstantByName(BlurHSID,"blurScale",4.0,0,0,0)
+	SetShaderConstantByName(BlurVSID,"blurScale",4.0,0,0,0)
 	
 	do
 		Print( ScreenFPS() )
@@ -137,6 +137,27 @@ function Game()
 		ClearScreen()
 		DrawObject(QuadOID)
 		
+		// Debugging Lines
+		for x=0 to Grid.length
+			for y=0 to Grid[0].length
+				TextID=x+y*64
+				DeleteText(TextID)
+				startx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
+				starty#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
+				if startx#>GetScreenBoundsLeft() and starty#>GetScreenBoundsTop() and startx#<ScreenWidth() and starty#<ScreenHeight()
+					CreateText(TextID,str(Grid[x,y].Number))
+					SetTextPosition(TextID,startx#,starty#)
+					SetTextSize(TextID,3)
+					SetTextAlignment(TextID,1)
+					if Grid[x,y].Position.x<>0 or Grid[x,y].Position.y<>0
+						endx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+						endy#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+						DrawLine(endx#,endy#,startx#,starty#,MakeColor(255,255,255),MakeColor(0,0,255))
+					endif
+				endif
+			next y
+		next x
+			
 		Render2DFront()
 		Swap()
 	loop
@@ -284,7 +305,6 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 		MoveX2#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
     endif
     
-	 
     if GetRawKeyState(KEY_SPACE)
 		Select player.state
 			
@@ -389,27 +409,6 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			PathFinding(Grid, PlayerGrid)
 		endif
 	endif
-	
-	// Debugging Lines
-	for x=0 to Grid.length
-		for y=0 to Grid[0].length
-			TextID=x+y*64
-			DeleteText(TextID)
-			startx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
-			starty#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
-			if startx#>GetScreenBoundsLeft() and starty#>GetScreenBoundsTop() and startx#<ScreenWidth() and starty#<ScreenHeight()
-				CreateText(TextID,str(Grid[x,y].Number))
-				SetTextPosition(TextID,startx#,starty#)
-				SetTextSize(TextID,3)
-				SetTextAlignment(TextID,1)
-				if Grid[x,y].Position.x<>0 or Grid[x,y].Position.y<>0
-					endx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-					endy#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-					DrawLine(endx#,endy#,startx#,starty#,MakeColor(255,255,255),MakeColor(0,0,255))
-				endif
-			endif
-		next y
-	next x
 	
 	for Index=0 to Enemy.length
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)

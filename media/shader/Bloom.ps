@@ -1,10 +1,7 @@
-uniform float agk_time;
-uniform vec2 agk_resolution;
-
 uniform sampler2D texture0;
-varying vec2 uvVarying;
-
 uniform sampler2D texture1;
+
+varying vec2 uvVarying;
 
 float BloomIntensity = 1.5;
 float OriginalIntensity = 1.0;
@@ -23,7 +20,7 @@ void main()
     vec4 basecolor = texture2D(texture0, uvVarying);
     vec4 bloomcolor = texture2D(texture1, uvVarying);
 
-    bloomcolor = AdjustSaturation(bloomcolor, BloomSaturation) * BloomIntensity;
+    // bloomcolor = AdjustSaturation(bloomcolor, BloomSaturation) * BloomIntensity;
     basecolor = AdjustSaturation(basecolor, OriginalSaturation) * OriginalIntensity;
 
     basecolor = basecolor*(1.0 - clamp(bloomcolor,0.0,1.0));
