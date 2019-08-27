@@ -26,6 +26,7 @@ SetDefaultWrapV(1)
 #include "types.agc"
 #include "constants.agc"
 #include "functions.agc"
+#include "path.agc"
 
 GameState = -1
 
