@@ -56,12 +56,21 @@ function Game()
 	
 	Grid as PathGrid[64,64]
 	
-	PathInit(Grid, 1, GridSize)
+	// create some random walls
+	for t = 1 to 10
+		wall = CreateObjectBox(random2(10,35),5,1.5)
+		SetObjectTransparency(wall,1)
+		SetObjectPosition(wall,random2(1,50),2.5,random2(1,50))
+		RotateObjectLocalY(wall,random2(0,360))
+		setobjectcolor(wall,0,255,0,155)
+	next t
+	
+	PathInit(Grid, 1, GridSize, Player.Character.OID)
 	PathFinding(Grid, PlayerGrid)
 	
 	Enemy as Character[50]
 	EnemyInit(Enemy, Grid, GridSize)
-	
+
 	Bullets as Bullet[]
 	
 	// temporary ...help me do this in a nicer way please
@@ -178,14 +187,16 @@ function Wrap(Value#,Min#,Max#)
 	if Value#<Min# then Value#=Max#
 endfunction Value#
 
-function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integer)
+function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integer, PlayerOID as integer)
 	local gridy as float
 	gridy=0.5
 	for gridx=0 to Grid.length
 		for gridz=0 to Grid[0].length
 			HitOID=ObjectSphereCast(0,gridx*GridSize,gridy*GridSize,gridz*GridSize,gridx*GridSize,gridy*GridSize,gridz*GridSize,ScanSize)
-			if HitOID>0 
-				PathSetCell(Grid,gridx,gridz,0,0,0,-1)
+			if HitOID>0 and HitOID <> PlayerOID
+				PathSetCell(Grid,gridx,gridz,0,0,1,-1) // giving grid number a "1" to stop enemies spawning in walls.
+`				PathSetCell(Grid,gridx,gridz,0,0,0,0)
+`				PathSetCell(Grid,gridx,gridz,0,0,0,random2(0,1)-1)
 			endif
 		next gridz
 	next gridx
@@ -504,15 +515,15 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	endif
 	
 	// Debugging Lines
-`	for x=0 to Grid.length
-`		for y=0 to Grid[0].length
-`			linestartx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-`			linestarty#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-`			linesendx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
-`			linesendy#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
-`			DrawLine(linestartx#,linestarty#,linesendx#,linesendy#,MakeColor(255,255,255),MakeColor(0,0,255))
-`		next y
-`	next x
+	for x=0 to Grid.length
+		for y=0 to Grid[0].length
+			linestartx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+			linestarty#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+			linesendx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
+			linesendy#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
+			DrawLine(linestartx#,linestarty#,linesendx#,linesendy#,MakeColor(255,255,255),MakeColor(0,0,255))
+		next y
+	next x
 	
 	for Index=0 to Enemy.length
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)
