@@ -7,9 +7,9 @@ function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integ
 		for gridz=0 to Grid[0].length
 			HitOID=ObjectSphereCast(0,gridx*GridSize,gridy*GridSize,gridz*GridSize,gridx*GridSize,gridy*GridSize,gridz*GridSize,ScanSize)
 			if HitOID>0 and HitOID <> PlayerOID
-				PathSetCell(Grid,gridx,gridz,0,0,1,-1) // giving grid number a "1" to stop enemies spawning in walls.
-`				PathSetCell(Grid,gridx,gridz,0,0,0,0)
-`				PathSetCell(Grid,gridx,gridz,0,0,0,random2(0,1)-1)
+				PathSetCell(Grid,gridx,gridz,gridx,gridz,0,-1)
+			else
+				PathSetCell(Grid,gridx,gridz,gridx,gridz,0,0)
 			endif
 		next gridz
 	next gridx
@@ -155,81 +155,7 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2)
 					//~ Grid[x+1,y].Number=Grid[x,y].Number+1
 				//~ endif
 			//~ endif
-			 if Mod((x+y),2)=1
-				 if Grid[x+1,y].Visited=0
-					 FrontierTemp.x=x+1
-					 FrontierTemp.y=y
-					 Frontier.insert(FrontierTemp)
-					 Grid[x+1,y].Position.x=x
-					 Grid[x+1,y].Position.y=y
-					 Grid[x+1,y].Visited=1
-					 Grid[x+1,y].Number=Grid[x,y].Number+1
-				 endif
-				 if Grid[x,y+1].Visited=0
-					 FrontierTemp.x=x
-					 FrontierTemp.y=y+1
-					 Frontier.insert(FrontierTemp)
-					 Grid[x,y+1].Position.x=x
-					 Grid[x,y+1].Position.y=y
-					 Grid[x,y+1].Visited=1
-					 Grid[x,y+1].Number=Grid[x,y].Number+1
-				 endif
-				 if Grid[x-1,y].Visited=0
-					 FrontierTemp.x=x-1
-					 FrontierTemp.y=y
-					 Frontier.insert(FrontierTemp)
-					 Grid[x-1,y].Position.x=x
-					 Grid[x-1,y].Position.y=y
-					 Grid[x-1,y].Visited=1
-					 Grid[x-1,y].Number=Grid[x,y].Number+1
-				 endif
-				 if Grid[x,y-1].Visited=0
-					 FrontierTemp.x=x
-					 FrontierTemp.y=y-1
-					 Frontier.insert(FrontierTemp)
-					 Grid[x,y-1].Position.x=x
-					 Grid[x,y-1].Position.y=y
-					 Grid[x,y-1].Visited=1
-					 Grid[x,y-1].Number=Grid[x,y].Number+1
-				 endif
-			 else
-				 if Grid[x,y-1].Visited=0
-					 FrontierTemp.x=x
-					 FrontierTemp.y=y-1
-					 Frontier.insert(FrontierTemp)
-					 Grid[x,y-1].Position.x=x
-					 Grid[x,y-1].Position.y=y
-					 Grid[x,y-1].Visited=1
-					 Grid[x,y-1].Number=Grid[x,y].Number+1
-				 endif
-				 if Grid[x-1,y].Visited=0
-					 FrontierTemp.x=x-1
-					 FrontierTemp.y=y
-					 Frontier.insert(FrontierTemp)
-					 Grid[x-1,y].Position.x=x
-					 Grid[x-1,y].Position.y=y
-					 Grid[x-1,y].Visited=1
-					 Grid[x-1,y].Number=Grid[x,y].Number+1
-				 endif
-				 if Grid[x,y+1].Visited=0
-					 FrontierTemp.x=x
-					 FrontierTemp.y=y+1
-					 Frontier.insert(FrontierTemp)
-					 Grid[x,y+1].Position.x=x
-					 Grid[x,y+1].Position.y=y
-					 Grid[x,y+1].Visited=1
-					 Grid[x,y+1].Number=Grid[x,y].Number+1
-				 endif
-				 if Grid[x+1,y].Visited=0
-					 FrontierTemp.x=x+1
-					 FrontierTemp.y=y
-					 Frontier.insert(FrontierTemp)
-					 Grid[x+1,y].Position.x=x
-					 Grid[x+1,y].Position.y=y
-					 Grid[x+1,y].Visited=1
-					 Grid[x+1,y].Number=Grid[x,y].Number+1
-				 endif
-			 endif
+
 			for n=0 to Neighbors.length
 				nx=x+Neighbors[n].x
 				ny=y+Neighbors[n].y

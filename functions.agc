@@ -311,13 +311,13 @@ endfunction
 function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize)
 	for Index=0 to Enemy.length // Test
 		Enemy[Index].OID=CreateObjectBox(1,1,1)
-		repeat 
+		repeat
 			SpawnX#=random2(1,63)
 			SpawnY#=random2(1,63)
 			
 			SpawnGridX=round(SpawnX#/GridSize)
 			SpawnGridY=round(SpawnY#/GridSize)
-			if Grid[SpawnGridX,SpawnGridY].Number<=0 then FoundSpawn=1
+			if Grid[SpawnGridX,SpawnGridY].Number>0 then FoundSpawn=1
 		until FoundSpawn
 		Enemy[Index].Position.x=SpawnX#
 		Enemy[Index].Position.z=SpawnY#
@@ -343,23 +343,44 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	endif
 	
 	// Debugging Lines
-`	for x=0 to Grid.length
-`		for y=0 to Grid[0].length
-`			linestartx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-`			linestarty#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-`			linesendx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
-`			linesendy#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
-`			DrawLine(linestartx#,linestarty#,linesendx#,linesendy#,MakeColor(255,255,255),MakeColor(0,0,255))
-`		next y
-`	next x
+	for x=0 to Grid.length
+		for y=0 to Grid[0].length
+			TextID=x+y*64
+			DeleteText(TextID)
+			startx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
+			starty#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
+			if startx#>GetScreenBoundsLeft() and starty#>GetScreenBoundsTop() and startx#<ScreenWidth() and starty#<ScreenHeight()
+				CreateText(TextID,str(Grid[x,y].Number))
+				SetTextPosition(TextID,startx#,starty#)
+				SetTextSize(TextID,4)
+				SetTextAlignment(TextID,1)
+				if Grid[x,y].Position.x<>0 or Grid[x,y].Position.y<>0
+					endx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+					endy#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+					DrawLine(endx#,endy#,startx#,starty#,MakeColor(255,255,255),MakeColor(0,0,255))
+				endif
+			endif
+		next y
+	next x
 	
 	for Index=0 to Enemy.length
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)
 		EnemyGridZ=round(Enemy[Index].Position.z/GridSize)
 
 		if EnemyGridX>0 and EnemyGridX<Grid.length and EnemyGridZ>0 and EnemyGridZ<Grid[0].length
-			DistX#=(Grid[EnemyGridX,EnemyGridZ].Position.x*GridSize)-Enemy[Index].Position.x
-			DistZ#=(Grid[EnemyGridX,EnemyGridZ].Position.y*GridSize)-Enemy[Index].Position.z
+			
+			// if the Enemy is stuck in a wall just run straight to the player
+			// but better mke them move to the old position
+			if Grid[EnemyGridX,EnemyGridZ].Number=0
+				TargetX=PlayerGrid.x
+				TargetZ=PlayerGrid.y
+			else
+				TargetX=Grid[EnemyGridX,EnemyGridZ].Position.x
+				TargetZ=Grid[EnemyGridX,EnemyGridZ].Position.y
+			endif
+			
+			DistX#=(TargetX*GridSize)-Enemy[Index].Position.x
+			DistZ#=(TargetZ*GridSize)-Enemy[Index].Position.z
 			
 			NewAngle#=-atanfull(DistX#,DistZ#)
 			Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
@@ -386,12 +407,11 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			OldEnemyY#=GetObjectY(Enemy[Index].OID)
 			OldEnemyZ#=GetObjectZ(Enemy[Index].OID)
 			
-			if ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)>0
-				Ray=0
-				//~ for Ray=0 to GetObjectRayCastNumHits()
-					Enemy[Index].Position.x=GetObjectRayCastSlideX(Ray)
-					Enemy[Index].Position.z=GetObjectRayCastSlideZ(Ray)
-				//~ next Ray
+			if Grid[EnemyGridX,EnemyGridZ].Number>0
+				if ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)>0
+					Enemy[Index].Position.x=GetObjectRayCastSlideX(0)
+					Enemy[Index].Position.z=GetObjectRayCastSlideZ(0)
+				endif
 			endif
 			
 			SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
