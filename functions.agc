@@ -77,8 +77,25 @@ function Game()
 	BulletShaderID=LoadShader("shader/Line.vs","shader/Default.ps")
 	BulletDiffuseIID=LoadImage("bullet.png")
 	
+	width=GetDeviceWidth()
+	height=GetDeviceHeight()
+	SceneIID=CreateRenderImage(width,height,0,0)
+	BlurHIID=CreateRenderImage(width*0.5,height*0.5,0,0)
+	BlurVIID=CreateRenderImage(width*0.5,height*0.5,0,0)
+	QuadOID=CreateObjectQuad()
+	BlurHSID=LoadFullScreenShader("shader/BlurH.ps")
+	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
+	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
+	SetShaderConstantByName(BlurHSID,"blurDir",8.0,0,0,0)
+	SetShaderConstantByName(BlurVSID,"blurDir",0.0,8.0,0,0)
+	
 	do
 		Print( ScreenFPS() )
+		print (player.state)
+		print("Energy:"+str(Player.Energy))
+		print("Attack:"+str(Player.Attack))
+		print("Life:"+str(Player.Character.Life))
+		print("mov-speed:"+str(Player.Character.MaxSpeed))
 		
 		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemy, Player, Grid, GridSize)
@@ -93,12 +110,35 @@ function Game()
 			GameState=STATE_GAME_MENU
 			exit
 		endif
-		print (player.state)
-		print("Energy:"+str(Player.Energy))
-		print("Attack:"+str(Player.Attack))
-		print("Life:"+str(Player.Character.Life))
-		print("mov-speed:"+str(Player.Character.MaxSpeed))
-		Sync()
+		
+		Update(0)
+		Render2DBack()
+		
+		SetRenderToImage(SceneIID,-1)
+		ClearScreen()
+		Render3D()
+		
+		SetObjectImage(QuadOID,SceneIID,0)
+		SetObjectShader(QuadOID,BlurHSID)
+		SetRenderToImage(BlurHIID,0)
+		ClearScreen()
+		DrawObject(QuadOID)
+		
+		SetObjectImage(QuadOID,BlurHIID,0)
+		SetObjectShader(QuadOID,BlurVSID)
+		SetRenderToImage(BlurVIID,0)
+		ClearScreen()
+		DrawObject(QuadOID)
+		
+		SetObjectImage(QuadOID,SceneIID,0)
+		SetObjectImage(QuadOID,BlurVIID,1)
+		SetObjectShader(QuadOID,BloomSID)
+		SetRenderToScreen()
+		ClearScreen()
+		DrawObject(QuadOID)
+		
+		Render2DFront()
+		Swap()
 	loop
 endfunction GameState
 
@@ -378,6 +418,10 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		if EnemyGridZ<0 then EnemyGridZ=0
 		if EnemyGridX>Grid.length then EnemyGridX=Grid.length
 		if EnemyGridZ>Grid[0].length then EnemyGridZ=Grid[0].length
+		
+		if Grid[EnemyGridX,EnemyGridZ].Number>0 and Grid[EnemyGridX,EnemyGridZ].Number<3
+			EnemySpawn(Enemy[Index], Grid, GridSize)
+		endif
 		
 		// if the Enemy can find a path just run straight to the player
 		if Grid[EnemyGridX,EnemyGridZ].Number=0
