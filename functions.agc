@@ -342,6 +342,81 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2)
 					//~ Grid[x+1,y].Number=Grid[x,y].Number+1
 				//~ endif
 			//~ endif
+			 if Mod((x+y),2)=1
+				 if Grid[x+1,y].Visited=0
+					 FrontierTemp.x=x+1
+					 FrontierTemp.y=y
+					 Frontier.insert(FrontierTemp)
+					 Grid[x+1,y].Position.x=x
+					 Grid[x+1,y].Position.y=y
+					 Grid[x+1,y].Visited=1
+					 Grid[x+1,y].Number=Grid[x,y].Number+1
+				 endif
+				 if Grid[x,y+1].Visited=0
+					 FrontierTemp.x=x
+					 FrontierTemp.y=y+1
+					 Frontier.insert(FrontierTemp)
+					 Grid[x,y+1].Position.x=x
+					 Grid[x,y+1].Position.y=y
+					 Grid[x,y+1].Visited=1
+					 Grid[x,y+1].Number=Grid[x,y].Number+1
+				 endif
+				 if Grid[x-1,y].Visited=0
+					 FrontierTemp.x=x-1
+					 FrontierTemp.y=y
+					 Frontier.insert(FrontierTemp)
+					 Grid[x-1,y].Position.x=x
+					 Grid[x-1,y].Position.y=y
+					 Grid[x-1,y].Visited=1
+					 Grid[x-1,y].Number=Grid[x,y].Number+1
+				 endif
+				 if Grid[x,y-1].Visited=0
+					 FrontierTemp.x=x
+					 FrontierTemp.y=y-1
+					 Frontier.insert(FrontierTemp)
+					 Grid[x,y-1].Position.x=x
+					 Grid[x,y-1].Position.y=y
+					 Grid[x,y-1].Visited=1
+					 Grid[x,y-1].Number=Grid[x,y].Number+1
+				 endif
+			 else
+				 if Grid[x,y-1].Visited=0
+					 FrontierTemp.x=x
+					 FrontierTemp.y=y-1
+					 Frontier.insert(FrontierTemp)
+					 Grid[x,y-1].Position.x=x
+					 Grid[x,y-1].Position.y=y
+					 Grid[x,y-1].Visited=1
+					 Grid[x,y-1].Number=Grid[x,y].Number+1
+				 endif
+				 if Grid[x-1,y].Visited=0
+					 FrontierTemp.x=x-1
+					 FrontierTemp.y=y
+					 Frontier.insert(FrontierTemp)
+					 Grid[x-1,y].Position.x=x
+					 Grid[x-1,y].Position.y=y
+					 Grid[x-1,y].Visited=1
+					 Grid[x-1,y].Number=Grid[x,y].Number+1
+				 endif
+				 if Grid[x,y+1].Visited=0
+					 FrontierTemp.x=x
+					 FrontierTemp.y=y+1
+					 Frontier.insert(FrontierTemp)
+					 Grid[x,y+1].Position.x=x
+					 Grid[x,y+1].Position.y=y
+					 Grid[x,y+1].Visited=1
+					 Grid[x,y+1].Number=Grid[x,y].Number+1
+				 endif
+				 if Grid[x+1,y].Visited=0
+					 FrontierTemp.x=x+1
+					 FrontierTemp.y=y
+					 Frontier.insert(FrontierTemp)
+					 Grid[x+1,y].Position.x=x
+					 Grid[x+1,y].Position.y=y
+					 Grid[x+1,y].Visited=1
+					 Grid[x+1,y].Number=Grid[x,y].Number+1
+				 endif
+			 endif
 			for n=0 to Neighbors.length
 				nx=x+Neighbors[n].x
 				ny=y+Neighbors[n].y
