@@ -65,7 +65,7 @@ function Game()
 		setobjectcolor(wall,0,255,0,155)
 	next t
 	
-	PathInit(Grid, 0.5, GridSize, Player.Character.OID)
+	PathInit(Grid, 0.5, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
 	Enemy as Character[50]
@@ -120,18 +120,14 @@ function IntroScreen()
 	SetSpriteSize(IntroScreenSID,ScreenWidth(),ScreenHeight())
 	SetSpritePosition(IntroScreenSID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 	PlayTweenSprite(FadeTween,IntroScreenSID,0)
-	while GetTweenSpritePlaying(FadeTween,IntroScreenSID)
+	repeat
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
 		sync()
-	endwhile
-	
-	while Not GetRawLastKey() and Not GetPointerPressed()
-		Sync()
-	endwhile
+	until GetRawLastKey() or GetPointerPressed()
 	
 	DeleteTween(FadeTween)
 	FadeTween = CreateTweenSprite(1)
-	SetTweenSpriteAlpha(FadeTween,255,0,TweenLinear())
+	SetTweenSpriteAlpha(FadeTween,GetSpriteColorAlpha(IntroScreenSID),0,TweenLinear())
 	PlayTweenSprite(FadeTween,IntroScreenSID,0)
 	while GetTweenSpritePlaying(FadeTween,IntroScreenSID)
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
@@ -282,11 +278,15 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	Player.Character.Position.x=Player.Character.Position.x+Player.Character.Velocity.x
 	Player.Character.Position.y=Player.Character.Position.y+Player.Character.Velocity.y
 	Player.Character.Position.z=Player.Character.Position.z+Player.Character.Velocity.z
-	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	
-	//~ SetCameraPosition(1,Player.Position.x+CameraDistance#*Sin0#,Player.Position.y+CameraDistance#,Player.Position.z+CameraDistance#*Cos0#)
-	//~ SetCameraLookAt(1,Player.Position.x,Player.Position.y,Player.Position.z,0)
-	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
+	OldPlayerX#=GetObjectX(Player.Character.OID)
+	OldPlayerY#=GetObjectY(Player.Character.OID)
+	OldPlayerZ#=GetObjectZ(Player.Character.OID)
+	
+	if ObjectSphereSlide(0,OldPlayerX#,OldPlayerY#,OldPlayerZ#,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0.3)>0
+		Player.Character.Position.x=GetObjectRayCastSlideX(0)
+		Player.Character.Position.z=GetObjectRayCastSlideZ(0)
+	endif
 	
 	// Player to look at mouse position
 	Pointer3DX#=Get3DVectorXFromScreen(PointerX#,PointerY#)
@@ -305,24 +305,32 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	NewAngle#=-atanfull(DistX#,DistZ#)
 	Player.Character.Rotation.y=CurveAngle(Player.Character.Rotation.y,NewAngle#,6.0)
 	
+	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetObjectRotation(Player.Character.OID,Player.Character.Rotation.x,Player.Character.Rotation.y,Player.Character.Rotation.z)
+	//~ SetCameraPosition(1,Player.Position.x+CameraDistance#*Sin0#,Player.Position.y+CameraDistance#,Player.Position.z+CameraDistance#*Cos0#)
+	//~ SetCameraLookAt(1,Player.Position.x,Player.Position.y,Player.Position.z,0)
+	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
 endfunction
 
-function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize)
-	for Index=0 to Enemy.length // Test
+function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize as integer)
+	for Index=0 to Enemy.length
 		Enemy[Index].OID=CreateObjectBox(1,1,1)
-		repeat
-			SpawnX#=random2(1,Grid.length)
-			SpawnY#=random2(1,Grid[0].length)
-			
-			SpawnGridX=round(SpawnX#/GridSize)
-			SpawnGridY=round(SpawnY#/GridSize)
-			if Grid[SpawnGridX,SpawnGridY].Number>0 then FoundSpawn=1
-		until FoundSpawn
-		Enemy[Index].Position.x=SpawnX#
-		Enemy[Index].Position.z=SpawnY#
 		Enemy[Index].MaxSpeed=random(10,50)/10.0
+		EnemySpawn(Enemy[Index],Grid,GridSize)	
+		SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
 	next Index
+endfunction
+
+function EnemySpawn(Enemy ref as Character, Grid ref as PathGrid[][], GridSize as integer)
+	repeat
+		SpawnX#=random(1,Grid.length)
+		SpawnY#=random(1,Grid[0].length)
+		
+		SpawnGridX=round(SpawnX#/GridSize)
+		SpawnGridY=round(SpawnY#/GridSize)
+	until Grid[SpawnGridX,SpawnGridY].Number>0
+	Enemy.Position.x=SpawnX#
+	Enemy.Position.z=SpawnY#
 endfunction
 
 function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer)
@@ -366,59 +374,58 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	for Index=0 to Enemy.length
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)
 		EnemyGridZ=round(Enemy[Index].Position.z/GridSize)
-
-		if EnemyGridX>0 and EnemyGridX<Grid.length and EnemyGridZ>0 and EnemyGridZ<Grid[0].length
-			
-			// if the Enemy is stuck in a wall just run straight to the player
-			// but better mke them move to the old position
-			if Grid[EnemyGridX,EnemyGridZ].Number=0
-				TargetX=PlayerGrid.x
-				TargetZ=PlayerGrid.y
-			else
-				TargetX=Grid[EnemyGridX,EnemyGridZ].Position.x
-				TargetZ=Grid[EnemyGridX,EnemyGridZ].Position.y
-			endif
-			
-			DistX#=(TargetX*GridSize)-Enemy[Index].Position.x
-			DistZ#=(TargetZ*GridSize)-Enemy[Index].Position.z
-			
-			NewAngle#=-atanfull(DistX#,DistZ#)
-			Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
-
-			EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
-			EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
-
-			EnemyDirVID=CreateVector3(Enemy[Index].Position.x-Player.Character.Position.x,0,Enemy[Index].Position.z-Player.Character.Position.z)
-			Length#=GetVector3Length(EnemyDirVID)
-			SetVector3(EnemyDirVID,GetVector3X(EnemyDirVID)/Length#,0,GetVector3Z(EnemyDirVID)/Length#)
-			LookDirVID=CreateVector3(sin(Player.Character.Rotation.y),0,cos(Player.Character.Rotation.y))
-			
-			if player.state=STATE_SUCK and GetVector3Dot(LookDirVID,EnemyDirVID)<-0.5 and Length#<=SUCK_DISTANCE
-				Enemy[Index].Position.x=Enemy[Index].Position.x-SUCK_POWER*EnemyDirX#
-				Enemy[Index].Position.z=Enemy[Index].Position.z-SUCK_POWER*EnemyDirZ#	
-			else	
-				Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
-				Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
-			endif
-			DeleteVector3(EnemyDirVID)
-			DeleteVector3(LookDirVID)
-			
-			OldEnemyX#=GetObjectX(Enemy[Index].OID)
-			OldEnemyY#=GetObjectY(Enemy[Index].OID)
-			OldEnemyZ#=GetObjectZ(Enemy[Index].OID)
-			
-			if Grid[EnemyGridX,EnemyGridZ].Number>0
-				if ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)>0
-					Enemy[Index].Position.x=GetObjectRayCastSlideX(0)
-					Enemy[Index].Position.z=GetObjectRayCastSlideZ(0)
-				endif
-			endif
-			
-			SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
-			SetObjectRotation(Enemy[Index].OID,Enemy[Index].Rotation.x,Enemy[Index].Rotation.y,Enemy[Index].Rotation.z)
+		if EnemyGridX<0 then EnemyGridX=0
+		if EnemyGridZ<0 then EnemyGridZ=0
+		if EnemyGridX>Grid.length then EnemyGridX=Grid.length
+		if EnemyGridZ>Grid[0].length then EnemyGridZ=Grid[0].length
+		
+		// if the Enemy can find a path just run straight to the player
+		if Grid[EnemyGridX,EnemyGridZ].Number=0
+			TargetX=PlayerGrid.x
+			TargetZ=PlayerGrid.y
+		else
+			TargetX=Grid[EnemyGridX,EnemyGridZ].Position.x
+			TargetZ=Grid[EnemyGridX,EnemyGridZ].Position.y
 		endif
+		
+		DistX#=(TargetX*GridSize)-Enemy[Index].Position.x
+		DistZ#=(TargetZ*GridSize)-Enemy[Index].Position.z
+		
+		NewAngle#=-atanfull(DistX#,DistZ#)
+		Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
+
+		EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
+		EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#
+
+		EnemyDirVID=CreateVector3(Enemy[Index].Position.x-Player.Character.Position.x,0,Enemy[Index].Position.z-Player.Character.Position.z)
+		Length#=GetVector3Length(EnemyDirVID)
+		SetVector3(EnemyDirVID,GetVector3X(EnemyDirVID)/Length#,0,GetVector3Z(EnemyDirVID)/Length#)
+		LookDirVID=CreateVector3(sin(Player.Character.Rotation.y),0,cos(Player.Character.Rotation.y))
+		
+		if player.state=STATE_SUCK and GetVector3Dot(LookDirVID,EnemyDirVID)<-0.5 and Length#<=SUCK_DISTANCE
+			Enemy[Index].Position.x=Enemy[Index].Position.x-SUCK_POWER*EnemyDirX#
+			Enemy[Index].Position.z=Enemy[Index].Position.z-SUCK_POWER*EnemyDirZ#	
+		else	
+			Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
+			Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
+		endif
+		DeleteVector3(EnemyDirVID)
+		DeleteVector3(LookDirVID)
+		
+		OldEnemyX#=GetObjectX(Enemy[Index].OID)
+		OldEnemyY#=GetObjectY(Enemy[Index].OID)
+		OldEnemyZ#=GetObjectZ(Enemy[Index].OID)
+		
+		if Grid[EnemyGridX,EnemyGridZ].Number>0
+			if ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)>0
+				Enemy[Index].Position.x=GetObjectRayCastSlideX(0)
+				Enemy[Index].Position.z=GetObjectRayCastSlideZ(0)
+			endif
+		endif
+		
+		SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
+		SetObjectRotation(Enemy[Index].OID,Enemy[Index].Rotation.x,Enemy[Index].Rotation.y,Enemy[Index].Rotation.z)
 	next Index
-	
 endfunction
 
 function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y coordinates.

@@ -1,12 +1,12 @@
 
 
-function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integer, PlayerOID as integer)
+function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integer)
 	local gridy as float
 	gridy=0.5
 	for gridx=0 to Grid.length
 		for gridz=0 to Grid[0].length
 			HitOID=ObjectSphereCast(0,gridx*GridSize,gridy*GridSize,gridz*GridSize,gridx*GridSize,gridy*GridSize,gridz*GridSize,ScanSize)
-			if HitOID>0 // and HitOID <> PlayerOID
+			if HitOID>0
 				PathSetCell(Grid,gridx,gridz,gridx,gridz,0,-1)
 			else
 				PathSetCell(Grid,gridx,gridz,gridx,gridz,0,0)
