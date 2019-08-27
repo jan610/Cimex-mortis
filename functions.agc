@@ -65,7 +65,7 @@ function Game()
 		setobjectcolor(wall,0,255,0,155)
 	next t
 	
-	PathInit(Grid, 1, GridSize, Player.Character.OID)
+	PathInit(Grid, 0.5, GridSize, Player.Character.OID)
 	PathFinding(Grid, PlayerGrid)
 	
 	Enemy as Character[50]
@@ -312,8 +312,8 @@ function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize)
 	for Index=0 to Enemy.length // Test
 		Enemy[Index].OID=CreateObjectBox(1,1,1)
 		repeat
-			SpawnX#=random2(1,63)
-			SpawnY#=random2(1,63)
+			SpawnX#=random2(1,Grid.length)
+			SpawnY#=random2(1,Grid[0].length)
 			
 			SpawnGridX=round(SpawnX#/GridSize)
 			SpawnGridY=round(SpawnY#/GridSize)
@@ -352,7 +352,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			if startx#>GetScreenBoundsLeft() and starty#>GetScreenBoundsTop() and startx#<ScreenWidth() and starty#<ScreenHeight()
 				CreateText(TextID,str(Grid[x,y].Number))
 				SetTextPosition(TextID,startx#,starty#)
-				SetTextSize(TextID,4)
+				SetTextSize(TextID,3)
 				SetTextAlignment(TextID,1)
 				if Grid[x,y].Position.x<>0 or Grid[x,y].Position.y<>0
 					endx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
