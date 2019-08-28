@@ -30,21 +30,30 @@ function Debuging (Debug ref as Debuging)
         endif
         
         if GetRawKeyState (49)        // 1 is held down
-            Debug.FogMin = Debug.FogMin + GetRawMouseWheelDelta()
+            Debug.FogMin = Debug.FogMin + debug_mousewheel (10.0)
             SetFogRange( Debug.FogMin, Debug.FogMax ) 
         endif
         
         if GetRawKeyState (50)        // 2 is held down
-            Debug.FogMax = Debug.FogMax + GetRawMouseWheelDelta()
+            Debug.FogMax = Debug.FogMax + debug_mousewheel (10.0)
             SetFogRange( Debug.FogMin, Debug.FogMax )
         endif
         
         print ("  CHEAT CONSOLE" + chr(10))
-        print ("  FogMode=" + str(Debug.fogEnabled) + "     F3 to toggle" + chr(10))
-        print ("  FogMin=" + str(Debug.FogMin) + "     1 + mouse wheel" + chr(10))
-        print ("  FogMax=" + str(Debug.FogMax) + "     2 + mouse wheel" + chr(10))
+        print ("  FogMode=" + str(Debug.fogEnabled) + "     F3 to toggle")
+        print ("  FogMin=" + str(Debug.FogMin) + "     1 + mouse wheel")
+        print ("  FogMax=" + str(Debug.FogMax) + "     2 + mouse wheel")
     endif
 endfunction
+
+function debug_mousewheel (wheelMultiplier# as float)
+	out# as float
+	out# = GetRawMouseWheelDelta() * wheelMultiplier# 
+	if GetRawKeyState (257) = 1 then out# = out# * 10.0 // left shift is down = increase
+	if GetRawKeyState (258) = 1 then out# = out# * 10.0 // right shift is down = increase
+	if GetRawKeyState (259) = 1 then out# = out# * 0.1 // left ctrl is down = decrease
+	if GetRawKeyState (260) = 1 then out# = out# * 0.1 // left ctrl is down = decrease
+endfunction out#
 
 function DebugPath(DebugEnabled as integer, Grid ref as PathGrid[][], GridSize)
 	if DebugEnabled
