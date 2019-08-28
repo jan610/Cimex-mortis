@@ -1,6 +1,7 @@
 type Debuging
     Enabled        	as integer
     PathEnabled		as integer
+    globalLightEnabled		as integer
     ShaderEnabled	as integer
     FogEnabled    	as integer
     FogMin    		as float
@@ -28,6 +29,13 @@ function Debuging (Debug ref as Debuging)
             SetFogMode( Debug.FogEnabled ) 
         endif
         
+        if GetRawKeyPressed (117)    // F6 to toggle global light
+            Debug.globalLightEnabled = 1 - Debug.globalLightEnabled
+            SetSunActive( Debug.globalLightEnabled ) 
+        endif
+        
+
+        
         if GetRawKeyState (49)        // 1 is held down
             Debug.FogMin = Debug.FogMin + debug_mousewheel (10.0)
             SetFogRange( Debug.FogMin, Debug.FogMax ) 
@@ -37,6 +45,18 @@ function Debuging (Debug ref as Debuging)
             Debug.FogMax = Debug.FogMax + debug_mousewheel (10.0)
             SetFogRange( Debug.FogMin, Debug.FogMax )
         endif
+        
+        if GetRawKeyPressed (120)    // F9 to paste hex color into suncolor
+			   clipGet$ = GetClipboardText()
+			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
+            SetSunColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) ) 
+        endif
+        
+        if GetRawKeyPressed (121)		// F10 to paste hex color into clearcolor
+			   clipGet$ = GetClipboardText()
+			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
+			   setClearColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
+		  endif
         
         if GetRawKeyPressed (122)		// F11 to paste hex color into fogcolor
 			   clipGet$ = GetClipboardText()
@@ -57,6 +77,9 @@ function Debuging (Debug ref as Debuging)
         print ("  FogMax=" + str(Debug.FogMax) + "     2 + mouse wheel")
         print ("  PathMode=" + str(Debug.PathEnabled) + "     F4 to toggle")
         print ("  ShaderMode=" + str(Debug.ShaderEnabled) + "     F5 to toggle")
+        print ("  sun=" str(Debug.globalLightEnabled) +"F6 to toggle")
+        print ("  F9 to paste hex color value into suncolor")
+        print ("  F10 to paste hex color value into clearcolor")
         print ("  F11 to paste hex color value into fogColor")
         print ("  F12 to paste hex color value into ambientColor")
     endif
