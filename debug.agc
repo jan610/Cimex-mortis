@@ -9,7 +9,6 @@ endtype
 
 
 function Debuging (Debug ref as Debuging)
-    
     if GetRawKeyPressed (112)        // toggle cheat console and input with F1
         Debug.Enabled = 1 - Debug.Enabled 
     endif
@@ -39,10 +38,12 @@ function Debuging (Debug ref as Debuging)
             SetFogRange( Debug.FogMin, Debug.FogMax )
         endif
         
-        print ("  CHEAT CONSOLE" + chr(10))
+        print ("  DEBUG CONSOLE" + chr(10))
         print ("  FogMode=" + str(Debug.fogEnabled) + "     F3 to toggle")
         print ("  FogMin=" + str(Debug.FogMin) + "     1 + mouse wheel")
         print ("  FogMax=" + str(Debug.FogMax) + "     2 + mouse wheel")
+        print ("  PathMode=" + str(Debug.PathEnabled) + "     F4 to toggle")
+        print ("  ShaderMode=" + str(Debug.ShaderEnabled) + "     F5 to toggle")
     endif
 endfunction
 
@@ -55,8 +56,8 @@ function debug_mousewheel (wheelMultiplier# as float)
 	if GetRawKeyState (260) = 1 then out# = out# * 0.1 // left ctrl is down = decrease
 endfunction out#
 
-function DebugPath(DebugEnabled as integer, Grid ref as PathGrid[][], GridSize)
-	if DebugEnabled
+function DebugPath(Debug ref as Debuging, Grid ref as PathGrid[][], GridSize)
+	if Debug.Enabled and Debug.PathEnabled
 		for x=0 to Grid.length
 			for y=0 to Grid[0].length
 				TextID=x+y*64
@@ -76,5 +77,9 @@ function DebugPath(DebugEnabled as integer, Grid ref as PathGrid[][], GridSize)
 				endif
 			next y
 		next x
+	else
+		for TextID=0 to Grid.length*Grid[0].length
+			DeleteText(TextID)
+		next TextID
 	endif
 endfunction

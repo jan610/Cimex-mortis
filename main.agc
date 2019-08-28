@@ -195,12 +195,12 @@ function Game()
 			ClearScreen()
 			DrawObject(QuadOID)
 			
-			DebugPath(Debug.Enabled, Grid, GridSize)
+			DebugPath(Debug, Grid, GridSize)
 			
 			Render2DFront()
 			Swap()
 		else
-			DebugPath(Debug.Enabled, Grid, GridSize)
+			DebugPath(Debug, Grid, GridSize)
 			sync()
 		endif
 	loop

@@ -44,11 +44,9 @@ endfunction
 
 function BulletUpdate(Bullets ref as Bullet[])
 	FrameTime#=GetFrameTime()
-	local MaxTime as Float
 	local BulletLength as float
 	BulletLength = 2
 	
-	print(Bullets.length)
 	for Index=0 to Bullets.length
 		UpdateTweenCustom(Bullets[Index].Velocity_Tween,FrameTime#)
 		VelocityX#=GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)*FrameTime#
