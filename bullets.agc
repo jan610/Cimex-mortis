@@ -20,6 +20,7 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	SetObjectRotation(TempBullet.OID,0,AngleY,0)
 	SetObjectImage(TempBullet.OID,DiffuseIID,0)
 	//~ SetObjectNormalMap(TempBullet.OID,NormalIID)
+	SetObjectCollisionMode(TempBullet.OID,0)
 	SetObjectTransparency(TempBullet.OID,1)
 	SetObjectShader(TempBullet.OID,ShaderID)
 	SetObjectShaderConstantByName(TempBullet.OID,"thickness",0.2,0,0,0)
@@ -42,12 +43,15 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	Bullets.insert(TempBullet)
 endfunction
 
-function BulletUpdate(Bullets ref as Bullet[])
+function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[])
 	FrameTime#=GetFrameTime()
 	local BulletLength as float
 	BulletLength = 2
+	local Damage as integer
+	Damage=50
 	
 	for Index=0 to Bullets.length
+		Delete=0
 		UpdateTweenCustom(Bullets[Index].Velocity_Tween,FrameTime#)
 		VelocityX#=GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)*FrameTime#
 		VelocityZ#=GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)*FrameTime#
@@ -55,15 +59,27 @@ function BulletUpdate(Bullets ref as Bullet[])
 		Bullets[Index].Position.z=Bullets[Index].Position.z-VelocityZ#
 `		Bullets[Index].Position.x=Bullets[Index].Position.x-GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)
 `		Bullets[Index].Position.z=Bullets[Index].Position.z-GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)
+		OldBulletX#=GetObjectX(Bullets[Index].OID)
+		OldBulletZ#=GetObjectZ(Bullets[Index].OID)
 		SetObjectPosition(Bullets[Index].OID,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
 		SetObjectShaderConstantByName(Bullets[Index].OID,"start",Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z, 0)
 		SetObjectShaderConstantByName(Bullets[Index].OID,"end",Bullets[Index].Position.x+VelocityX#*BulletLength,Bullets[Index].Position.y,Bullets[Index].Position.z+VelocityZ#*BulletLength, 0)
 	
+		for e=0 to Enemy.length
+			if ObjectRayCast(Enemy[e].OID,OldBulletX#,Bullets[Index].Position.y,OldBulletZ#,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+				Enemy[e].Life=Enemy[e].Life-Damage
+				Delete=1
+				exit
+			endif
+		next e
+		
 `		if Timer()>Bullets[Index].Time
 `			DeleteObject(Bullets[Index].OID)
 `			Bullets.remove(Index)
 `		endif
-		if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween)
+		if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween) then Delete=1
+		
+		if Delete=1
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 		endif

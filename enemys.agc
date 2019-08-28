@@ -30,6 +30,7 @@ function EnemySpawn(Enemy ref as Character, Grid ref as PathGrid[][], GridSize a
 	until Grid[SpawnGridX,SpawnGridY].Number>0
 	Enemy.Position.x=SpawnX#
 	Enemy.Position.z=SpawnY#
+	Enemy.Life=100
 endfunction
 
 function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer)
@@ -48,6 +49,10 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	endif
 	
 	for Index=0 to Enemy.length
+		if Enemy[Index].Life<=0
+			EnemySpawn(Enemy[Index], Grid, GridSize)
+			continue
+		endif
 		EnemyGridX=round(Enemy[Index].Position.x/GridSize)
 		EnemyGridZ=round(Enemy[Index].Position.z/GridSize)
 		if EnemyGridX<0 then EnemyGridX=0
@@ -55,9 +60,9 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		if EnemyGridX>Grid.length then EnemyGridX=Grid.length
 		if EnemyGridZ>Grid[0].length then EnemyGridZ=Grid[0].length
 		
-		if Grid[EnemyGridX,EnemyGridZ].Number>0 and Grid[EnemyGridX,EnemyGridZ].Number<3
-			EnemySpawn(Enemy[Index], Grid, GridSize)
-		endif
+		//~ if Grid[EnemyGridX,EnemyGridZ].Number>0 and Grid[EnemyGridX,EnemyGridZ].Number<3
+			//~ EnemySpawn(Enemy[Index], Grid, GridSize)
+		//~ endif
 		
 		// if the Enemy can find a path just run straight to the player
 		if Grid[EnemyGridX,EnemyGridZ].Number=0
@@ -96,11 +101,20 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		OldEnemyY#=GetObjectY(Enemy[Index].OID)
 		OldEnemyZ#=GetObjectZ(Enemy[Index].OID)
 		
-		if Grid[EnemyGridX,EnemyGridZ].Number>0
-			if ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)>0
+		
+		HitOID=ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)
+		if HitOID>0
+			HitCount=0
+			if Grid[EnemyGridX,EnemyGridZ].Number>0
 				Enemy[Index].Position.x=GetObjectRayCastSlideX(0)
 				Enemy[Index].Position.z=GetObjectRayCastSlideZ(0)
 			endif
+			for i=0 to GetObjectRayCastNumHits()-1
+				HitOID=GetObjectRayCastHitID(i)
+				if HitOID=Player.Character.OID
+					EnemySpawn(Enemy[Index], Grid, GridSize)
+				endif
+			next i
 		endif
 		
 		SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)

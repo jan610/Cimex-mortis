@@ -121,8 +121,8 @@ function Game()
 	PathInit(Grid, 0.5, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
-	Enemy as Character[50]
-	EnemyInit(Enemy, Grid, GridSize)
+	Enemys as Character[5]
+	EnemyInit(Enemys, Grid, GridSize)
 
 	Bullets as Bullet[]
 	
@@ -153,13 +153,13 @@ function Game()
 		print("mov-speed:"+str(Player.Character.MaxSpeed))
 		
 		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
-		EnemyControll(Enemy, Player, Grid, GridSize)
+		EnemyControll(Enemys, Player, Grid, GridSize)
 		
 		if GetPointerPressed()
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
 		endif	
 		
-		BulletUpdate(Bullets)
+		BulletUpdate(Bullets, Enemys)
 		
 		Debuging(Debug)
 
