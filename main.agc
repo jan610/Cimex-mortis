@@ -98,6 +98,16 @@ function GameMenu()
 endfunction GameState
 
 function Game()
+	
+	// This defines the lightning in the level
+	SetFogMode(1)
+	SetSunActive(1)
+	SetFogRange(-9.0,69.0)
+	SetSunColor(182,54,51)
+	setClearColor(7,11,37)
+	setFogColor(0,10,87)
+	SetAmbientColor(145,145,145)
+	
 	local GridSize
 	GridSize=1
 	
@@ -213,7 +223,7 @@ endfunction GameState
 function IntroScreen()
 	FadeTween = CreateTweenSprite(1)
 	SetTweenSpriteAlpha(FadeTween,0,255,TweenLinear())
-	IntroScreenIID = loadimage("Intro_Screen.png")
+	IntroScreenIID = loadimage("Intro_Screen.jpg")
 	IntroScreenSID = CreateSprite(IntroScreenIID)
 	SetSpriteSize(IntroScreenSID,ScreenWidth(),ScreenHeight())
 	SetSpritePosition(IntroScreenSID,GetScreenBoundsLeft(),GetScreenBoundsTop())
