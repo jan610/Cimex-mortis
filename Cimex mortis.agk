@@ -55,16 +55,18 @@ FILE_4=common.agc;-1
 FILE_5=bullets.agc;-1
 FILE_6=enemys.agc;-1
 FILE_7=player.agc;-1
+FILE_8=notes.txt;-1
 
 [files]
-FILE_NAME_0=0;main.agc;2837;13
-FILE_NAME_1=1;debug.agc;0;33
-FILE_NAME_2=0;constants.agc;203;14
-FILE_NAME_3=0;path.agc;84;16
-FILE_NAME_4=0;common.agc;479;31
-FILE_NAME_5=0;bullets.agc;208;29
-FILE_NAME_6=0;enemys.agc;267;30
-FILE_NAME_7=0;player.agc;245;32
+FILE_NAME_0=0;main.agc;2837;0
+FILE_NAME_1=0;debug.agc;0;7
+FILE_NAME_2=0;constants.agc;203;1
+FILE_NAME_3=0;path.agc;84;2
+FILE_NAME_4=0;common.agc;479;5
+FILE_NAME_5=0;bullets.agc;208;3
+FILE_NAME_6=0;enemys.agc;267;4
+FILE_NAME_7=0;player.agc;245;6
+FILE_NAME_8=1;notes.txt;94;8
 
 [project]
 description=
