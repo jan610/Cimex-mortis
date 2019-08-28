@@ -225,11 +225,16 @@ function IntroScreen()
 	SetTweenSpriteAlpha(FadeTween,0,255,TweenLinear())
 	IntroScreenIID = loadimage("Intro_Screen.jpg")
 	IntroScreenSID = CreateSprite(IntroScreenIID)
-	SetSpriteSize(IntroScreenSID,ScreenWidth(),ScreenHeight())
-	SetSpritePosition(IntroScreenSID,GetScreenBoundsLeft(),GetScreenBoundsTop())
+	Width=ScreenWidth()
+	Height=ScreenHeight()
+	SetSpriteSize(IntroScreenSID,Width,Height)
+	SetSpritePositionByOffset(IntroScreenSID,50,50)
 	PlayTweenSprite(FadeTween,IntroScreenSID,0)
 	repeat
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
+		if ScreenWidth()<>Width or Height<>ScreenHeight()
+			SetSpriteSize(IntroScreenSID,ScreenWidth(),ScreenHeight())
+		endif
 		sync()
 	until GetRawLastKey() or GetPointerPressed()
 	
