@@ -44,8 +44,10 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	if PlayerGrid.x<>Player.OldGrid.x or PlayerGrid.y<>Player.OldGrid.y
 		Player.OldGrid.x=PlayerGrid.x
 		Player.OldGrid.y=PlayerGrid.y
-		PathClear(Grid)
-		PathFinding(Grid, PlayerGrid)
+		if PlayerGrid.x>0 and PlayerGrid.y>0 and PlayerGrid.x<Grid.length and PlayerGrid.y<Grid[0].length
+			PathClear(Grid)
+			PathFinding(Grid, PlayerGrid)
+		endif
 	endif
 	
 	for Index=0 to Enemy.length
@@ -100,7 +102,6 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		OldEnemyX#=GetObjectX(Enemy[Index].OID)
 		OldEnemyY#=GetObjectY(Enemy[Index].OID)
 		OldEnemyZ#=GetObjectZ(Enemy[Index].OID)
-		
 		
 		HitOID=ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)
 		if HitOID>0

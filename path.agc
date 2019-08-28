@@ -54,64 +54,62 @@ function PathClear(Grid ref as PathGrid[][])
 endfunction
 
 function PathFinding(Grid ref as PathGrid[][], Start as int2)
-	if Start.x>0 and Start.y>0 and Start.x<Grid.length and Start.y<Grid[0].length
-		local FrontierTemp as int2
-		local Frontier as int2[]
-		local Neighbors as int2[7]
+	local FrontierTemp as int2
+	local Frontier as int2[]
+	local Neighbors as int2[7]
 
-		Neighbors[0].x=1
-		Neighbors[0].y=0
-		
-		Neighbors[1].x=0
-		Neighbors[1].y=1
+	Neighbors[0].x=1
+	Neighbors[0].y=0
+	
+	Neighbors[1].x=0
+	Neighbors[1].y=1
 
-		Neighbors[2].x=-1
-		Neighbors[2].y=0
-		
-		Neighbors[3].x=0
-		Neighbors[3].y=-1
-		
-		Neighbors[4].x=1
-		Neighbors[4].y=1
-		
-		Neighbors[5].x=1
-		Neighbors[5].y=-1
+	Neighbors[2].x=-1
+	Neighbors[2].y=0
+	
+	Neighbors[3].x=0
+	Neighbors[3].y=-1
+	
+	Neighbors[4].x=1
+	Neighbors[4].y=1
+	
+	Neighbors[5].x=1
+	Neighbors[5].y=-1
 
-		Neighbors[6].x=-1
-		Neighbors[6].y=1
-		
-		Neighbors[7].x=-1
-		Neighbors[7].y=-1
+	Neighbors[6].x=-1
+	Neighbors[6].y=1
+	
+	Neighbors[7].x=-1
+	Neighbors[7].y=-1
 
-		FrontierTemp.x=Start.x
-		FrontierTemp.y=Start.y
-		Frontier.insert(FrontierTemp)
-		
-		Grid[Start.x,Start.y].Position.x=Start.x
-		Grid[Start.x,Start.y].Position.y=Start.y
-		Grid[Start.x,Start.y].Number=0
-		Grid[Start.x,Start.y].Visited=1
-		
-		while Frontier.length>=0
-			x=Frontier[0].x
-			y=Frontier[0].y
-			Frontier.remove(0)
+	FrontierTemp.x=Start.x
+	FrontierTemp.y=Start.y
+	Frontier.insert(FrontierTemp)
+	
+	Grid[Start.x,Start.y].Position.x=Start.x
+	Grid[Start.x,Start.y].Position.y=Start.y
+	Grid[Start.x,Start.y].Number=0
+	Grid[Start.x,Start.y].Visited=1
+	
+	while Frontier.length>=0
+		x=Frontier[0].x
+		y=Frontier[0].y
+		Frontier.remove(0)
 
-			//~ if x>0 and x<Grid.length and y>0 and y<Grid[0].length
-				for n=0 to Neighbors.length
-					nx=x+Neighbors[n].x
-					ny=y+Neighbors[n].y
-					if Grid[nx,ny].Visited=0
-						FrontierTemp.x=nx
-						FrontierTemp.y=ny
-						Frontier.insert(FrontierTemp)
-						Grid[nx,ny].Position.x=x
-						Grid[nx,ny].Position.y=y
-						Grid[nx,ny].Visited=1
-						Grid[nx,ny].Number=Grid[x,y].Number+1
-					endif
-				next n
-			//~ endif
-		endwhile
-	endif
+		//~ if x>0 and x<Grid.length and y>0 and y<Grid[0].length
+			for n=0 to Neighbors.length
+				nx=x+Neighbors[n].x
+				ny=y+Neighbors[n].y
+				if Grid[nx,ny].Visited=0
+					FrontierTemp.x=nx
+					FrontierTemp.y=ny
+					Frontier.insert(FrontierTemp)
+					Grid[nx,ny].Position.x=x
+					Grid[nx,ny].Position.y=y
+					Grid[nx,ny].Visited=1
+					Grid[nx,ny].Number=Grid[x,y].Number+1
+				endif
+			next n
+		//~ endif
+	endwhile
 endfunction
