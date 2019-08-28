@@ -33,7 +33,7 @@ SetDefaultWrapV(1)
 #include "particles.agc"
 
 GameState = -1
-
+loadimage(particleImg,"particles.png")
 do
 	Select GameState
 		case STATE_GAME_INTRO
