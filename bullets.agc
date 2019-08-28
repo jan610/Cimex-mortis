@@ -46,7 +46,7 @@ endfunction
 function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particles ref as Particle[])
 	FrameTime#=GetFrameTime()
 	local BulletLength as float
-	BulletLength = 2
+	BulletLength = 1
 	local Damage as integer
 	Damage=50
 	
@@ -62,17 +62,26 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 		OldBulletX#=GetObjectX(Bullets[Index].OID)
 		OldBulletZ#=GetObjectZ(Bullets[Index].OID)
 		SetObjectPosition(Bullets[Index].OID,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+		Length#=sqrt(VelocityX#*VelocityX#+VelocityZ#*VelocityZ#)
+		DirX#=VelocityX#/Length#
+		DirZ#=VelocityZ#/Length#
+		EndX#=Bullets[Index].Position.x-DirX#*BulletLength
+		EndZ#=Bullets[Index].Position.z-DirZ#*BulletLength
 		SetObjectShaderConstantByName(Bullets[Index].OID,"start",Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z, 0)
-		SetObjectShaderConstantByName(Bullets[Index].OID,"end",Bullets[Index].Position.x+VelocityX#*BulletLength,Bullets[Index].Position.y,Bullets[Index].Position.z+VelocityZ#*BulletLength, 0)
+		SetObjectShaderConstantByName(Bullets[Index].OID,"end",EndX#,Bullets[Index].Position.y,EndZ#, 0)
 	
-		HitOID=ObjectRayCast(0,OldBulletX#,Bullets[Index].Position.y,OldBulletZ#,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+		HitOID=ObjectRayCast(0,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z,EndX#,Bullets[Index].Position.y,EndZ#)
 		if HitOID>0
-			for e=0 to Enemy.length
-				if HitOID=Enemy[e].OID
-					Enemy[e].Life=Enemy[e].Life-Damage
-					ParticleCreate(Particles, Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
-				endif
-			next e
+			//~ for i=0 to GetObjectRayCastNumHits()-1
+				//~ HitOID=GetObjectRayCastHitID(i)
+				for e=0 to Enemy.length
+					if HitOID=Enemy[e].OID
+						Enemy[e].Life=Enemy[e].Life-Damage
+						ParticleCreate(Particles, Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+						exit
+					endif
+				next e
+			//~ next i
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 			continue
