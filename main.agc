@@ -218,6 +218,13 @@ function Game()
 			sync()
 		endif
 	loop
+	DeleteAllObjects()
+	DeleteAllText()
+	DeleteAllImages()
+	deleteshader(BlurHSID)
+	deleteshader(BlurVSID)
+	deleteshader(BloomSID)
+	DeleteShader(BulletShaderID)
 endfunction GameState
 
 function IntroScreen()
