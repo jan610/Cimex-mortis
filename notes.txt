@@ -1,11 +1,24 @@
 remstart
 
 
+=========================================
 TODO LIST: 
+=========================================
 
 [ ] add bullet collision (spherecast)
 [ ] new fancy title screen
+[ ] sounds
+[ ] 3D models
 
+
+
+
+
+
+
+=========================================
+RANDOM BRAINSTORM:
+=========================================
 
 
 
