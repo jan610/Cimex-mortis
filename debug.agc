@@ -98,7 +98,7 @@ function DebugPath(Debug ref as Debuging, Grid ref as PathGrid[][], GridSize)
 	if Debug.Enabled and Debug.PathEnabled
 		for x=0 to Grid.length
 			for y=0 to Grid[0].length
-				TextID=x+y*64
+				TextID=x+y*48
 				DeleteText(TextID)
 				startx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
 				starty#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)

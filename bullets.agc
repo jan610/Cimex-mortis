@@ -43,7 +43,7 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	Bullets.insert(TempBullet)
 endfunction
 
-function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[])
+function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particles ref as Particle[])
 	FrameTime#=GetFrameTime()
 	local BulletLength as float
 	BulletLength = 2
@@ -68,7 +68,10 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[])
 		HitOID=ObjectRayCast(0,OldBulletX#,Bullets[Index].Position.y,OldBulletZ#,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
 		if HitOID>0
 			for e=0 to Enemy.length
-				if HitOID=Enemy[e].OID then Enemy[e].Life=Enemy[e].Life-Damage
+				if HitOID=Enemy[e].OID
+					Enemy[e].Life=Enemy[e].Life-Damage
+					ParticleCreate(Particles, Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+				endif
 			next e
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)

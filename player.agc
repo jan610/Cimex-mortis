@@ -10,9 +10,9 @@ endtype
 function PlayerInit(Player ref as Player, CameraDistance#)
 	Player.Character.OID=CreateObjectBox(1,1,1)
 	Player.Character.MaxSpeed=8.0
-	Player.Character.Position.x=32
+	Player.Character.Position.x=16
 	Player.Character.Position.y=0
-	Player.Character.Position.z=32
+	Player.Character.Position.z=16
 	Player.Attack = 0.9
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)

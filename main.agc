@@ -30,6 +30,7 @@ SetDefaultWrapV(1)
 #include "path.agc"
 #include "player.agc"
 #include "debug.agc"
+#include "particles.agc"
 
 GameState = -1
 
@@ -117,24 +118,26 @@ function Game()
 	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
 	PlayerGrid.y=round(Player.Character.Position.z/GridSize)
 	
-	Grid as PathGrid[64,64]
+	Grid as PathGrid[48,48]
 	
 	// create some random walls
 	for t = 1 to 10
-		wall = CreateObjectBox(random2(10,35),5,1.5)
+		wall = CreateObjectBox(random2(10,20),3,1.0)
 		SetObjectTransparency(wall,1)
-		SetObjectPosition(wall,random2(1,50),2.5,random2(1,50))
+		SetObjectPosition(wall,random2(1,48),1.5,random2(1,48))
 		RotateObjectLocalY(wall,random2(0,360))
 		setobjectcolor(wall,0,255,0,155)
 	next t
 	
-	PathInit(Grid, 0.3, GridSize)
+	PathInit(Grid, 0.5, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
 	Enemys as Character[5]
 	EnemyInit(Enemys, Grid, GridSize)
 
 	Bullets as Bullet[]
+	
+	Particles as Particle[]
 	
 	Debug as Debuging
 	
@@ -169,7 +172,8 @@ function Game()
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
 		endif	
 		
-		BulletUpdate(Bullets, Enemys)
+		BulletUpdate(Bullets, Enemys, Particles)
+		ParticleUpdate(Particles)
 		
 		Debuging(Debug)
 
