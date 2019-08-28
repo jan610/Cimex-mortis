@@ -31,9 +31,10 @@ SetDefaultWrapV(1)
 #include "player.agc"
 #include "debug.agc"
 #include "particles.agc"
+#include "media.agc"
 
 GameState = -1
-loadimage(particleImg,"particles.png")
+
 do
 	Select GameState
 		case STATE_GAME_INTRO
@@ -141,21 +142,9 @@ function Game()
 	
 	Debug as Debuging
 	
-	// temporary ...help me do this in a nicer way please
-	BulletShaderID=LoadShader("shader/Line.vs","shader/Default.ps")
-	BulletDiffuseIID=LoadImage("bullet.png")
+	LoadGameMedia()
 	
-	width=GetDeviceWidth()
-	height=GetDeviceHeight()
-	SceneIID=CreateRenderImage(width,height,0,0)
-	BlurHIID=CreateRenderImage(width*0.5,height*0.5,0,0)
-	BlurVIID=CreateRenderImage(width*0.5,height*0.5,0,0)
 	QuadOID=CreateObjectQuad()
-	BlurHSID=LoadFullScreenShader("shader/BlurH.ps")
-	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
-	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
-	SetShaderConstantByName(BlurHSID,"blurScale",4.0,0,0,0)
-	SetShaderConstantByName(BlurVSID,"blurScale",4.0,0,0,0)
 	
 	do
 		Print( ScreenFPS() )
