@@ -65,23 +65,24 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[])
 		SetObjectShaderConstantByName(Bullets[Index].OID,"start",Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z, 0)
 		SetObjectShaderConstantByName(Bullets[Index].OID,"end",Bullets[Index].Position.x+VelocityX#*BulletLength,Bullets[Index].Position.y,Bullets[Index].Position.z+VelocityZ#*BulletLength, 0)
 	
-		for e=0 to Enemy.length
-			if ObjectRayCast(Enemy[e].OID,OldBulletX#,Bullets[Index].Position.y,OldBulletZ#,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
-				Enemy[e].Life=Enemy[e].Life-Damage
-				Delete=1
-				exit
-			endif
-		next e
+		HitOID=ObjectRayCast(0,OldBulletX#,Bullets[Index].Position.y,OldBulletZ#,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+		if HitOID>0
+			for e=0 to Enemy.length
+				if HitOID=Enemy[e].OID then Enemy[e].Life=Enemy[e].Life-Damage
+			next e
+			DeleteObject(Bullets[Index].OID)
+			Bullets.remove(Index)
+			continue
+		endif
 		
 `		if Timer()>Bullets[Index].Time
 `			DeleteObject(Bullets[Index].OID)
 `			Bullets.remove(Index)
 `		endif
-		if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween) then Delete=1
-		
-		if Delete=1
+		if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween)
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
+			continue
 		endif
 	next Index
 endfunction

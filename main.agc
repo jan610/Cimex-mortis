@@ -118,7 +118,7 @@ function Game()
 		setobjectcolor(wall,0,255,0,155)
 	next t
 	
-	PathInit(Grid, 0.5, GridSize)
+	PathInit(Grid, 0.3, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
 	Enemys as Character[5]
