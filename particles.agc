@@ -9,7 +9,9 @@ function ParticleCreate(Particles ref as Particle[], X#, Y#, Z#)
     pLife# as float = 2.0
     local TempParticle as Particle
     TempParticle.PID=Create3DParticles(X#,Y#,Z#)
-	Set3DParticlesLife(TempParticle.PID, pLife#)
+    //~ ImageID=CreateImageColor(255,255,255,255)
+    //~ Set3DParticlesImage(TempParticle.PID, ImageID ) // maybe just create a global ImageID until we have a better method
+    Set3DParticlesLife(TempParticle.PID, pLife#)
     Set3DParticlesMax(TempParticle.PID, 100)
     Set3DParticlesSize(TempParticle.PID, 0.8)
     Set3DParticlesFrequency(TempParticle.PID,20)
@@ -18,7 +20,8 @@ function ParticleCreate(Particles ref as Particle[], X#, Y#, Z#)
     //Set3DParticlesStartZone( TempParticle.PID, -100.0, -50.0, -100.0, 100.0, 50.0, 100.0 )
     Set3DParticlesStartZone( TempParticle.PID, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3 )
     Set3DParticlesPosition( TempParticle.PID, X#, Y#, Z# ) 
-    Set3DParticlesImage( TempParticle.PID, ParticleIID )
+    //tmpImg = LoadImage( "particles.png" ) // yeah i know
+    Set3DParticlesImage( TempParticle.PID, particleImg )
     Set3DParticlesColorInterpolation( TempParticle.PID, 1 ) // fade the particles out before they die
     Add3DParticlesColorKeyFrame( TempParticle.PID, 0, 255, 255, 255,255 )
     Add3DParticlesColorKeyFrame( TempParticle.PID, pLife#, 255, 255, 255, 0 ) // fade to transparence

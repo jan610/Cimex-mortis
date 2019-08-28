@@ -33,6 +33,8 @@ SetDefaultWrapV(1)
 #include "particles.agc"
 #include "media.agc"
 
+loadimage(particleImg,"particles.png")
+
 GameState = -1
 
 do

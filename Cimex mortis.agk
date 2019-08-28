@@ -59,16 +59,16 @@ FILE_8=player.agc;-1
 FILE_9=media.agc;-1
 
 [files]
-FILE_NAME_0=0;main.agc;1008;12
-FILE_NAME_1=0;debug.agc;4258;31
-FILE_NAME_2=0;constants.agc;203;13
-FILE_NAME_3=0;particles.agc;963;32
-FILE_NAME_4=0;path.agc;2425;14
-FILE_NAME_5=0;common.agc;479;29
-FILE_NAME_6=0;bullets.agc;3241;27
-FILE_NAME_7=0;enemys.agc;1024;28
-FILE_NAME_8=0;player.agc;393;30
-FILE_NAME_9=1;media.agc;0;33
+FILE_NAME_0=0;main.agc;1070;0
+FILE_NAME_1=0;debug.agc;4258;7
+FILE_NAME_2=1;constants.agc;509;1
+FILE_NAME_3=0;particles.agc;1414;8
+FILE_NAME_4=0;path.agc;2425;2
+FILE_NAME_5=0;common.agc;479;5
+FILE_NAME_6=0;bullets.agc;3241;3
+FILE_NAME_7=0;enemys.agc;1024;4
+FILE_NAME_8=0;player.agc;393;6
+FILE_NAME_9=0;media.agc;0;9
 
 [project]
 description=
