@@ -29,6 +29,7 @@ SetDefaultWrapV(1)
 #include "enemys.agc"
 #include "path.agc"
 #include "player.agc"
+#include "debug.agc"
 
 GameState = -1
 
@@ -125,6 +126,8 @@ function Game()
 
 	Bullets as Bullet[]
 	
+	Debug as Debuging
+	
 	// temporary ...help me do this in a nicer way please
 	BulletShaderID=LoadShader("shader/Line.vs","shader/Default.ps")
 	BulletDiffuseIID=LoadImage("bullet.png")
@@ -157,61 +160,49 @@ function Game()
 		endif	
 		
 		BulletUpdate(Bullets)
+		
+		Debuging(Debug)
 
 		if GetRawKeyReleased(27)
 			GameState=STATE_GAME_MENU
 			exit
 		endif
 		
-		Update(0)
-		Render2DBack()
-		
-		SetRenderToImage(SceneIID,-1)
-		ClearScreen()
-		Render3D()
-		
-		SetObjectImage(QuadOID,SceneIID,0)
-		SetObjectShader(QuadOID,BlurHSID)
-		SetRenderToImage(BlurHIID,0)
-		ClearScreen()
-		DrawObject(QuadOID)
-		
-		SetObjectImage(QuadOID,BlurHIID,0)
-		SetObjectShader(QuadOID,BlurVSID)
-		SetRenderToImage(BlurVIID,0)
-		ClearScreen()
-		DrawObject(QuadOID)
-		
-		SetObjectImage(QuadOID,SceneIID,0)
-		SetObjectImage(QuadOID,BlurVIID,1)
-		SetObjectShader(QuadOID,BloomSID)
-		SetRenderToScreen()
-		ClearScreen()
-		DrawObject(QuadOID)
-		
-		// Debugging Lines
-		for x=0 to Grid.length
-			for y=0 to Grid[0].length
-				TextID=x+y*64
-				DeleteText(TextID)
-				startx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
-				starty#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
-				if startx#>GetScreenBoundsLeft() and starty#>GetScreenBoundsTop() and startx#<ScreenWidth() and starty#<ScreenHeight()
-					CreateText(TextID,str(Grid[x,y].Number))
-					SetTextPosition(TextID,startx#,starty#)
-					SetTextSize(TextID,3)
-					SetTextAlignment(TextID,1)
-					if Grid[x,y].Position.x<>0 or Grid[x,y].Position.y<>0
-						endx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-						endy#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
-						DrawLine(endx#,endy#,startx#,starty#,MakeColor(255,255,255),MakeColor(0,0,255))
-					endif
-				endif
-			next y
-		next x
+		if Debug.ShaderEnabled=0
+			Update(0)
+			Render2DBack()
 			
-		Render2DFront()
-		Swap()
+			SetRenderToImage(SceneIID,-1)
+			ClearScreen()
+			Render3D()
+			
+			SetObjectImage(QuadOID,SceneIID,0)
+			SetObjectShader(QuadOID,BlurHSID)
+			SetRenderToImage(BlurHIID,0)
+			ClearScreen()
+			DrawObject(QuadOID)
+			
+			SetObjectImage(QuadOID,BlurHIID,0)
+			SetObjectShader(QuadOID,BlurVSID)
+			SetRenderToImage(BlurVIID,0)
+			ClearScreen()
+			DrawObject(QuadOID)
+			
+			SetObjectImage(QuadOID,SceneIID,0)
+			SetObjectImage(QuadOID,BlurVIID,1)
+			SetObjectShader(QuadOID,BloomSID)
+			SetRenderToScreen()
+			ClearScreen()
+			DrawObject(QuadOID)
+			
+			DebugPath(Debug.Enabled, Grid, GridSize)
+			
+			Render2DFront()
+			Swap()
+		else
+			DebugPath(Debug.Enabled, Grid, GridSize)
+			sync()
+		endif
 	loop
 endfunction GameState
 
