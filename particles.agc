@@ -12,7 +12,7 @@ function ParticleCreate(Particles ref as Particle[], X#, Y#, Z#)
 	Set3DParticlesLife(TempParticle.PID, pLife#)
     Set3DParticlesMax(TempParticle.PID, 100)
     Set3DParticlesSize(TempParticle.PID, 0.8)
-    Set3DParticlesFrequency(TempParticle.PID,20)
+    Set3DParticlesFrequency(TempParticle.PID,100)
     Set3DParticlesDirectionRange(TempParticle.PID,180,180)
     Set3DParticlesDirection(TempParticle.PID,0,1,0,1)
     //Set3DParticlesStartZone( TempParticle.PID, -100.0, -50.0, -100.0, 100.0, 50.0, 100.0 )
@@ -28,7 +28,7 @@ endfunction
 function ParticleUpdate(Particles ref as Particle[])
 	print(Particles.length)
 	for Index=0 to Particles.length
-		Update3DParticles(Particles[Index].PID,0.1)
+		Update3DParticles(Particles[Index].PID,GetFrameTime())
 		//~ for i=0 to 9 //10 times 0.1 to update 10 particles in one second
 			//~ Update3DParticles(Particles[Index].PID,0.1)
 		//~ next i
