@@ -29,12 +29,13 @@ function ParticleCreate(Particles ref as Particle[], X#, Y#, Z#)
 endfunction
 
 function ParticleUpdate(Particles ref as Particle[])
+	print(Particles.length)
 	for Index=0 to Particles.length
 		Update3DParticles(Particles[Index].PID,0.1)
 		//~ for i=0 to 9 //10 times 0.1 to update 10 particles in one second
 			//~ Update3DParticles(Particles[Index].PID,0.1)
 		//~ next i
-		if Get3DParticlesLife(Particles[Index].PID)>2.0
+		if Get3DParticlesMaxReached(Particles[Index].PID)
 			DeleteParticles(Particles[Index].PID)
 			Particles.remove(Index)
 		endif
