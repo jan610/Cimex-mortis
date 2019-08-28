@@ -38,12 +38,27 @@ function Debuging (Debug ref as Debuging)
             SetFogRange( Debug.FogMin, Debug.FogMax )
         endif
         
+        if GetRawKeyPressed (122)		// F11 to paste hex color into fogcolor
+			   clipGet$ = GetClipboardText()
+			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
+			   setFogColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
+		  endif
+        
+        if GetRawKeyPressed (123)		// F12 to paste hex color into ambientcolor
+			   clipGet$ = GetClipboardText()
+			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
+			   SetAmbientColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
+		  endif
+        
+
         print ("  DEBUG CONSOLE" + chr(10))
         print ("  FogMode=" + str(Debug.fogEnabled) + "     F3 to toggle")
         print ("  FogMin=" + str(Debug.FogMin) + "     1 + mouse wheel")
         print ("  FogMax=" + str(Debug.FogMax) + "     2 + mouse wheel")
         print ("  PathMode=" + str(Debug.PathEnabled) + "     F4 to toggle")
         print ("  ShaderMode=" + str(Debug.ShaderEnabled) + "     F5 to toggle")
+        print ("  F11 to paste hex color value into fogColor")
+        print ("  F12 to paste hex color value into ambientColor")
     endif
 endfunction
 
