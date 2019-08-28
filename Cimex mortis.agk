@@ -58,10 +58,10 @@ FILE_7=enemys.agc;-1
 FILE_8=player.agc;-1
 
 [files]
-FILE_NAME_0=1;main.agc;1058;0
+FILE_NAME_0=0;main.agc;1027;0
 FILE_NAME_1=0;debug.agc;3560;7
-FILE_NAME_2=0;constants.agc;506;1
-FILE_NAME_3=0;particles.agc;24;8
+FILE_NAME_2=1;constants.agc;488;1
+FILE_NAME_3=0;particles.agc;1414;8
 FILE_NAME_4=0;path.agc;357;2
 FILE_NAME_5=0;common.agc;479;5
 FILE_NAME_6=0;bullets.agc;3270;3
