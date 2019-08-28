@@ -48,17 +48,21 @@ output_path=
 
 [projectfiles]
 FILE_0=main.agc;-1
-FILE_1=types.agc;-1
-FILE_2=constants.agc;-1
-FILE_3=functions.agc;-1
-FILE_4=path.agc;-1
+FILE_1=constants.agc;-1
+FILE_2=path.agc;-1
+FILE_3=common.agc;-1
+FILE_4=bullets.agc;-1
+FILE_5=enemys.agc;-1
+FILE_6=player.agc;-1
 
 [files]
-FILE_NAME_0=0;main.agc;441;47
-FILE_NAME_1=0;types.agc;1345;48
-FILE_NAME_2=0;constants.agc;203;49
-FILE_NAME_3=0;functions.agc;18690;50
-FILE_NAME_4=1;path.agc;0;55
+FILE_NAME_0=0;main.agc;5590;13
+FILE_NAME_1=0;constants.agc;203;15
+FILE_NAME_2=0;path.agc;84;17
+FILE_NAME_3=0;common.agc;479;32
+FILE_NAME_4=0;bullets.agc;208;30
+FILE_NAME_5=0;enemys.agc;275;31
+FILE_NAME_6=0;player.agc;150;33
 
 [project]
 description=

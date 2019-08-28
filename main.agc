@@ -48,3 +48,190 @@ do
     Sync()
 loop
 
+function MainMenu()
+	PlayTID=CreateText("Play")
+	SetTextSize(PlayTID,12)
+	ExitTID=CreateText("Exit")
+	SetTextSize(ExitTID,12)
+	SetTextPosition(ExitTID,0,12)
+	do
+		PointerX#=GetPointerX()
+		PointerY#=GetPointerY()
+		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
+			if GetPointerReleased()
+				GameState=STATE_GAME_MENU
+				exit
+			endif
+		endif
+		if GetTextHitTest(ExitTID,PointerX#,PointerY#)
+			if GetPointerReleased()
+				GameState=-1
+				end
+			endif
+		endif
+		sync()
+	loop
+	DeleteText(PlayTID)
+	DeleteText(ExitTID)
+endfunction GameState
+
+function GameMenu()
+	MainTID=CreateText("Level Select")
+	SetTextSize(MainTID,12)
+	
+	do
+		PointerX#=GetPointerX()
+		PointerY#=GetPointerY()
+		if GetTextHitTest(MainTID,PointerX#,PointerY#)
+			if GetPointerReleased()
+				GameState=STATE_GAME
+				exit
+			endif
+		endif
+		sync()
+	loop
+	DeleteText(MainTID)
+endfunction GameState
+
+function Game()
+	local GridSize
+	GridSize=1
+	
+	Player as Player
+	PlayerInit(Player,10)
+	
+	local PlayerGrid as int2
+	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
+	PlayerGrid.y=round(Player.Character.Position.z/GridSize)
+	
+	Grid as PathGrid[64,64]
+	
+	// create some random walls
+	for t = 1 to 10
+		wall = CreateObjectBox(random2(10,35),5,1.5)
+		SetObjectTransparency(wall,1)
+		SetObjectPosition(wall,random2(1,50),2.5,random2(1,50))
+		RotateObjectLocalY(wall,random2(0,360))
+		setobjectcolor(wall,0,255,0,155)
+	next t
+	
+	PathInit(Grid, 0.5, GridSize)
+	PathFinding(Grid, PlayerGrid)
+	
+	Enemy as Character[50]
+	EnemyInit(Enemy, Grid, GridSize)
+
+	Bullets as Bullet[]
+	
+	// temporary ...help me do this in a nicer way please
+	BulletShaderID=LoadShader("shader/Line.vs","shader/Default.ps")
+	BulletDiffuseIID=LoadImage("bullet.png")
+	
+	width=GetDeviceWidth()
+	height=GetDeviceHeight()
+	SceneIID=CreateRenderImage(width,height,0,0)
+	BlurHIID=CreateRenderImage(width*0.5,height*0.5,0,0)
+	BlurVIID=CreateRenderImage(width*0.5,height*0.5,0,0)
+	QuadOID=CreateObjectQuad()
+	BlurHSID=LoadFullScreenShader("shader/BlurH.ps")
+	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
+	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
+	SetShaderConstantByName(BlurHSID,"blurScale",4.0,0,0,0)
+	SetShaderConstantByName(BlurVSID,"blurScale",4.0,0,0,0)
+	
+	do
+		Print( ScreenFPS() )
+		print (player.state)
+		print("Energy:"+str(Player.Energy))
+		print("Attack:"+str(Player.Attack))
+		print("Life:"+str(Player.Character.Life))
+		print("mov-speed:"+str(Player.Character.MaxSpeed))
+		
+		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
+		EnemyControll(Enemy, Player, Grid, GridSize)
+		
+		if GetPointerPressed()
+			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
+		endif	
+		
+		BulletUpdate(Bullets)
+
+		if GetRawKeyReleased(27)
+			GameState=STATE_GAME_MENU
+			exit
+		endif
+		
+		Update(0)
+		Render2DBack()
+		
+		SetRenderToImage(SceneIID,-1)
+		ClearScreen()
+		Render3D()
+		
+		SetObjectImage(QuadOID,SceneIID,0)
+		SetObjectShader(QuadOID,BlurHSID)
+		SetRenderToImage(BlurHIID,0)
+		ClearScreen()
+		DrawObject(QuadOID)
+		
+		SetObjectImage(QuadOID,BlurHIID,0)
+		SetObjectShader(QuadOID,BlurVSID)
+		SetRenderToImage(BlurVIID,0)
+		ClearScreen()
+		DrawObject(QuadOID)
+		
+		SetObjectImage(QuadOID,SceneIID,0)
+		SetObjectImage(QuadOID,BlurVIID,1)
+		SetObjectShader(QuadOID,BloomSID)
+		SetRenderToScreen()
+		ClearScreen()
+		DrawObject(QuadOID)
+		
+		// Debugging Lines
+		for x=0 to Grid.length
+			for y=0 to Grid[0].length
+				TextID=x+y*64
+				DeleteText(TextID)
+				startx#=GetScreenXFrom3D(x*GridSize,0,y*GridSize)
+				starty#=GetScreenYFrom3D(x*GridSize,0,y*GridSize)
+				if startx#>GetScreenBoundsLeft() and starty#>GetScreenBoundsTop() and startx#<ScreenWidth() and starty#<ScreenHeight()
+					CreateText(TextID,str(Grid[x,y].Number))
+					SetTextPosition(TextID,startx#,starty#)
+					SetTextSize(TextID,3)
+					SetTextAlignment(TextID,1)
+					if Grid[x,y].Position.x<>0 or Grid[x,y].Position.y<>0
+						endx#=GetScreenXFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+						endy#=GetScreenYFrom3D(Grid[x,y].Position.x*GridSize,0,Grid[x,y].Position.y*GridSize)
+						DrawLine(endx#,endy#,startx#,starty#,MakeColor(255,255,255),MakeColor(0,0,255))
+					endif
+				endif
+			next y
+		next x
+			
+		Render2DFront()
+		Swap()
+	loop
+endfunction GameState
+
+function IntroScreen()
+	FadeTween = CreateTweenSprite(1)
+	SetTweenSpriteAlpha(FadeTween,0,255,TweenLinear())
+	IntroScreenIID = loadimage("Intro_Screen.png")
+	IntroScreenSID = CreateSprite(IntroScreenIID)
+	SetSpriteSize(IntroScreenSID,ScreenWidth(),ScreenHeight())
+	SetSpritePosition(IntroScreenSID,GetScreenBoundsLeft(),GetScreenBoundsTop())
+	PlayTweenSprite(FadeTween,IntroScreenSID,0)
+	repeat
+		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
+		sync()
+	until GetRawLastKey() or GetPointerPressed()
+	
+	DeleteTween(FadeTween)
+	FadeTween = CreateTweenSprite(1)
+	SetTweenSpriteAlpha(FadeTween,GetSpriteColorAlpha(IntroScreenSID),0,TweenLinear())
+	PlayTweenSprite(FadeTween,IntroScreenSID,0)
+	while GetTweenSpritePlaying(FadeTween,IntroScreenSID)
+		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
+		sync()
+	endwhile
+endfunction STATE_MAIN_MENU

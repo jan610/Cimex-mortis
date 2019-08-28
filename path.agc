@@ -1,4 +1,8 @@
-
+type PathGrid
+	Position 		as int2
+	Visited 		as integer
+	Number			as integer
+endtype
 
 function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integer)
 	local gridy as float
