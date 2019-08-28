@@ -23,10 +23,12 @@ UseNewDefaultFonts( 1 ) // since version 2.0.22 we can use nicer default fonts
 SetDefaultWrapU(1)
 SetDefaultWrapV(1)
 
-#include "types.agc"
 #include "constants.agc"
-#include "functions.agc"
+#include "common.agc"
+#include "bullets.agc"
+#include "enemys.agc"
 #include "path.agc"
+#include "player.agc"
 
 GameState = -1
 
