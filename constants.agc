@@ -15,5 +15,4 @@
 #constant STATE_SUCK       5
 #constant SUCK_POWER       5
 #constant SUCK_DISTANCE    10
-#constant BOOST_AMMOUNT		4
-#constant  particleImg      1   		  
+#constant BOOST_AMMOUNT		4  		  
