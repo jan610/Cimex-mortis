@@ -82,7 +82,11 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 					exit
 				endif
 			next e
-			if HitEnemy=0 then CamshakeShake(0.2)
+			if HitEnemy=0 
+				CamshakeShake(0.2)
+				PlaySound(WallHitSoundID,random2(20,50))
+			endif
+			
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 			continue

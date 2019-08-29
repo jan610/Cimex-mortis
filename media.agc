@@ -52,6 +52,9 @@ function LoadGameMedia()
 	global AmbientSoundID
 	AmbientSoundID=LoadSound("sound/UnderwaterLoop.wav")
 	PlaySound(AmbientSoundID,15,1)
+	
+	global WallHitSoundID
+	WallHitSoundID=LoadSound("sound/low_dark_hit.wav")
 endfunction
 
 
