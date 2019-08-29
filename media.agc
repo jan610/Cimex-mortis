@@ -37,7 +37,7 @@ function LoadGameMedia()
 	GutOID = LoadObject("ground.3ds")
 	SetObjectImage(GutOID, GutDiffuseIID, 0)
 	SetObjectNormalMap(GutOID,GutNormalIID)
-	SetObjectPosition(GutOID,24,-0.5,24)
+	SetObjectPosition(GutOID,24,-2,24)
 	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
 	
 	global SelfilluminationSID

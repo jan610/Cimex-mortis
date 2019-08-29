@@ -109,7 +109,7 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	
     MoveY#=0
 	Player.Character.Velocity.x=curvevalue((MoveX1#+MoveX2#)*FrameTime#,Player.Character.Velocity.x,4.0)
-	//~ Player.Character.Velocity.y=curvevalue((MoveY#)*FrameTime#,Player.Character.Velocity.y,0.2)
+	Player.Character.Velocity.y=curvevalue(0,Player.Character.Velocity.y,0.2)
 	Player.Character.Velocity.z=curvevalue((MoveZ1#+MoveZ2#)*FrameTime#,Player.Character.Velocity.z,4.0)
 
 	Player.Character.Position.x=Player.Character.Position.x+Player.Character.Velocity.x

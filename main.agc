@@ -32,6 +32,7 @@ SetDefaultWrapV(1)
 #include "debug.agc"
 #include "particles.agc"
 #include "media.agc"
+#include "voices.agc"
 
 GameState = -1
 
@@ -137,6 +138,10 @@ function Game()
 	
 	Enemys as Character[10]
 	EnemyInit(Enemys, Grid, GridSize)
+	
+	Voices as Voice
+	
+	VoicesInit(Voices,"Voices.json")
 
 	Bullets as Bullet[]
 	
@@ -170,6 +175,7 @@ function Game()
 		
 		BulletUpdate(Bullets, Enemys, Particles)
 		ParticleUpdate(Particles)
+		VoiceDelay#=VoicesUpdate(Voices, VoiceDelay#)
 		
 		Debuging(Debug)
 
