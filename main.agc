@@ -133,7 +133,7 @@ function Game()
 	PathInit(Grid, 0.5, GridSize)
 	PathFinding(Grid, PlayerGrid)
 	
-	Enemys as Character[5]
+	Enemys as Character[10]
 	EnemyInit(Enemys, Grid, GridSize)
 
 	Bullets as Bullet[]
@@ -144,7 +144,7 @@ function Game()
 	
 	LoadGameMedia()
 	
-	ParticleCreate_ambient(Particles,16,0,16)
+	ParticleCreate_ambient(Particles,24,0,24)
 	
 	QuadOID=CreateObjectQuad()
 	
@@ -160,7 +160,7 @@ function Game()
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
 		
 		if GetPointerState() and Timer()>ShootDelay#
-			ShootDelay#=Timer()+0.2
+			ShootDelay#=Timer()+0.1
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
 		endif	
 		

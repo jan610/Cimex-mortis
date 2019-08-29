@@ -11,15 +11,15 @@ function LoadGameMedia()
 	global SceneIID
 	SceneIID=CreateRenderImage(width,height,0,0)
 	global BlurHIID
-	BlurHIID=CreateRenderImage(width*0.5,height*0.5,0,0)
+	BlurHIID=CreateRenderImage(width*0.25,height*0.25,0,0)
 	global BlurVIID
-	BlurVIID=CreateRenderImage(width*0.5,height*0.5,0,0)
+	BlurVIID=CreateRenderImage(width*0.25,height*0.25,0,0)
 	global BlurHSID
 	BlurHSID=LoadFullScreenShader("shader/BlurH.ps")
-	SetShaderConstantByName(BlurHSID,"blurScale",4.0,0,0,0)
+	SetShaderConstantByName(BlurHSID,"blurScale",2.0,0,0,0)
 	global BlurVSID
 	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
-	SetShaderConstantByName(BlurVSID,"blurScale",4.0,0,0,0)
+	SetShaderConstantByName(BlurVSID,"blurScale",2.0,0,0,0)
 	global BloomSID
 	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
 	
@@ -45,7 +45,7 @@ function LoadGameMedia()
 	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
 	SetShaderConstantByName(SelfilluminationSID,"glow",2.0,0,0,0)
 	
-	global LaserSoundID
-	LaserSoundID=LoadSound("sound/Laser_Shoot.wav")
-	
+	global LaserSoundID as integer[]
+	LaserSoundID.insert(LoadSound("sound/Laser_Shoot.wav"))
+	LaserSoundID.insert(LoadSound("sound/Laser_Shoot2.wav"))
 endfunction

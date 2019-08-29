@@ -40,7 +40,7 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
 	PlayTweenCustom(TempBullet.Velocity_Tween,0.0)
 	TempBullet.Time = Timer()+3
-	BulletSoundInstanceID=PlaySound(LaserSoundID,5)
+	BulletSoundInstanceID=PlaySound(LaserSoundID[random(0,1)],2)
 	Bullets.insert(TempBullet)
 endfunction
 
