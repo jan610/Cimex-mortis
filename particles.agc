@@ -2,8 +2,6 @@
 type Particle
 	PID			as integer
 	Position	as vec3
-	birthdate# as float
-	lifetime# as float
 endtype
 
 function ParticleCreate_ambient(Particles ref as Particle[], X#, Y#, Z#)
@@ -31,8 +29,6 @@ endfunction
 function ParticleCreate_explosion(Particles ref as Particle[], X#, Y#, Z#)
     pLife# as float = 3.0
     local TempParticle as Particle
-    TempParticle.lifetime# = 3.2
-    TempParticle.birthdate# = Timer()
     TempParticle.PID=Create3DParticles(X#,Y#,Z#)
 	Set3DParticlesLife(TempParticle.PID, pLife#)
     Set3DParticlesMax(TempParticle.PID, 200)
@@ -53,8 +49,6 @@ endfunction
 function ParticleCreate_bullet(Particles ref as Particle[], X#, Y#, Z#)
     pLife# as float = 0.4
     local TempParticle as Particle
-    TempParticle.lifetime# = 0.4
-    TempParticle.birthdate# = Timer()
     TempParticle.PID=Create3DParticles(X#,Y#,Z#)
 	Set3DParticlesLife(TempParticle.PID, pLife#)
     Set3DParticlesMax(TempParticle.PID, 200)
@@ -84,9 +78,5 @@ function ParticleUpdate(Particles ref as Particle[])
 			DeleteParticles(Particles[Index].PID)
 			Particles.remove(Index)
 		endif
-		//~ if Timer() > Particles[Index].birthdate# + Particles[Index].lifetime#
-			//~ DeleteParticles(Particles[Index].PID)
-			//~ Particles.remove(Index)
-		//~ endif
 	next Index
 endfunction
