@@ -189,6 +189,7 @@ function Game()
 		endif
 		
 		CamshakeUpdate()
+		BuoyancyApply(Player.Character,0.2,150.0)
 		
 		if Debug.ShaderEnabled=0
 			Update(0)

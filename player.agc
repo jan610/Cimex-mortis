@@ -31,6 +31,10 @@ function DeletePlayer(Player ref as Player)
 	DeleteTween(Player.Boost_TweenID)
 endfunction
 
+function BuoyancyApply(Character ref as Character,BuoyancyAmplitude as float,BuoyancySpeed as float)
+	SetObjectPosition(Character.OID,GetObjectX(Character.OID),GetObjectY(Character.OID)+(sin(timer()*BuoyancySpeed)*BuoyancyAmplitude),GetObjectZ(Character.OID))
+endfunction
+
 function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
