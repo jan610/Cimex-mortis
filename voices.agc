@@ -1,7 +1,8 @@
 
 type Voice
 	TID			as integer
-	TweenID		as integer
+	InTweenID	as integer
+	OutTweenID	as integer
 	Text 		as string[]
 endtype
 
@@ -15,8 +16,10 @@ function VoicesInit(Voices ref as Voice, FileName$)
 	SetTextAlignment(Voices.TID,1)
 	SetTextSize(Voices.TID,7)
 	SetTextPosition(Voices.TID,50,GetScreenBoundsBottom()-GetTextSize(Voices.TID))
-	Voices.TweenID=CreateTweenText(1.0)
-	SetTweenTextAlpha(Voices.TweenID,0,255,TweenEaseIn2())
+	Voices.InTweenID=CreateTweenText(1.0)
+	SetTweenTextAlpha(Voices.InTweenID,0,255,TweenEaseIn2())
+	Voices.OutTweenID=CreateTweenText(1.0)
+	SetTweenTextAlpha(Voices.OutTweenID,255,0,TweenEaseOut2())
 endfunction
 
 function VoicesUpdate(Voices ref as Voice, VoiceDelay as float)
@@ -25,7 +28,9 @@ function VoicesUpdate(Voices ref as Voice, VoiceDelay as float)
 		VoiceDelay=Time#+random(5,20)
 		Index=random(0,Voices.Text.length)
 		SetTextString(Voices.TID,Voices.Text[Index])
-		PlayTweenText(Voices.TweenID,Voices.TID,0)
+		PlayTweenText(Voices.InTweenID,Voices.TID,0)
+		PlayTweenText(Voices.OutTweenID,Voices.TID,4)
 	endif
-	UpdateTweenText(Voices.TweenID,Voices.TID,GetFrameTime())
+	UpdateTweenText(Voices.InTweenID,Voices.TID,GetFrameTime())
+	UpdateTweenText(Voices.OutTweenID,Voices.TID,GetFrameTime())
 endfunction VoiceDelay
