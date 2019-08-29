@@ -159,7 +159,8 @@ function Game()
 		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
 		
-		if GetPointerPressed()
+		if GetPointerState() and Timer()>ShootDelay#
+			ShootDelay#=Timer()+0.2
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
 		endif	
 		

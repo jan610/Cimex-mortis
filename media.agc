@@ -44,4 +44,8 @@ function LoadGameMedia()
 	global SelfilluminationSID
 	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
 	SetShaderConstantByName(SelfilluminationSID,"glow",2.0,0,0,0)
+	
+	global LaserSoundID
+	LaserSoundID=LoadSound("sound/Laser_Shoot.wav")
+	
 endfunction
