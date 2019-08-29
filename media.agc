@@ -37,7 +37,7 @@ function LoadGameMedia()
 	GutOID = LoadObject("ground.3ds")
 	SetObjectImage(GutOID, GutDiffuseIID, 0)
 	SetObjectNormalMap(GutOID,GutNormalIID)
-	SetObjectPosition(GutOID,24,-0.5,24)
+	SetObjectPosition(GutOID,24,-2,24)
 	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
 	
 	global SelfilluminationSID
@@ -47,6 +47,10 @@ function LoadGameMedia()
 	global LaserSoundID as integer[]
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot.wav"))
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot2.wav"))
+	
+	global AmbientSoundID
+	AmbientSoundID=LoadSound("sound/UnderwaterLoop.wav")
+	PlaySound(AmbientSoundID,15,1)
 endfunction
 
 
@@ -74,4 +78,6 @@ function DeleteGameMedia()
 	DeleteSound(LaserSoundID[0])
 	DeleteSound(LaserSoundID[1])
 	LaserSoundID.length=-1
+	
+	DeleteSound(AmbientSoundID)
 endfunction
