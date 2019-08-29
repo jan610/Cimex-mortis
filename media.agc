@@ -11,17 +11,15 @@ function LoadGameMedia()
 	global SceneIID
 	SceneIID=CreateRenderImage(width,height,0,0)
 	global BlurHIID
-	BlurHIID=CreateRenderImage(width*0.25,height*0.25,0,0)
+	BlurHIID=CreateRenderImage(width,height,0,0)
 	global BlurVIID
-	BlurVIID=CreateRenderImage(width*0.25,height*0.25,0,0)
+	BlurVIID=CreateRenderImage(width,height,0,0)
 	global BlurHSID
 	BlurHSID=LoadFullScreenShader("shader/BlurH.ps")
-	SetShaderConstantByName(BlurHSID,"blurScale",4.0,0,0,0)
+	SetShaderConstantByName(BlurHSID,"blurScale",6.0,0,0,0)
 	global BlurVSID
 	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
-	SetShaderConstantByName(BlurVSID,"blurScale",4.0,0,0,0)
-	global BloomSID
-	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
+	SetShaderConstantByName(BlurVSID,"blurScale",6.0,0,0,0)
 	
 	global ParticleIID
 	ParticleIID=loadimage("particles2.png")
@@ -63,7 +61,6 @@ function DeleteGameMedia()
 	DeleteImage(BlurVIID)
 	DeleteShader(BlurHSID)
 	DeleteShader(BlurVSID)
-	DeleteShader(BloomSID)
 	
 	DeleteImage(ParticleIID)
 	

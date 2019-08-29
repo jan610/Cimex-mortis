@@ -207,13 +207,6 @@ function Game()
 			
 			SetObjectImage(QuadOID,BlurHIID,0)
 			SetObjectShader(QuadOID,BlurVSID)
-			SetRenderToImage(BlurVIID,0)
-			ClearScreen()
-			DrawObject(QuadOID)
-			
-			SetObjectImage(QuadOID,SceneIID,0)
-			SetObjectImage(QuadOID,BlurVIID,1)
-			SetObjectShader(QuadOID,BloomSID)
 			SetRenderToScreen()
 			ClearScreen()
 			DrawObject(QuadOID)
