@@ -10,11 +10,13 @@ mediump vec3 ApplyFog( mediump vec3 color, highp vec3 pointPos );
 
 void main()
 {
+	vec4 diffuse = texture2D(texture0, uvVarying);
+
     mediump vec3 norm = normalize(normalVarying);
     mediump vec3 light = lightVarying + GetPSLighting( norm, posVarying );
-
-    mediump vec3 color = texture2D(texture0, uvVarying).rgb * light;
+	
+    mediump vec3 color = diffuse.rgb * light;
     color = ApplyFog( color, posVarying );
     
-    gl_FragColor = vec4(color,1.0);
+    gl_FragColor = vec4(diffuse.rgb,diffuse.a);
 }
