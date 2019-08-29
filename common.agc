@@ -83,27 +83,29 @@ function Wrap(Value#,Min#,Max#)
 	if Value#<Min# then Value#=Max#
 endfunction Value#
 
-type cam_shaker
-	shake_offset	as vec3[60]
-	shake_start		as float
+type Camshaker
+	Offset		as vec3[60]
+	Start		as float
+	Amplitude	as float
 endtype
 
-function init_camshake(cam_shake ref as cam_shaker)
+function CamshakeInit(Camshake ref as Camshaker)
 	for t = 0 to 60
-		cam_shake.shake_offset[t].x=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
-		cam_shake.shake_offset[t].y=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
-		cam_shake.shake_offset[t].z=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
+		Camshake.Offset[t].x=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
+		Camshake.Offset[t].y=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
+		Camshake.Offset[t].z=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
 	next t
 endfunction
 
-function do_cam_shake(cam_shake ref as cam_shaker)
-	cam_shake.shake_start = timer()
+function CamshakeShake(Camshake ref as Camshaker,Amplitude as float)
+	Camshake.Start = timer()
+	Camshake.Amplitude = Amplitude
 endfunction
 
-function update_cam_shake(cam_shake ref as cam_shaker)
-		index = (timer()-cam_shake.shake_start)*60
+function CamshakeUpdate(Camshake ref as Camshaker)
+		index = (timer()-Camshake.Start)*60
 		if index <=60
-			SetCameraPosition(1,getcamerax(1)+cam_shake.shake_offset[index].x,getcameray(1)+cam_shake.shake_offset[index].y,getcameraz(1)+cam_shake.shake_offset[index].z)
+			SetCameraPosition(1,getcamerax(1)+Camshake.Offset[index].x*Camshake.Amplitude,getcameray(1)+Camshake.Offset[index].y*Camshake.Amplitude,getcameraz(1)+Camshake.Offset[index].z*Camshake.Amplitude)
 		endif
 endfunction
 
