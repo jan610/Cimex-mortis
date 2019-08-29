@@ -82,3 +82,28 @@ function Wrap(Value#,Min#,Max#)
 	if Value#>Max# then Value#=Min#
 	if Value#<Min# then Value#=Max#
 endfunction Value#
+
+type cam_shaker
+	shake_offset	as vec3[60]
+	shake_start		as float
+endtype
+
+function init_camshake(cam_shake ref as cam_shaker)
+	for t = 0 to 60
+		cam_shake.shake_offset[t].x=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
+		cam_shake.shake_offset[t].y=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
+		cam_shake.shake_offset[t].z=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
+	next t
+endfunction
+
+function do_cam_shake(cam_shake ref as cam_shaker)
+	cam_shake.shake_start = timer()
+endfunction
+
+function update_cam_shake(cam_shake ref as cam_shaker)
+		index = (timer()-cam_shake.shake_start)*60
+		if index <=60
+			SetCameraPosition(1,getcamerax(1)+cam_shake.shake_offset[index].x,getcameray(1)+cam_shake.shake_offset[index].y,getcameraz(1)+cam_shake.shake_offset[index].z)
+		endif
+endfunction
+

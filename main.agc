@@ -153,6 +153,9 @@ function Game()
 	InfoTID=CreateText("")
 	SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 	
+	cam_shake as cam_shaker
+	init_camshake(cam_shake)
+	
 	do
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
@@ -166,6 +169,7 @@ function Game()
 		if GetPointerState() and Timer()>ShootDelay#
 			ShootDelay#=Timer()+0.1
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
+			do_cam_shake(cam_shake)
 		endif	
 		
 		BulletUpdate(Bullets, Enemys, Particles)
@@ -177,6 +181,8 @@ function Game()
 			GameState=STATE_GAME_MENU
 			exit
 		endif
+		
+		update_cam_shake(cam_shake)
 		
 		if Debug.ShaderEnabled=0
 			Update(0)
