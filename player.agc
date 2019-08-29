@@ -6,6 +6,7 @@ type Player
 	Boost_TweenID	as integer
 	State 			as integer
 	LID				as integer
+	CameraPosition	as vec3
 endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
@@ -98,9 +99,9 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
     endif
 	
     MoveY#=0
-	Player.Character.Velocity.x=curvevalue((MoveX1#+MoveX2#)*FrameTime#,Player.Character.Velocity.x,3.0)
-	Player.Character.Velocity.y=curvevalue((MoveY#)*FrameTime#,Player.Character.Velocity.y,0.2)
-	Player.Character.Velocity.z=curvevalue((MoveZ1#+MoveZ2#)*FrameTime#,Player.Character.Velocity.z,3.0)
+	Player.Character.Velocity.x=curvevalue((MoveX1#+MoveX2#)*FrameTime#,Player.Character.Velocity.x,4.0)
+	//~ Player.Character.Velocity.y=curvevalue((MoveY#)*FrameTime#,Player.Character.Velocity.y,0.2)
+	Player.Character.Velocity.z=curvevalue((MoveZ1#+MoveZ2#)*FrameTime#,Player.Character.Velocity.z,4.0)
 
 	Player.Character.Position.x=Player.Character.Position.x+Player.Character.Velocity.x
 	Player.Character.Position.y=Player.Character.Position.y+Player.Character.Velocity.y
@@ -132,11 +133,15 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	NewAngle#=-atanfull(DistX#,DistZ#)
 	Player.Character.Rotation.y=CurveAngle(Player.Character.Rotation.y,NewAngle#,6.0)
 	
+	Player.CameraPosition.x=CurveValue(Player.Character.Position.x,Player.CameraPosition.x,3)
+	Player.CameraPosition.y=CurveValue(Player.Character.Position.y+CameraDistance#,Player.CameraPosition.y,3)
+	Player.CameraPosition.z=CurveValue(Player.Character.Position.z-CameraDistance#,Player.CameraPosition.z,3)
+	
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetObjectRotation(Player.Character.OID,Player.Character.Rotation.x,Player.Character.Rotation.y,Player.Character.Rotation.z)
 	//~ SetCameraPosition(1,Player.Position.x+CameraDistance#*Sin0#,Player.Position.y+CameraDistance#,Player.Position.z+CameraDistance#*Cos0#)
 	//~ SetCameraLookAt(1,Player.Position.x,Player.Position.y,Player.Position.z,0)
-	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
+	SetCameraPosition(1,Player.CameraPosition.x,Player.CameraPosition.y,Player.CameraPosition.z)
 	SetPointLightPosition(Player.LID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 endfunction
 

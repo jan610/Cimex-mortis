@@ -16,10 +16,10 @@ function LoadGameMedia()
 	BlurVIID=CreateRenderImage(width*0.25,height*0.25,0,0)
 	global BlurHSID
 	BlurHSID=LoadFullScreenShader("shader/BlurH.ps")
-	SetShaderConstantByName(BlurHSID,"blurScale",2.0,0,0,0)
+	SetShaderConstantByName(BlurHSID,"blurScale",4.0,0,0,0)
 	global BlurVSID
 	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
-	SetShaderConstantByName(BlurVSID,"blurScale",2.0,0,0,0)
+	SetShaderConstantByName(BlurVSID,"blurScale",4.0,0,0,0)
 	global BloomSID
 	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
 	

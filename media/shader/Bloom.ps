@@ -20,7 +20,7 @@ void main()
     vec4 basecolor = texture2D(texture0, uvVarying);
     vec4 bloomcolor = texture2D(texture1, uvVarying);
 
-    // bloomcolor = AdjustSaturation(bloomcolor, BloomSaturation) * BloomIntensity;
+    bloomcolor = AdjustSaturation(bloomcolor, BloomSaturation) * BloomIntensity;
     basecolor = AdjustSaturation(basecolor, OriginalSaturation) * OriginalIntensity;
 
     basecolor = basecolor*(1.0 - clamp(bloomcolor,0.0,1.0));

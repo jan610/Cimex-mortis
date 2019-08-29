@@ -14,7 +14,7 @@ endtype
 function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize as integer)
 	for Index=0 to Enemy.length
 		Enemy[Index].OID=CreateObjectBox(1,1,1)
-		Enemy[Index].MaxSpeed=random(10,50)/10.0
+		Enemy[Index].MaxSpeed=random(20,50)/10.0
 		EnemySpawn(Enemy[Index],Grid,GridSize)	
 		SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
 	next Index
