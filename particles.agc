@@ -67,7 +67,6 @@ function ParticleCreate_bullet(Particles ref as Particle[], X#, Y#, Z#)
 endfunction
 
 function ParticleUpdate(Particles ref as Particle[])
-	print(Particles.length)
 	for Index=0 to Particles.length
 		Update3DParticles(Particles[Index].PID,GetFrameTime())
 		//~ for i=0 to 9 //10 times 0.1 to update 10 particles in one second
@@ -79,4 +78,11 @@ function ParticleUpdate(Particles ref as Particle[])
 			Particles.remove(Index)
 		endif
 	next Index
+endfunction
+
+function DeleteParicles(Particles ref as Particle[])
+	for p=0 to Particles.length
+		DeleteParticles(Particles[p].PID)
+	next p
+	Particles.length=-1
 endfunction

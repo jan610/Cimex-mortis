@@ -40,7 +40,6 @@ function LoadGameMedia()
 	SetObjectPosition(GutOID,24,-0.5,24)
 	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
 	
-	
 	global SelfilluminationSID
 	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
 	SetShaderConstantByName(SelfilluminationSID,"glow",2.0,0,0,0)
@@ -48,4 +47,31 @@ function LoadGameMedia()
 	global LaserSoundID as integer[]
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot.wav"))
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot2.wav"))
+endfunction
+
+
+function DeleteGameMedia()
+	DeleteShader(BulletShaderID)
+	DeleteImage(BulletDiffuseIID)
+	
+	DeleteImage(SceneIID)
+	DeleteImage(BlurHIID)
+	DeleteImage(BlurVIID)
+	DeleteShader(BlurHSID)
+	DeleteShader(BlurVSID)
+	DeleteShader(BloomSID)
+	
+	DeleteImage(ParticleIID)
+	
+	DeleteImage(ParticleExpIID)
+	
+	DeleteImage(GutDiffuseIID)
+	DeleteImage(GutNormalIID)
+	DeleteObject(GutOID)
+	
+	DeleteShader(SelfilluminationSID)
+	
+	DeleteSound(LaserSoundID[0])
+	DeleteSound(LaserSoundID[1])
+	LaserSoundID.length=-1
 endfunction

@@ -99,7 +99,6 @@ function GameMenu()
 endfunction GameState
 
 function Game()
-	
 	// This defines the lightning in the level
 	SetFogMode(1)
 	SetSunActive(1)
@@ -108,6 +107,9 @@ function Game()
 	setClearColor(7,11,37)
 	setFogColor(0,10,87)
 	SetAmbientColor(145,145,145)
+	
+	Width=ScreenWidth()
+	Height=ScreenHeight()
 	
 	local GridSize
 	GridSize=1
@@ -148,13 +150,15 @@ function Game()
 	
 	QuadOID=CreateObjectQuad()
 	
+	InfoTID=CreateText("")
+	SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
+	
 	do
-		Print( ScreenFPS() )
-		print (player.state)
-		print("Energy:"+str(Player.Energy))
-		print("Attack:"+str(Player.Attack))
-		print("Life:"+str(Player.Character.Life))
-		print("mov-speed:"+str(Player.Character.MaxSpeed))
+		if ScreenWidth()<>Width or Height<>ScreenHeight()
+			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
+		endif
+		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
+		SetTextString(InfoTID,String$)
 		
 		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
@@ -210,13 +214,12 @@ function Game()
 			sync()
 		endif
 	loop
+	DeleteGameMedia()
+	DeletePlayer(Player)
+	DeleteParicles(Particles)
 	DeleteAllObjects()
 	DeleteAllText()
 	DeleteAllImages()
-	deleteshader(BlurHSID)
-	deleteshader(BlurVSID)
-	deleteshader(BloomSID)
-	DeleteShader(BulletShaderID)
 endfunction GameState
 
 function IntroScreen()

@@ -26,6 +26,11 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	SetPointLightMode(Player.LID,1)
 endfunction
 
+function DeletePlayer(Player ref as Player)
+	DeletePointLight(Player.LID)
+	DeleteTween(Player.Boost_TweenID)
+endfunction
+
 function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
@@ -131,7 +136,7 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	DistZ#=Pointer3DZ#-Player.Character.Position.z
 	
 	NewAngle#=-atanfull(DistX#,DistZ#)
-	Player.Character.Rotation.y=CurveAngle(Player.Character.Rotation.y,NewAngle#,6.0)
+	Player.Character.Rotation.y=CurveAngle(Player.Character.Rotation.y,NewAngle#,4.0)
 	
 	Player.CameraPosition.x=CurveValue(Player.Character.Position.x,Player.CameraPosition.x,3)
 	Player.CameraPosition.y=CurveValue(Player.Character.Position.y+CameraDistance#,Player.CameraPosition.y,3)
