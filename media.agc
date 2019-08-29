@@ -28,4 +28,15 @@ function LoadGameMedia()
 	
 	global ParticleExpIID
 	ParticleIID=loadimage("particles2_b.png")
+	
+	global GutDiffuseIID
+	GutDiffuseIID = LoadImage("guts.png")
+	global GutNormalIID
+	GutNormalIID = LoadImage("guts.nrm.png")
+	global GutOID
+	GutOID = LoadObject("ground.3ds")
+	SetObjectImage(GutOID, GutDiffuseIID, 0)
+	SetObjectNormalMap(GutOID,GutNormalIID)
+	SetObjectPosition(GutOID,24,-0.5,24)
+	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
 endfunction
