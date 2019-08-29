@@ -34,6 +34,8 @@ SetDefaultWrapV(1)
 #include "media.agc"
 #include "voices.agc"
 
+global Camshake as Camshaker
+
 GameState = -1
 
 do
@@ -158,8 +160,8 @@ function Game()
 	InfoTID=CreateText("")
 	SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 	
-	Camshake as Camshaker
-	CamshakeInit(Camshake)
+	
+	CamshakeInit()
 	
 	do
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
@@ -174,7 +176,7 @@ function Game()
 		if GetPointerState() and Timer()>ShootDelay#
 			ShootDelay#=Timer()+0.1
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
-			CamshakeShake(Camshake,0.2)
+			CamshakeShake(0.2)
 		endif	
 		
 		BulletUpdate(Bullets, Enemys, Particles)
@@ -188,7 +190,7 @@ function Game()
 			exit
 		endif
 		
-		CamshakeUpdate(Camshake)
+		CamshakeUpdate()
 		
 		if Debug.ShaderEnabled=0
 			Update(0)

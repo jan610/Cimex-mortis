@@ -89,7 +89,7 @@ type Camshaker
 	Amplitude	as float
 endtype
 
-function CamshakeInit(Camshake ref as Camshaker)
+function CamshakeInit()
 	for t = 0 to 60
 		Camshake.Offset[t].x=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
 		Camshake.Offset[t].y=(random2(0,(t-59)*200.0)-((t-59)*200.0)*0.5)*0.0001
@@ -97,12 +97,12 @@ function CamshakeInit(Camshake ref as Camshaker)
 	next t
 endfunction
 
-function CamshakeShake(Camshake ref as Camshaker,Amplitude as float)
+function CamshakeShake(Amplitude as float)
 	Camshake.Start = timer()
 	Camshake.Amplitude = Amplitude
 endfunction
 
-function CamshakeUpdate(Camshake ref as Camshaker)
+function CamshakeUpdate()
 		index = (timer()-Camshake.Start)*60
 		if index <=60
 			SetCameraPosition(1,getcamerax(1)+Camshake.Offset[index].x*Camshake.Amplitude,getcameray(1)+Camshake.Offset[index].y*Camshake.Amplitude,getcameraz(1)+Camshake.Offset[index].z*Camshake.Amplitude)
