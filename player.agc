@@ -62,22 +62,18 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	SpeedBoost# = GetTweenCustomFloat1(player.Boost_TweenID)
 	
     if GetRawKeyState(KEY_W)
-		player.state=STATE_FORWARD
 		MoveZ1#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
 		MoveX1#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
     endif
     if GetRawKeyState(KEY_S)
-		player.state=STATE_BACKWARD
 		MoveZ1#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
 		MoveX1#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
     endif
     if GetRawKeyState(KEY_A)
-		player.state=STATE_LEFT
 		MoveZ2#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
 		MoveX2#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
     endif
     if GetRawKeyState(KEY_D)
-		player.state=STATE_RIGHT
 		MoveZ2#=-(Player.Character.MaxSpeed+SpeedBoost#)*Sin0#
 		MoveX2#=(Player.Character.MaxSpeed+SpeedBoost#)*Sin90#
     endif
