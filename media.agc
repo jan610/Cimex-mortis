@@ -45,8 +45,10 @@ function LoadGameMedia()
 	SetShaderConstantByName(SelfilluminationSID,"glow",2.0,0,0,0)
 	
 	global LaserSoundID as integer[]
+	global underwaterUID as integer
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot.wav"))
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot2.wav"))
+	underwaterUID=LoadSound("sound/UnderwaterLoop.wav")
 endfunction
 
 
@@ -73,5 +75,6 @@ function DeleteGameMedia()
 	
 	DeleteSound(LaserSoundID[0])
 	DeleteSound(LaserSoundID[1])
+	DeleteSound(underwaterUID)
 	LaserSoundID.length=-1
 endfunction

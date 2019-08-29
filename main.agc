@@ -152,7 +152,7 @@ function Game()
 	
 	InfoTID=CreateText("")
 	SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
-	
+	PlaySound(underwaterUID,90,1)
 	do
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
