@@ -155,7 +155,7 @@ function Game()
 		print("mov-speed:"+str(Player.Character.MaxSpeed))
 		
 		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
-		EnemyControll(Enemys, Player, Grid, GridSize)
+		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
 		
 		if GetPointerPressed()
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)

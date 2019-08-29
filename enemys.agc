@@ -33,7 +33,7 @@ function EnemySpawn(Enemy ref as Character, Grid ref as PathGrid[][], GridSize a
 	Enemy.Life=100
 endfunction
 
-function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer)
+function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer, Particles ref as Particle[])
 	FrameTime#=GetFrameTime()
 	PlayerGrid as int2
 	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
@@ -52,6 +52,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	
 	for Index=0 to Enemy.length
 		if Enemy[Index].Life<=0
+			ParticleCreate_explosion(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
 			EnemySpawn(Enemy[Index], Grid, GridSize)
 			continue
 		endif
