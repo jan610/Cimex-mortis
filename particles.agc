@@ -10,10 +10,10 @@ function ParticleCreate_ambient(Particles ref as Particle[], X#, Y#, Z#)
     pLife# as float = 30.0
     local TempParticle as Particle
     TempParticle.PID=Create3DParticles(X#,Y#,Z#)
-	Set3DParticlesLife(TempParticle.PID, 30)
+	Set3DParticlesLife(TempParticle.PID, pLife#)
     Set3DParticlesMax(TempParticle.PID, -1)
     Set3DParticlesSize(TempParticle.PID, 0.8)
-    Set3DParticlesFrequency(TempParticle.PID,50)
+    Set3DParticlesFrequency(TempParticle.PID,30)
     Set3DParticlesDirectionRange(TempParticle.PID,0,0)
     Set3DParticlesDirection(TempParticle.PID, 0.0, 0.0, -0.2, 0)
     Set3DParticlesStartZone( TempParticle.PID, -24.0, -1.0, -24.0, 24.0, 8.0, 24.0 )
@@ -37,7 +37,7 @@ function ParticleCreate_explosion(Particles ref as Particle[], X#, Y#, Z#)
 	Set3DParticlesLife(TempParticle.PID, pLife#)
     Set3DParticlesMax(TempParticle.PID, 200)
     Set3DParticlesSize(TempParticle.PID, 0.8)
-    Set3DParticlesFrequency(TempParticle.PID,1000)
+    Set3DParticlesFrequency(TempParticle.PID,10000)
     Set3DParticlesDirectionRange(TempParticle.PID,180,180)
     Set3DParticlesDirection(TempParticle.PID, 0.0, 0.8, 0.0, 0.8)
     //Set3DParticlesStartZone( TempParticle.PID, -100.0, -50.0, -100.0, 100.0, 50.0, 100.0 )
@@ -79,14 +79,14 @@ function ParticleUpdate(Particles ref as Particle[])
 		//~ for i=0 to 9 //10 times 0.1 to update 10 particles in one second
 			//~ Update3DParticles(Particles[Index].PID,0.1)
 		//~ next i
-		/*
+		
 		if Get3DParticlesMaxReached(Particles[Index].PID)
 			DeleteParticles(Particles[Index].PID)
 			Particles.remove(Index)
-		endif*/
-		if Timer() > Particles[Index].birthdate# + Particles[Index].lifetime#
-			DeleteParticles(Particles[Index].PID)
-			Particles.remove(Index)
 		endif
+		//~ if Timer() > Particles[Index].birthdate# + Particles[Index].lifetime#
+			//~ DeleteParticles(Particles[Index].PID)
+			//~ Particles.remove(Index)
+		//~ endif
 	next Index
 endfunction
