@@ -24,5 +24,5 @@ function LoadGameMedia()
 	BloomSID=LoadFullScreenShader("shader/Bloom.ps")
 	
 	global ParticleIID
-	ParticleIID=loadimage("particles.png")
+	ParticleIID=loadimage("particles2.png")
 endfunction
