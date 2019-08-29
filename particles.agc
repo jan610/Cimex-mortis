@@ -4,14 +4,14 @@ type Particle
 	Position	as vec3
 endtype
 
-function ParticleCreate_ambient(Particles ref as Particle[], X#, Y#, Z#)
+function ParticleCreate_ambient(Particles ref as Particle[], X#, Y#, Z#, Size#)
     pLife# as float = 30.0
     local TempParticle as Particle
     TempParticle.PID=Create3DParticles(X#,Y#,Z#)
 	Set3DParticlesLife(TempParticle.PID, pLife#)
     Set3DParticlesMax(TempParticle.PID, -1)
-    Set3DParticlesSize(TempParticle.PID, 0.4)
-    Set3DParticlesFrequency(TempParticle.PID,30)
+    Set3DParticlesSize(TempParticle.PID, Size#)
+    Set3DParticlesFrequency(TempParticle.PID,10)
     Set3DParticlesDirectionRange(TempParticle.PID,360,180)
     Set3DParticlesDirection(TempParticle.PID, 0.0, 0.0, -0.1, 0)
     Set3DParticlesStartZone( TempParticle.PID, -24.0, 0.0, -24.0, 24.0, 6.0, 24.0 )

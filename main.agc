@@ -153,7 +153,9 @@ function Game()
 	
 	LoadGameMedia()
 	
-	ParticleCreate_ambient(Particles,24,0,24)
+	ParticleCreate_ambient(Particles,24,0,24,0.4)
+	ParticleCreate_ambient(Particles,24,0,24,0.25)
+	ParticleCreate_ambient(Particles,24,0,24,0.1)
 	
 	QuadOID=CreateObjectQuad()
 	
