@@ -5,6 +5,7 @@ type Player
 	OldGrid			as int2
 	Boost_TweenID	as integer
 	State 			as integer
+	LID				as integer
 endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
@@ -14,11 +15,14 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	Player.Character.Position.y=0
 	Player.Character.Position.z=16
 	Player.Attack = 0.9
+	Player.LID = 1
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
 	SetCameraLookAt(1,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0)
 	Player.Boost_TweenID = CreateTweenCustom(0.3)
 	SetTweenCustomFloat1(Player.Boost_TweenID,100,0,TweenSmooth2())
+	CreatePointLight(Player.LID,0,0,0,10,255,255,255)
+	SetPointLightMode(Player.LID,1)
 endfunction
 
 function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
@@ -133,6 +137,7 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	//~ SetCameraPosition(1,Player.Position.x+CameraDistance#*Sin0#,Player.Position.y+CameraDistance#,Player.Position.z+CameraDistance#*Cos0#)
 	//~ SetCameraLookAt(1,Player.Position.x,Player.Position.y,Player.Position.z,0)
 	SetCameraPosition(1,Player.Character.Position.x,Player.Character.Position.y+CameraDistance#,Player.Character.Position.z-CameraDistance#)
+	SetPointLightPosition(Player.LID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 endfunction
 
 function Pick(X# as float, Y# as float) // returns 3D object ID from screen x/y coordinates.

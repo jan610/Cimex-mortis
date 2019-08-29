@@ -39,4 +39,9 @@ function LoadGameMedia()
 	SetObjectNormalMap(GutOID,GutNormalIID)
 	SetObjectPosition(GutOID,24,-0.5,24)
 	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
+	
+	
+	global SelfilluminationSID
+	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
+	SetShaderConstantByName(SelfilluminationSID,"glow",2.0,0,0,0)
 endfunction

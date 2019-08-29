@@ -1,0 +1,26 @@
+uniform sampler2D texture0;
+
+varying highp vec3 posVarying;
+varying mediump vec3 normalVarying;
+varying mediump vec2 uvVarying;
+varying mediump vec3 lightVarying;
+
+uniform float glow;
+
+mediump vec3 GetPSLighting( mediump vec3 normal, highp vec3 pos );
+mediump vec3 ApplyFog( mediump vec3 color, highp vec3 pointPos );
+
+void main()
+{
+	vec4 diffuse = texture2D(texture0, uvVarying);
+	float illumination = texture2D(texture1, uvVarying).r;
+
+	vec3 norm = normalize(normalVarying);
+    vec3 light = lightVarying + GetPSLighting( norm, posVarying );
+	
+	illumination = clamp(illumination * glow, 0.0, 1.0);
+	vec3 color = (1.0 - illumination) * light * diffuse + clamp(illumination * diffuse, 0.0, 1.0);
+    color = ApplyFog( color, posVarying );
+    
+    gl_FragColor = vec4(diffuse.rgb,diffuse.a);
+}
