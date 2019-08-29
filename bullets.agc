@@ -44,7 +44,7 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	Bullets.insert(TempBullet)
 endfunction
 
-function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particles ref as Particle[])
+function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particles ref as Particle[], Player as Player)
 	FrameTime#=GetFrameTime()
 	local BulletLength as float
 	BulletLength = 1
@@ -72,17 +72,17 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 		SetObjectShaderConstantByName(Bullets[Index].OID,"end",EndX#,Bullets[Index].Position.y,EndZ#, 0)
 	
 		HitOID=ObjectRayCast(0,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z,EndX#,Bullets[Index].Position.y,EndZ#)
-		if HitOID>0
-			//~ for i=0 to GetObjectRayCastNumHits()-1
-				//~ HitOID=GetObjectRayCastHitID(i)
-				for e=0 to Enemy.length
-					if HitOID=Enemy[e].OID
-						Enemy[e].Life=Enemy[e].Life-Damage
-						ParticleCreate_bullet(Particles, Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
-						exit
-					endif
-				next e
-			//~ next i
+		if HitOID>0 and HitOID<>Player.Character.OID
+			HitEnemy=0
+			for e=0 to Enemy.length
+				if HitOID=Enemy[e].OID
+					Enemy[e].Life=Enemy[e].Life-Damage
+					ParticleCreate_bullet(Particles, Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+					HitEnemy=1
+					exit
+				endif
+			next e
+			if HitEnemy=0 then CamshakeShake(0.2)
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 			continue

@@ -160,7 +160,6 @@ function Game()
 	InfoTID=CreateText("")
 	SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 	
-	
 	CamshakeInit()
 	
 	do
@@ -176,10 +175,9 @@ function Game()
 		if GetPointerState() and Timer()>ShootDelay#
 			ShootDelay#=Timer()+0.1
 			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack)
-			CamshakeShake(0.2)
 		endif	
 		
-		BulletUpdate(Bullets, Enemys, Particles)
+		BulletUpdate(Bullets, Enemys, Particles, Player)
 		ParticleUpdate(Particles)
 		VoiceDelay#=VoicesUpdate(Voices, VoiceDelay#)
 		

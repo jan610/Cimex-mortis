@@ -60,17 +60,17 @@ FILE_9=media.agc;-1
 FILE_10=voices.agc;-1
 
 [files]
-FILE_NAME_0=0;main.agc;2545;0
+FILE_NAME_0=0;main.agc;4453;0
 FILE_NAME_1=0;debug.agc;234;9
 FILE_NAME_2=0;constants.agc;0;6
 FILE_NAME_3=0;particles.agc;504;2
 FILE_NAME_4=0;path.agc;2181;3
-FILE_NAME_5=0;common.agc;0;7
-FILE_NAME_6=0;bullets.agc;0;8
+FILE_NAME_5=0;common.agc;2226;7
+FILE_NAME_6=1;bullets.agc;3372;8
 FILE_NAME_7=0;enemys.agc;0;5
-FILE_NAME_8=0;player.agc;3877;4
-FILE_NAME_9=0;media.agc;1181;1
-FILE_NAME_10=1;voices.agc;0;10
+FILE_NAME_8=0;player.agc;5845;4
+FILE_NAME_9=0;media.agc;1273;1
+FILE_NAME_10=0;voices.agc;764;10
 
 [project]
 description=
