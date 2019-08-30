@@ -42,10 +42,8 @@ function LoadGameMedia()
 	ParticleExplotionIID=loadimage("particle_explotion.png")
 	
 	global GutDiffuseIID
-	//GutDiffuseIID = LoadImage("guts.png")
 	GutDiffuseIID = LoadImage("abc_dif2.jpg")
 	global GutNormalIID
-	//GutNormalIID = LoadImage("guts.nrm.png")
 	GutNormalIID = LoadImage("abc_nrm3.jpg")
 	global GutOID
 	GutOID = LoadObject("ground.3ds")

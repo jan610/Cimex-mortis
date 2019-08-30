@@ -146,7 +146,7 @@ function GameMenu()
 		
 	MapCells.load("worlmapdata.json")
 	
-	Cell_DiffuseIID = LoadImage("guts.PNG")
+	Cell_DiffuseIID = LoadImage("abc_dif2.jpg")
 	for index = 0 to 6
 		MapCells[index].OID = LoadObject("hexcell.fbx")
 		SetObjectImage(MapCells[index].OID,Cell_DiffuseIID,0)
