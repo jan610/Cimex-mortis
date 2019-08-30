@@ -96,7 +96,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		NewAngle#=-atanfull(DistX#,DistZ#)
 		Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
 
-		JellyfishMovement#=pow(1.0+sin(Enemy[Index].Position.x*Enemy[Index].Position.z+Timer()*500)*0.5+0.5,2)/2
+		JellyfishMovement#=pow(1.0+sin(Enemy[Index].Position.x*Enemy[Index].Position.z+Timer()*500)*0.5+0.5,2)/3
 		EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#*JellyfishMovement#
 		EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#*JellyfishMovement#
 
