@@ -18,6 +18,8 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	PlayObjectAnimation(Player.Character.OID,AnimationName$,0,AnimationDurration#,1,0.2)
 	SetObjectCollisionMode(Player.Character.OID,0)
 	SetObjectTransparency(Player.Character.OID,1)
+	RotateObjectLocalY(Player.Character.OID,180)
+	FixObjectPivot(Player.Character.OID)
 	SetObjectShader(Player.Character.OID,SelfilluminationSID)
 	SetObjectImage(Player.Character.OID, PlayerDiffuseIID, 0)
 	SetObjectImage(Player.Character.OID, PlayerIlluminationIID, 1)
@@ -29,6 +31,7 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 		SetObjectImage(ChildOID, PlayerIlluminationIID, 1)
     next
     Player.Character.CollisionOID=CreateObjectBox(1,1,1)
+    SetObjectVisible(Player.Character.CollisionOID,0)
 	Player.Character.MaxSpeed=8.0
 	Player.Character.Position.x=16
 	Player.Character.Position.y=0
@@ -171,6 +174,7 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetObjectRotation(Player.Character.OID,Player.Character.Rotation.x,Player.Character.Rotation.y,Player.Character.Rotation.z)
+	SetObjectPosition(Player.Character.CollisionOID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	//~ SetCameraPosition(1,Player.Position.x+CameraDistance#*Sin0#,Player.Position.y+CameraDistance#,Player.Position.z+CameraDistance#*Cos0#)
 	//~ SetCameraLookAt(1,Player.Position.x,Player.Position.y,Player.Position.z,0)
 	SetCameraPosition(1,Player.CameraPosition.x,Player.CameraPosition.y,Player.CameraPosition.z)
