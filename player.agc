@@ -124,7 +124,8 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	
 	Col_Obj = ObjectSphereSlide(0,OldPlayerX#,OldPlayerY#,OldPlayerZ#,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0.3)
 	if Col_Obj >0
-		if Col_Obj <> Player.Character.OID
+		if Col_Obj <> Player.Character.OID and Col_Obj <> GetObjectChildID(Player.Character.OID,1) and Col_Obj <> GetObjectChildID(Player.Character.OID,2) and Col_Obj <> GetObjectChildID(Player.Character.OID,3)and  Col_Obj <> GutOID
+			print(str(Col_Obj))
 			Player.Character.Position.x=GetObjectRayCastSlideX(0)
 			Player.Character.Position.z=GetObjectRayCastSlideZ(0)
 		endif
