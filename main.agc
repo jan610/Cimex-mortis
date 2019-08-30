@@ -6,14 +6,14 @@ SetErrorMode(2)
 
 // set window properties
 SetWindowTitle( "Cimex mortis" )
-SetWindowSize( 1920, 1080, 0 )
+SetWindowSize( 1920, 1080, 1 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 // set display properties
 SetVirtualResolution( 100, 100 ) // doesn't have to match the window
 SetOrientationAllowed( 1, 1, 1, 1 ) // allow both portrait and landscape on mobile devices
-SetSyncRate( 30, 0 ) // 30fps instead of 60 to save battery
-//~ SetVsync(1)
+//~SetSyncRate( 30, 0 ) // 30fps instead of 60 to save battery
+SetVsync(1)
 SetScissor( 0,0,0,0 ) // use the maximum available screen space, no black borders
 UseNewDefaultFonts( 1 ) // since version 2.0.22 we can use nicer default fonts
 
@@ -65,6 +65,7 @@ function MainMenu()
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
+		basicInput()
 		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
 			if GetPointerReleased()
 				GameState=STATE_GAME_MENU
@@ -84,21 +85,33 @@ function MainMenu()
 endfunction GameState
 
 function GameMenu()
-	MainTID=CreateText("Level Select")
-	SetTextSize(MainTID,12)
-	
+	SelectTID=CreateText("Level Select")
+	SetTextSize(SelectTID,12)
+	ExitTID=CreateText("Exit")
+	SetTextSize(ExitTID,12)
+	SetTextPosition(ExitTID,0,12)
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
-		if GetTextHitTest(MainTID,PointerX#,PointerY#)
+		
+		basicInput()
+		
+		if GetTextHitTest(SelectTID,PointerX#,PointerY#)
 			if GetPointerReleased()
 				GameState=STATE_GAME
 				exit
 			endif
 		endif
+		if GetTextHitTest(ExitTID,PointerX#,PointerY#) or GetRawKeyState(27)
+			if GetPointerReleased() or GetRawKeyPressed(27)
+				GameState=STATE_MAIN_MENU
+				exit
+			endif
+		endif
 		sync()
 	loop
-	DeleteText(MainTID)
+	DeleteText(SelectTID)
+	DeleteText(ExitTID)
 endfunction GameState
 
 function Game()
@@ -110,6 +123,11 @@ function Game()
 	setClearColor(7,11,37)
 	setFogColor(0,10,87)
 	SetAmbientColor(145,145,145)
+	
+	crosshairIID = loadimage("crosshair.png")
+	crosshairSID = CreateSprite( crosshairIID ) 
+	setSpriteSize (crosshairSID, 7.0, 7.0)
+	SetRawMouseVisible( 0 ) 
 	
 	Width=ScreenWidth()
 	Height=ScreenHeight()
@@ -136,7 +154,7 @@ function Game()
 	next t
 	
 	PathInit(Grid, 0.5, GridSize)
-	PathFinding(Grid, PlayerGrid)
+	PathFinding(Grid, PlayerGrid, 0, 0, Grid.length, Grid[0].length)
 	
 	Enemys as Character[10]
 	EnemyInit(Enemys, Grid, GridSize)
@@ -165,6 +183,9 @@ function Game()
 	CamshakeInit()
 	
 	do
+		basicInput()
+		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
+		
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 		endif
@@ -186,6 +207,7 @@ function Game()
 		Debuging(Debug)
 
 		if GetRawKeyReleased(27)
+			SetRawMouseVisible( 1 ) 
 			GameState=STATE_GAME_MENU
 			exit
 		endif
@@ -228,6 +250,7 @@ function Game()
 	DeleteAllObjects()
 	DeleteAllText()
 	DeleteAllImages()
+	DeleteAllSprites()
 endfunction GameState
 
 function IntroScreen()
@@ -267,3 +290,13 @@ function IntroScreen()
 	DeleteImage(IntroScreenIID)
 	
 endfunction STATE_MAIN_MENU
+
+
+function basicInput()
+	// Use Alt+F4 to end
+	if GetRawKeyState(18) = 1
+		if GetRawKeyPressed(115) = 1
+			end
+		endif
+	endif
+endfunction  

@@ -42,9 +42,9 @@ function PathSetCell(Grid ref as PathGrid[][], x as integer, y as integer, Targe
 	Grid[x,y].Visited=Visited
 endfunction
 
-function PathClear(Grid ref as PathGrid[][])
-	for x=0 to Grid.length
-		for y=0 to Grid[0].length
+function PathClear(Grid ref as PathGrid[][], MinX as integer,MinY as integer, MaxX as integer, MaxY as integer)
+	for x=MinX to MaxX
+		for y=MinY to MaxY
 			Grid[x,y].Position.x=0
 			Grid[x,y].Position.y=0
 			Grid[x,y].Number=0
@@ -53,7 +53,7 @@ function PathClear(Grid ref as PathGrid[][])
 	next x
 endfunction
 
-function PathFinding(Grid ref as PathGrid[][], Start as int2)
+function PathFinding(Grid ref as PathGrid[][], Start as int2, MinX as integer, MinY as integer, MaxX as integer, MaxY as integer)
 	local FrontierTemp as int2
 	local Frontier as int2[]
 	local Neighbors as int2[7]
@@ -96,7 +96,7 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2)
 		y=Frontier[0].y
 		Frontier.remove(0)
 
-		//~ if x>0 and x<Grid.length and y>0 and y<Grid[0].length
+		if x>=MinX and y>=MinY and x<=MaxX and y<=MaxY
 			for n=0 to Neighbors.length
 				nx=x+Neighbors[n].x
 				ny=y+Neighbors[n].y
@@ -110,6 +110,6 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2)
 					Grid[nx,ny].Number=Grid[x,y].Number+1
 				endif
 			next n
-		//~ endif
+		endif
 	endwhile
 endfunction

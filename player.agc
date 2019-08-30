@@ -15,6 +15,8 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	Player.Character.Position.x=16
 	Player.Character.Position.y=0
 	Player.Character.Position.z=16
+	Player.Character.Life=100.0
+	Player.Character.MaxLife=100.0
 	Player.Attack = 0.9
 	Player.LID = 1
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
