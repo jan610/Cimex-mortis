@@ -86,7 +86,61 @@ function MainMenu()
 	DeleteText(ExitTID)
 endfunction GameState
 
+	type MapCells
+		OID					as integer
+		Position			as vec3
+		ConnectingCells		as integer[] // MapCell index to connecting cells
+		Complete			as integer
+		Unlocked			as integer
+	endtype
+	
 function GameMenu()
+	
+	// make some map cell objects
+	MapCells as MapCells[6]
+
+	// setup cell connections
+	// centre cell (connects with all surrounding cells)
+	MapCells[0].ConnectingCells.length = 6
+	for index = 1 to 6
+		MapCells[0].ConnectingCells[index] = index  
+	next index
+	for CellIndex = 1 to 6
+		MapCells[CellIndex].ConnectingCells.length = 2
+		MapCells[CellIndex].ConnectingCells[0] = 0
+		MapCells[CellIndex].ConnectingCells[1] = mod(CellIndex-1,6)
+		MapCells[CellIndex].ConnectingCells[2] = mod(CellIndex+1,6)
+	next CellIndex
+		
+	MapCells[1].Unlocked = 1
+	
+	
+	Cell_DiffuseIID = LoadImage("guts.PNG")
+	for index = 0 to 6
+		MapCells[index].OID = LoadObject("hexcell.fbx")
+		SetObjectImage(MapCells[index].OID,Cell_DiffuseIID,0)
+		RotateObjectLocalY(MapCells[index].OID,90)
+		SetObjectScalePermanent(MapCells[Index].OID,0.05,0.05,0.05)
+		if MapCells[index].Complete = 1
+			SetObjectColorEmissive(MapCells[Index].OID,55,55,55) // make object look dark if stage is complete
+		endif
+		if MapCells[index].Unlocked = 1
+			SetObjectColorEmissive(MapCells[Index].OID,50,50,355) // cell blue if it is unlocked
+		endif
+	next index
+	
+	// position the map cell objects
+	SetObjectPosition(MapCells[0].OID,50,1,50)
+	SetObjectPosition(MapCells[1].OID,50,1,60)
+	SetObjectPosition(MapCells[2].OID,65,1,55)
+	SetObjectPosition(MapCells[3].OID,65,1,45)
+	SetObjectPosition(MapCells[4].OID,50,1,40)
+	SetObjectPosition(MapCells[5].OID,35,1,45)
+	SetObjectPosition(MapCells[6].OID,35,1,55)
+
+	SetCameraPosition(1,50,55,40)
+	SetCameraLookAt(1,50,0,50,0)
+	
 	SelectTID=CreateText("Level Select")
 	SetTextSize(SelectTID,12)
 	ExitTID=CreateText("Exit")
@@ -114,6 +168,14 @@ function GameMenu()
 	loop
 	DeleteText(SelectTID)
 	DeleteText(ExitTID)
+	
+	
+	for index = 0 to 6
+		DeleteObject(MapCells[index].OID)
+	next index
+	Deleteimage(Cell_DiffuseIID)
+	
+	
 endfunction GameState
 
 function Game()
