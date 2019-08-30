@@ -65,6 +65,8 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	for Index=0 to Enemy.length
 		if Enemy[Index].Life<=0
 			ParticleCreate_explosion(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
+			ParticleCreate_realExplosion(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
+			ParticleCreate_bubbles(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
 			EnemySpawn(Enemy[Index], Grid, GridSize)
 			continue
 		endif

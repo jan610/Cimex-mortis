@@ -197,6 +197,10 @@ function Game()
 	InfoTID=CreateText("")
 	SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 	
+	for runParticlesSeveralTimes = 1 to 200
+		ParticleUpdate(Particles)
+	next
+
 	CamshakeInit()
 	
 	do
@@ -276,7 +280,7 @@ function IntroScreen()
 	TitleDrone=LoadMusicOGG("sound/title_drone.ogg")
 	FadeTween = CreateTweenSprite(1)
 	SetTweenSpriteAlpha(FadeTween,0,255,TweenLinear())
-	IntroScreenIID = loadimage("Intro_Screen.jpg")
+	IntroScreenIID = loadimage("intro_screen.jpg")
 	IntroScreenSID = CreateSprite(IntroScreenIID)
 	Width=ScreenWidth()
 	Height=ScreenHeight()
