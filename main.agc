@@ -84,21 +84,30 @@ function MainMenu()
 endfunction GameState
 
 function GameMenu()
-	MainTID=CreateText("Level Select")
-	SetTextSize(MainTID,12)
-	
+	SelectTID=CreateText("Level Select")
+	SetTextSize(SelectTID,12)
+	ExitTID=CreateText("Exit")
+	SetTextSize(ExitTID,12)
+	SetTextPosition(ExitTID,0,12)
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
-		if GetTextHitTest(MainTID,PointerX#,PointerY#)
+		if GetTextHitTest(SelectTID,PointerX#,PointerY#)
 			if GetPointerReleased()
 				GameState=STATE_GAME
 				exit
 			endif
 		endif
+		if GetTextHitTest(ExitTID,PointerX#,PointerY#)
+			if GetPointerReleased()
+				GameState=STATE_MAIN_MENU
+				exit
+			endif
+		endif
 		sync()
 	loop
-	DeleteText(MainTID)
+	DeleteText(SelectTID)
+	DeleteText(ExitTID)
 endfunction GameState
 
 function Game()
