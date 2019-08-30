@@ -17,6 +17,12 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	AnimationName$=GetObjectAnimationName(Player.Character.OID,1)
 	AnimationDurration#=GetObjectAnimationDuration(Player.Character.OID,AnimationName$)
 	PlayObjectAnimation(Player.Character.OID,AnimationName$,0,AnimationDurration#,1,0.2)
+	SetObjectCollisionMode(Player.Character.OID,0)
+    for Index=1 to GetObjectNumChildren(Player.Character.OID)
+        ChildOID = GetObjectChildID(Player.Character.OID,Index)
+        SetObjectCollisionMode(ChildOID,0)
+    next
+    Player.Character.CollisionOID=CreateObjectSphere(1.0,3,6)
 	Player.Character.MaxSpeed=8.0
 	Player.Character.Position.x=16
 	Player.Character.Position.y=0
@@ -130,7 +136,7 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	
 	HitOID=ObjectSphereSlide(0,OldPlayerX#,OldPlayerY#,OldPlayerZ#,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0.3)
 	if HitOID>0
-		if Not (HitOID>=Player.Character.OID and HitOID<=Player.Character.OID+4)
+		if HitOID<>Player.Character.CollisionOID
 			Player.Character.Position.x=GetObjectRayCastSlideX(0)
 			Player.Character.Position.z=GetObjectRayCastSlideZ(0)
 		endif

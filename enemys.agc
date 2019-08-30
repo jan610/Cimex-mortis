@@ -1,5 +1,6 @@
 Type Character		// can be Player and Enemy
 	OID				as integer
+	CollisionOID	as integer
 	DiffuseIID		as integer
 	NormalIID		as integer
 	ShaderID		as integer
@@ -124,7 +125,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			endif
 			for i=0 to GetObjectRayCastNumHits()-1
 				HitOID=GetObjectRayCastHitID(i)
-				if HitOID=Player.Character.OID
+				if HitOID=Player.Character.CollisionOID
 					Player.Character.Life = Player.Character.Life - Enemy[Index].MeleeDamage
 					EnemySpawn(Enemy[Index], Grid, GridSize)
 				endif
