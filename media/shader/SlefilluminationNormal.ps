@@ -23,7 +23,7 @@ void main()
     vec3 light = lightVarying + GetPSLighting( norm, posVarying );
 	
 	float average = ((illumination.r + illumination.g + illumination.b) / 3.0) * glow;
-	diffuse.rgb = ApplyFog(light * diffuse.tgb, posVarying );
+	diffuse.rgb = ApplyFog(light * diffuse.rgb, posVarying );
 	vec3 color = mix(diffuse.rgb,illumination.rgb, average);
     
     gl_FragColor = vec4(color, diffuse.a);
