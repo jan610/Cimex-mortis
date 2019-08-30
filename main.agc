@@ -140,9 +140,7 @@ function GameMenu()
 	
 	*/
 	MapCells as MapCells[]
-	
-	message(GetWritePath())
-	
+		
 	MapCells.load("worlmapdata.json")
 	
 	Cell_DiffuseIID = LoadImage("guts.PNG")
