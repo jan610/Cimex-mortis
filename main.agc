@@ -86,7 +86,86 @@ function MainMenu()
 	DeleteText(ExitTID)
 endfunction GameState
 
+	type MapCells
+		OID					as integer
+		Position			as vec3
+		ConnectingCells		as integer[] // MapCell index to connecting cells
+		Complete			as integer
+		Unlocked			as integer
+	endtype
+	
 function GameMenu()
+	
+/*
+	// make some map cell objects
+	MapCells as MapCells[6]
+
+	// setup cell connections
+	// centre cell (connects with all surrounding cells)
+	MapCells[0].ConnectingCells.length = 6
+	for index = 1 to 6
+		MapCells[0].ConnectingCells[index] = index  
+	next index
+	for CellIndex = 1 to 6
+		MapCells[CellIndex].ConnectingCells.length = 2
+		MapCells[CellIndex].ConnectingCells[0] = 0
+		MapCells[CellIndex].ConnectingCells[1] = mod(CellIndex-1,6)
+		MapCells[CellIndex].ConnectingCells[2] = mod(CellIndex+1,6)
+	next CellIndex
+		
+	MapCells[1].Unlocked = 1
+	MapCells[0].Position.x = 50
+	MapCells[0].Position.y = 1
+	MapCells[0].Position.z = 50	
+	MapCells[1].Position.x = 50
+	MapCells[1].Position.y = 1
+	MapCells[1].Position.z = 60
+	MapCells[2].Position.x = 65
+	MapCells[2].Position.y = 1
+	MapCells[2].Position.z = 55
+	MapCells[3].Position.x = 65
+	MapCells[3].Position.y = 1
+	MapCells[3].Position.z = 45
+	MapCells[4].Position.x = 50
+	MapCells[4].Position.y = 1
+	MapCells[4].Position.z = 40
+	MapCells[5].Position.x = 35
+	MapCells[5].Position.y = 1
+	MapCells[5].Position.z = 45
+	MapCells[6].Position.x = 35
+	MapCells[6].Position.y = 1
+	MapCells[6].Position.z = 55
+	
+	MapCells.save("worlmapdata.json")
+	
+	*/
+	MapCells as MapCells[]
+		
+	MapCells.load("worlmapdata.json")
+	
+	Cell_DiffuseIID = LoadImage("guts.PNG")
+	for index = 0 to 6
+		MapCells[index].OID = LoadObject("hexcell.fbx")
+		SetObjectImage(MapCells[index].OID,Cell_DiffuseIID,0)
+		RotateObjectLocalY(MapCells[index].OID,90)
+		SetObjectScalePermanent(MapCells[Index].OID,0.05,0.05,0.05)
+		if MapCells[index].Complete = 1
+			SetObjectColorEmissive(MapCells[Index].OID,55,55,55) // make object look dark if stage is complete
+		endif
+		if MapCells[index].Unlocked = 1
+			SetObjectColorEmissive(MapCells[Index].OID,50,50,355) // cell blue if it is unlocked
+		endif
+	next index
+
+	
+	// position the map cell objects
+	for index = 0 to 6
+		SetObjectPosition(MapCells[index].OID,MapCells[index].Position.x,MapCells[index].Position.y,MapCells[index].Position.z)
+	next index
+
+	SetCameraPosition(1,50,55,40)
+	SetCameraLookAt(1,50,0,50,0)
+	
 	SelectTID=CreateText("Level Select")
 	SetTextSize(SelectTID,12)
 	ExitTID=CreateText("Exit")
@@ -114,6 +193,14 @@ function GameMenu()
 	loop
 	DeleteText(SelectTID)
 	DeleteText(ExitTID)
+	
+	
+	for index = 0 to 6
+		DeleteObject(MapCells[index].OID)
+	next index
+	Deleteimage(Cell_DiffuseIID)
+	
+	
 endfunction GameState
 
 function Game()
