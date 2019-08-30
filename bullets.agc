@@ -78,6 +78,7 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 				if HitOID=Enemy[e].OID
 					Enemy[e].Life=Enemy[e].Life-Damage
 					ParticleCreate_bullet(Particles, Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
+					ParticleCreate_cuteExplosion(Particles, Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
 					HitEnemy=1
 					exit
 				endif
