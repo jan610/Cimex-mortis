@@ -8,7 +8,9 @@ Type Character		// can be Player and Enemy
 	Velocity		as vec3
 	AngularVelocity	as vec3
 	Life			as float // Player Health
-	MaxSpeed		as float 
+	MaxLife		as float
+	MaxSpeed		as float
+	MeleeDamage	as float
 endtype
 
 function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize as integer)
@@ -30,7 +32,8 @@ function EnemySpawn(Enemy ref as Character, Grid ref as PathGrid[][], GridSize a
 	until Grid[SpawnGridX,SpawnGridY].Number>0
 	Enemy.Position.x=SpawnX#
 	Enemy.Position.z=SpawnY#
-	Enemy.Life=100
+	Enemy.Life=100.0
+	Enemy.MeleeDamage=17.0
 endfunction
 
 function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer, Particles ref as Particle[])
@@ -114,6 +117,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			for i=0 to GetObjectRayCastNumHits()-1
 				HitOID=GetObjectRayCastHitID(i)
 				if HitOID=Player.Character.OID
+					Player.Character.Life = Player.Character.Life - Enemy[Index].MeleeDamage
 					EnemySpawn(Enemy[Index], Grid, GridSize)
 				endif
 			next i
