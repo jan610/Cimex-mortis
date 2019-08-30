@@ -18,7 +18,7 @@ function ParticleCreate_ambient(Particles ref as Particle[], X#, Y#, Z#, Size#)
     Set3DParticlesVelocityRange(TempParticle.PID,1,1.1)
     //~ Set3DParticlesStartZone( TempParticle.PID, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3 )
     Set3DParticlesPosition( TempParticle.PID, X#, Y#, Z# ) 
-    Set3DParticlesImage( TempParticle.PID, ParticleExpIID )
+    Set3DParticlesImage( TempParticle.PID, ParticleAmbIID )
     Set3DParticlesTransparency( TempParticle.PID, 1 ) 			// 0=none 1=alpha 2=addictive
     Set3DParticlesColorInterpolation( TempParticle.PID, 1 ) // fade the particles out before they die
     Add3DParticlesColorKeyFrame( TempParticle.PID, 0, 255, 255, 255,0 )
@@ -33,9 +33,9 @@ function ParticleCreate_explosion(Particles ref as Particle[], X#, Y#, Z#)
     local TempParticle as Particle
     TempParticle.PID=Create3DParticles(X#,Y#,Z#)
 	Set3DParticlesLife(TempParticle.PID, pLife#)
-    Set3DParticlesMax(TempParticle.PID, 27) // 200
+    Set3DParticlesMax(TempParticle.PID, 10) // 200
     Set3DParticlesSize(TempParticle.PID, 1.5) // 0.8
-    Set3DParticlesFrequency(TempParticle.PID,10000)
+    Set3DParticlesFrequency(TempParticle.PID,1000)
     Set3DParticlesDirectionRange(TempParticle.PID,180,180)
     Set3DParticlesDirection(TempParticle.PID, 0.0, 0.4, 0.0, 0.4) // 0.8
     //Set3DParticlesStartZone( TempParticle.PID, -100.0, -50.0, -100.0, 100.0, 50.0, 100.0 )
