@@ -36,6 +36,7 @@ SetDefaultWrapV(1)
 #include "voices.agc"
 
 global Camshake as Camshaker
+global isItfullscreen = 0
 
 GameState = -1
 
@@ -284,6 +285,7 @@ function IntroScreen()
 	PlayTweenSprite(FadeTween,IntroScreenSID,0)
 	PlayMusicOGG(TitleDrone)
 	repeat
+		basicInput()
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetSpriteSize(IntroScreenSID,ScreenWidth(),ScreenHeight())
@@ -296,6 +298,7 @@ function IntroScreen()
 	SetTweenSpriteAlpha(FadeTween,GetSpriteColorAlpha(IntroScreenSID),0,TweenLinear())
 	PlayTweenSprite(FadeTween,IntroScreenSID,0)
 	while GetTweenSpritePlaying(FadeTween,IntroScreenSID)
+		basicInput()
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
 		SetMusicVolumeOGG(TitleDrone,GetSpriteColorAlpha(IntroScreenSID)*0.39)
 		sync()
@@ -316,5 +319,10 @@ function basicInput()
 		if GetRawKeyPressed(115) = 1
 			end
 		endif
+	endif
+	
+	if GetRawKeyPressed (122) = 1
+		isItfullscreen = 1-isItfullscreen
+		SetWindowSize( 960, 540, isItfullscreen )
 	endif
 endfunction  

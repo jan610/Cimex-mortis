@@ -56,6 +56,9 @@ function LoadGameMedia()
 	global WallHitSoundID
 	WallHitSoundID=LoadSound("sound/low_dark_hit.wav")
 	
+	//~ global GobalPlayerOID
+	//~ GobalPlayerOID=LoadObjectWithChildren("player.3ds")
+	
 endfunction
 
 
