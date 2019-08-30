@@ -43,7 +43,7 @@ function LoadGameMedia()
 	
 	global SelfilluminationSID
 	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
-	SetShaderConstantByName(SelfilluminationSID,"glow",2.0,0,0,0)
+	SetShaderConstantByName(SelfilluminationSID,"glow",4.0,0,0,0)
 	
 	global LaserSoundID as integer[]
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot.wav"))
@@ -91,12 +91,11 @@ function DeleteGameMedia()
 
 endfunction
 
-function SetChildrenImage(id as integer, img as integer)
+function SetChildrenImage(id as integer, img as integer, stage as integer)
     i as integer
     h as integer
     for i=1 to GetObjectNumChildren(id)
         h = GetObjectChildID(id, i)
-        SetObjectImage(h, img, 0)
-        SetObjectLightMode(h, 0)
+        SetObjectImage(h, img, stage)
     next
 endfunction

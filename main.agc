@@ -126,6 +126,8 @@ function Game()
 	setFogColor(0,10,87)
 	SetAmbientColor(145,145,145)
 	
+	LoadGameMedia()
+	
 	crosshairIID = loadimage("crosshair.png")
 	crosshairSID = CreateSprite( crosshairIID ) 
 	setSpriteSize (crosshairSID, 7.0, 7.0)
@@ -185,8 +187,6 @@ function Game()
 	Particles as Particle[]
 	
 	Debug as Debuging
-	
-	LoadGameMedia()
 	
 	ParticleCreate_ambient(Particles,24,0,24,0.4)
 	ParticleCreate_ambient(Particles,24,0,24,0.25)

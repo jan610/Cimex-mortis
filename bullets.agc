@@ -72,7 +72,7 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 		SetObjectShaderConstantByName(Bullets[Index].OID,"end",EndX#,Bullets[Index].Position.y,EndZ#, 0)
 	
 		HitOID=ObjectRayCast(0,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z,EndX#,Bullets[Index].Position.y,EndZ#)
-		if HitOID>0 and HitOID<>Player.Character.OID
+		if HitOID>0 and HitOID<>Player.Character.CollisionOID
 			HitEnemy=0
 			for e=0 to Enemy.length
 				if HitOID=Enemy[e].OID
