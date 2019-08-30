@@ -6,7 +6,7 @@ SetErrorMode(2)
 
 // set window properties
 SetWindowTitle( "Cimex mortis" )
-SetWindowSize( 1920, 1080, 0 )
+SetWindowSize( 1920, 1080, 1 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 // set display properties
@@ -65,6 +65,7 @@ function MainMenu()
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
+		basicInput()
 		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
 			if GetPointerReleased()
 				GameState=STATE_GAME_MENU
@@ -92,14 +93,17 @@ function GameMenu()
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
+		
+		basicInput()
+		
 		if GetTextHitTest(SelectTID,PointerX#,PointerY#)
 			if GetPointerReleased()
 				GameState=STATE_GAME
 				exit
 			endif
 		endif
-		if GetTextHitTest(ExitTID,PointerX#,PointerY#)
-			if GetPointerReleased()
+		if GetTextHitTest(ExitTID,PointerX#,PointerY#) or GetRawKeyState(27)
+			if GetPointerReleased() or GetRawKeyPressed(27)
 				GameState=STATE_MAIN_MENU
 				exit
 			endif
@@ -174,6 +178,8 @@ function Game()
 	CamshakeInit()
 	
 	do
+		basicInput()
+		
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 		endif
@@ -276,3 +282,13 @@ function IntroScreen()
 	DeleteImage(IntroScreenIID)
 	
 endfunction STATE_MAIN_MENU
+
+
+function basicInput()
+	// Use Alt+F4 to end
+	if GetRawKeyState(18) = 1
+		if GetRawKeyPressed(115) = 1
+			end
+		endif
+	endif
+endfunction  
