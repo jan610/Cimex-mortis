@@ -10,7 +10,7 @@ type Player
 endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
-	Player.Character.OID=CreateObjectBox(1,1,1)
+	Player.Character.OID=LoadObjectWithChildren("player.3ds")
 	Player.Character.MaxSpeed=8.0
 	Player.Character.Position.x=16
 	Player.Character.Position.y=0
@@ -122,9 +122,12 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	OldPlayerY#=GetObjectY(Player.Character.OID)
 	OldPlayerZ#=GetObjectZ(Player.Character.OID)
 	
-	if ObjectSphereSlide(0,OldPlayerX#,OldPlayerY#,OldPlayerZ#,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0.3)>0
-		Player.Character.Position.x=GetObjectRayCastSlideX(0)
-		Player.Character.Position.z=GetObjectRayCastSlideZ(0)
+	Col_Obj = ObjectSphereSlide(0,OldPlayerX#,OldPlayerY#,OldPlayerZ#,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0.3)
+	if Col_Obj >0
+		if Col_Obj <> Player.Character.OID
+			Player.Character.Position.x=GetObjectRayCastSlideX(0)
+			Player.Character.Position.z=GetObjectRayCastSlideZ(0)
+		endif
 	endif
 	
 	// Player to look at mouse position
