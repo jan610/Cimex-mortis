@@ -10,7 +10,19 @@ type Player
 endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
+	PlayerDiffuseIID=LoadImage("player0001.png")
+	PlayerIlluminationIID=LoadImage("player0002.png")
 	Player.Character.OID=LoadObjectWithChildren("player.3ds")
+	
+	AnimationName$=GetObjectAnimationName(Player.Character.OID,1)
+	AnimationDurration#=GetObjectAnimationDuration(Player.Character.OID,AnimationName$)
+	PlayObjectAnimation(Player.Character.OID,AnimationName$,0,AnimationDurration#,1,0.2)
+    for Index=1 to GetObjectNumChildren(Player.Character.OID)
+        ChildOID=GetObjectChildID(Player.Character.OID,Index)
+		SetObjectCollisionMode(ChildOID,0)
+    next
+	
+	SetChildrenImage(Player.Character.OID, PlayerDiffuseIID)
 	Player.Character.MaxSpeed=8.0
 	Player.Character.Position.x=16
 	Player.Character.Position.y=0
@@ -123,6 +135,8 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	OldPlayerZ#=GetObjectZ(Player.Character.OID)
 	
 	Col_Obj = ObjectSphereSlide(0,OldPlayerX#,OldPlayerY#,OldPlayerZ#,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0.3)
+	print(Col_Obj)
+	print(Player.Character.OID)
 	if Col_Obj >0
 		if Col_Obj <> Player.Character.OID
 			Player.Character.Position.x=GetObjectRayCastSlideX(0)

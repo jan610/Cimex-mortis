@@ -90,3 +90,13 @@ function DeleteGameMedia()
 	DeleteSound(WallHitSoundID)
 
 endfunction
+
+function SetChildrenImage(id as integer, img as integer)
+    i as integer
+    h as integer
+    for i=1 to GetObjectNumChildren(id)
+        h = GetObjectChildID(id, i)
+        SetObjectImage(h, img, 0)
+        SetObjectLightMode(h, 0)
+    next
+endfunction
