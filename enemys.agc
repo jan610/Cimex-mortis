@@ -142,8 +142,14 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			for i=0 to GetObjectRayCastNumHits()-1
 				HitOID=GetObjectRayCastHitID(i)
 				if HitOID=Player.Character.CollisionOID
-					Player.Character.Life = Player.Character.Life - Enemy[Index].MeleeDamage
-					EnemySpawn(Enemy[Index], Grid, GridSize)
+					if Enemy[Index].style = 0
+						Player.Character.Life = Player.Character.Life - Enemy[Index].MeleeDamage
+						EnemySpawn(Enemy[Index], Grid, GridSize)
+					else
+						Player.Energy = Player.Energy + Enemy[Index].MeleeDamage
+						EnemySpawn(Enemy[Index], Grid, GridSize)
+					endif
+					
 				endif
 			next i
 		endif
