@@ -41,15 +41,23 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 	PlayerGrid as int2
 	PlayerGrid.x=round(Player.Character.Position.x/GridSize)
 	PlayerGrid.y=round(Player.Character.Position.z/GridSize)
-
+	
 	// TODO: for each Enemy Cast ray to player and only calculate path if there is an obstacle detected else run straight to player
 	// only calculate if the player moves to a new cell
 	if PlayerGrid.x<>Player.OldGrid.x or PlayerGrid.y<>Player.OldGrid.y
 		Player.OldGrid.x=PlayerGrid.x
 		Player.OldGrid.y=PlayerGrid.y
 		if PlayerGrid.x>0 and PlayerGrid.y>0 and PlayerGrid.x<Grid.length and PlayerGrid.y<Grid[0].length
-			PathClear(Grid)
-			PathFinding(Grid, PlayerGrid)
+			MinX=PlayerGrid.x-14
+			MinY=PlayerGrid.y-14
+			MaxX=PlayerGrid.x+14
+			MaxY=PlayerGrid.y+14
+			if MinX<0 then MinX=0
+			if MinY<0 then MinY=0
+			if MaxX>Grid.length then MaxX=Grid.length
+			if MaxY>Grid[0].length then MaxY=Grid[0].length
+			PathClear(Grid, MinX, MinY, MaxX, MaxY)
+			PathFinding(Grid, PlayerGrid, MinX, MinY, MaxX, MaxY)
 		endif
 	endif
 	
