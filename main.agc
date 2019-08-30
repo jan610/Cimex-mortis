@@ -197,6 +197,10 @@ function Game()
 	InfoTID=CreateText("")
 	SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 	
+	for runParticlesSeveralTimes = 1 to 200
+		ParticleUpdate(Particles)
+	next
+
 	CamshakeInit()
 	
 	do

@@ -29,6 +29,9 @@ function LoadGameMedia()
 `	ParticleExpIID=loadimage("particle_blob.png")
 `	ParticleIID=loadimage("particles2_b.png")
 
+	global ParticleAmbIID
+	       ParticleAmbIID=loadimage("particle_blob.png")
+
 	global ParticleExplotionIID
 	ParticleExplotionIID=loadimage("particle_explotion.png")
 	

@@ -18,7 +18,7 @@ function ParticleCreate_ambient(Particles ref as Particle[], X#, Y#, Z#, Size#)
     Set3DParticlesVelocityRange(TempParticle.PID,1,1.1)
     //~ Set3DParticlesStartZone( TempParticle.PID, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3 )
     Set3DParticlesPosition( TempParticle.PID, X#, Y#, Z# ) 
-    Set3DParticlesImage( TempParticle.PID, ParticleExpIID )
+    Set3DParticlesImage( TempParticle.PID, ParticleAmbIID )
     Set3DParticlesTransparency( TempParticle.PID, 1 ) 			// 0=none 1=alpha 2=addictive
     Set3DParticlesColorInterpolation( TempParticle.PID, 1 ) // fade the particles out before they die
     Add3DParticlesColorKeyFrame( TempParticle.PID, 0, 255, 255, 255,0 )
