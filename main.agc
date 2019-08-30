@@ -95,7 +95,10 @@ endfunction GameState
 	endtype
 	
 function GameMenu()
-	
+	SetFogMode(0)
+	SetSunActive(0)
+	setClearColor(0,0,0)
+	SetAmbientColor(146,146,146)
 /*
 	// make some map cell objects
 	MapCells as MapCells[6]
