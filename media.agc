@@ -3,6 +3,12 @@ function LoadGameMedia()
 	width=GetDeviceWidth()
 	height=GetDeviceHeight()
 	
+	global crosshairSID
+	CrosshairIID = loadimage("crosshair.png")
+	crosshairSID = CreateSprite( crosshairIID ) 
+	setSpriteSize (crosshairSID, 7.0, 7.0)
+	SetRawMouseVisible( 0 )
+	
 	global BulletShaderID
 	BulletShaderID=LoadShader("shader/Line.vs","shader/Default.ps")
 	global BulletDiffuseIID

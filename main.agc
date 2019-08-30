@@ -128,11 +128,6 @@ function Game()
 	
 	LoadGameMedia()
 	
-	crosshairIID = loadimage("crosshair.png")
-	crosshairSID = CreateSprite( crosshairIID ) 
-	setSpriteSize (crosshairSID, 7.0, 7.0)
-	SetRawMouseVisible( 0 )
-	
 	/*
 	hudLifeSID = CreateSprite( 0 )
 	setSpriteSize (hudLifeSID, 37.0, 2.0)
