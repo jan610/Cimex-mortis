@@ -103,7 +103,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		if Enemy[index].style=0
 			NewAngle#=-atanfull(DistX#,DistZ#)
 		else
-			NewAngle#=-atan2(DistX#,DistZ#)
+			NewAngle#=atan2(DistX#,DistZ#)
 		endif
 		Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
 
