@@ -96,6 +96,7 @@ endfunction GameState
 	
 function GameMenu()
 	
+/*
 	// make some map cell objects
 	MapCells as MapCells[6]
 
@@ -113,7 +114,36 @@ function GameMenu()
 	next CellIndex
 		
 	MapCells[1].Unlocked = 1
+	MapCells[0].Position.x = 50
+	MapCells[0].Position.y = 1
+	MapCells[0].Position.z = 50	
+	MapCells[1].Position.x = 50
+	MapCells[1].Position.y = 1
+	MapCells[1].Position.z = 60
+	MapCells[2].Position.x = 65
+	MapCells[2].Position.y = 1
+	MapCells[2].Position.z = 55
+	MapCells[3].Position.x = 65
+	MapCells[3].Position.y = 1
+	MapCells[3].Position.z = 45
+	MapCells[4].Position.x = 50
+	MapCells[4].Position.y = 1
+	MapCells[4].Position.z = 40
+	MapCells[5].Position.x = 35
+	MapCells[5].Position.y = 1
+	MapCells[5].Position.z = 45
+	MapCells[6].Position.x = 35
+	MapCells[6].Position.y = 1
+	MapCells[6].Position.z = 55
 	
+	MapCells.save("worlmapdata.json")
+	
+	*/
+	MapCells as MapCells[]
+	
+	message(GetWritePath())
+	
+	MapCells.load("worlmapdata.json")
 	
 	Cell_DiffuseIID = LoadImage("guts.PNG")
 	for index = 0 to 6
@@ -128,15 +158,12 @@ function GameMenu()
 			SetObjectColorEmissive(MapCells[Index].OID,50,50,355) // cell blue if it is unlocked
 		endif
 	next index
+
 	
 	// position the map cell objects
-	SetObjectPosition(MapCells[0].OID,50,1,50)
-	SetObjectPosition(MapCells[1].OID,50,1,60)
-	SetObjectPosition(MapCells[2].OID,65,1,55)
-	SetObjectPosition(MapCells[3].OID,65,1,45)
-	SetObjectPosition(MapCells[4].OID,50,1,40)
-	SetObjectPosition(MapCells[5].OID,35,1,45)
-	SetObjectPosition(MapCells[6].OID,35,1,55)
+	for index = 0 to 6
+		SetObjectPosition(MapCells[index].OID,MapCells[index].Position.x,MapCells[index].Position.y,MapCells[index].Position.z)
+	next index
 
 	SetCameraPosition(1,50,55,40)
 	SetCameraLookAt(1,50,0,50,0)

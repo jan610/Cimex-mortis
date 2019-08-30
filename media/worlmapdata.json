@@ -1,0 +1,79 @@
+[
+    {
+        "oid": 0, 
+        "position": {
+            "x": 50, 
+            "y": 1, 
+            "z": 50
+        }, 
+        "connectingcells": [0, 1, 2, 3, 4, 5, 6], 
+        "complete": 0, 
+        "unlocked": 0
+    }, 
+    {
+        "oid": 0, 
+        "position": {
+            "x": 50, 
+            "y": 1, 
+            "z": 60
+        }, 
+        "connectingcells": [0, 0, 2], 
+        "complete": 0, 
+        "unlocked": 1
+    }, 
+    {
+        "oid": 0, 
+        "position": {
+            "x": 65, 
+            "y": 1, 
+            "z": 55
+        }, 
+        "connectingcells": [0, 1, 3], 
+        "complete": 0, 
+        "unlocked": 0
+    }, 
+    {
+        "oid": 0, 
+        "position": {
+            "x": 65, 
+            "y": 1, 
+            "z": 45
+        }, 
+        "connectingcells": [0, 2, 4], 
+        "complete": 0, 
+        "unlocked": 0
+    }, 
+    {
+        "oid": 0, 
+        "position": {
+            "x": 50, 
+            "y": 1, 
+            "z": 40
+        }, 
+        "connectingcells": [0, 3, 5], 
+        "complete": 0, 
+        "unlocked": 0
+    }, 
+    {
+        "oid": 0, 
+        "position": {
+            "x": 35, 
+            "y": 1, 
+            "z": 45
+        }, 
+        "connectingcells": [0, 4, 0], 
+        "complete": 0, 
+        "unlocked": 0
+    }, 
+    {
+        "oid": 0, 
+        "position": {
+            "x": 35, 
+            "y": 1, 
+            "z": 55
+        }, 
+        "connectingcells": [0, 5, 1], 
+        "complete": 0, 
+        "unlocked": 0
+    }
+]
