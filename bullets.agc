@@ -10,38 +10,40 @@ type Bullet
 	Velocity_Tween	as integer
 endtype
 
-function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer,Attack as float)
+function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer,Attack as float, Player ref as Player)
 	local MaxSpeed as float
 	MaxSpeed = 9
-	
-	local TempBullet as Bullet
-	TempBullet.OID=CreateObjectPlane(1,1)
-	SetObjectPosition(TempBullet.OID,X,Y,Z)
-	SetObjectRotation(TempBullet.OID,0,AngleY,0)
-	SetObjectImage(TempBullet.OID,DiffuseIID,0)
-	//~ SetObjectNormalMap(TempBullet.OID,NormalIID)
-	SetObjectCollisionMode(TempBullet.OID,0)
-	SetObjectTransparency(TempBullet.OID,1)
-	SetObjectShader(TempBullet.OID,ShaderID)
-	SetObjectShaderConstantByName(TempBullet.OID,"thickness",0.2,0,0,0)
-	//~ SetObjectLightMode(TempBullet.OID,0)
-	//~ SetObjectCullMode(TempBullet.OID,0)
-	TempBullet.Position.x=X
-	TempBullet.Position.y=Y
-	TempBullet.Position.z=Z
-	TempBullet.Rotation.y=AngleY
-	TempBullet.ShaderID=ShaderID
-	TempBullet.DiffuseIID=DiffuseIID
-	TempBullet.NormalIID=NormalIID
-	TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
-	TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
-	TempBullet.Velocity_Tween = CreateTweenCustom(Attack)
-	SetTweenCustomFloat1(TempBullet.Velocity_Tween,TempBullet.Velocity.x,0,TweenEaseIn2())
-	SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
-	PlayTweenCustom(TempBullet.Velocity_Tween,0.0)
-	TempBullet.Time = Timer()+1
-	BulletSoundInstanceID=PlaySound(LaserSoundID[random(0,1)],2)
-	Bullets.insert(TempBullet)
+	if Player.Energy > 0
+		local TempBullet as Bullet
+		TempBullet.OID=CreateObjectPlane(1,1)
+		SetObjectPosition(TempBullet.OID,X,Y,Z)
+		SetObjectRotation(TempBullet.OID,0,AngleY,0)
+		SetObjectImage(TempBullet.OID,DiffuseIID,0)
+		//~ SetObjectNormalMap(TempBullet.OID,NormalIID)
+		SetObjectCollisionMode(TempBullet.OID,0)
+		SetObjectTransparency(TempBullet.OID,1)
+		SetObjectShader(TempBullet.OID,ShaderID)
+		SetObjectShaderConstantByName(TempBullet.OID,"thickness",0.2,0,0,0)
+		//~ SetObjectLightMode(TempBullet.OID,0)
+		//~ SetObjectCullMode(TempBullet.OID,0)
+		TempBullet.Position.x=X
+		TempBullet.Position.y=Y
+		TempBullet.Position.z=Z
+		TempBullet.Rotation.y=AngleY
+		TempBullet.ShaderID=ShaderID
+		TempBullet.DiffuseIID=DiffuseIID
+		TempBullet.NormalIID=NormalIID
+		TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
+		TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
+		TempBullet.Velocity_Tween = CreateTweenCustom(Attack)
+		SetTweenCustomFloat1(TempBullet.Velocity_Tween,TempBullet.Velocity.x,0,TweenEaseIn2())
+		SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
+		PlayTweenCustom(TempBullet.Velocity_Tween,0.0)
+		TempBullet.Time = Timer()+1
+		BulletSoundInstanceID=PlaySound(LaserSoundID[random(0,1)],2)
+		Bullets.insert(TempBullet)
+		Player.Energy = Player.Energy - 1 
+	endif
 endfunction
 
 function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particles ref as Particle[], Player as Player)
