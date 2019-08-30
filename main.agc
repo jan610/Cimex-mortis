@@ -12,8 +12,8 @@ SetWindowAllowResize( 1 ) // allow the user to resize the window
 // set display properties
 SetVirtualResolution( 100, 100 ) // doesn't have to match the window
 SetOrientationAllowed( 1, 1, 1, 1 ) // allow both portrait and landscape on mobile devices
-SetSyncRate( 0, 0 ) // 30fps instead of 60 to save battery
-//~ SetVsync(1)
+//~SetSyncRate( 30, 0 ) // 30fps instead of 60 to save battery
+SetVsync(1)
 SetScissor( 0,0,0,0 ) // use the maximum available screen space, no black borders
 UseNewDefaultFonts( 1 ) // since version 2.0.22 we can use nicer default fonts
 
@@ -124,6 +124,11 @@ function Game()
 	setFogColor(0,10,87)
 	SetAmbientColor(145,145,145)
 	
+	crosshairIID = loadimage("crosshair.png")
+	crosshairSID = CreateSprite( crosshairIID ) 
+	setSpriteSize (crosshairSID, 7.0, 7.0)
+	SetRawMouseVisible( 0 ) 
+	
 	Width=ScreenWidth()
 	Height=ScreenHeight()
 	
@@ -179,6 +184,7 @@ function Game()
 	
 	do
 		basicInput()
+		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
 		
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
@@ -201,6 +207,7 @@ function Game()
 		Debuging(Debug)
 
 		if GetRawKeyReleased(27)
+			SetRawMouseVisible( 1 ) 
 			GameState=STATE_GAME_MENU
 			exit
 		endif
@@ -243,6 +250,7 @@ function Game()
 	DeleteAllObjects()
 	DeleteAllText()
 	DeleteAllImages()
+	DeleteAllSprites()
 endfunction GameState
 
 function IntroScreen()
