@@ -76,6 +76,12 @@ function LoadGameMedia()
 	//~ global GobalPlayerOID
 	//~ GobalPlayerOID=LoadObjectWithChildren("player.3ds")
 	
+	global SuckSoundID
+	SuckSoundID = LoadSound("sound/sucky.wav")
+	global SuckSoundInstance as integer
+	SuckSoundInstance = 0
+	global SuckSoundFade_Tween as integer
+	SuckSoundFade_Tween = 0
 endfunction
 
 
@@ -105,7 +111,10 @@ function DeleteGameMedia()
 	
 	DeleteSound(AmbientSoundID)
 	DeleteSound(WallHitSoundID)
-
+	DeleteSound(SuckSoundID)
+	if GetTweenExists(SuckSoundFade_Tween)
+		DeleteTween(SuckSoundFade_Tween)
+	endif
 endfunction
 
 function SetChildrenImage(id as integer, img as integer, stage as integer)

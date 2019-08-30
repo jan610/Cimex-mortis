@@ -77,9 +77,37 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	
 	if GetRawMouseRightState() 
 		player.State=STATE_SUCK
+		if SuckSoundInstance = 0 
+			SuckSoundInstance = playsound(SuckSoundID,100,1) // loop forever
+		endif
+		if GetTweenCustomExists(SuckSoundFade_Tween)
+			DeleteTween(SuckSoundFade_Tween)
+		endif
+		SuckSoundFade_Tween = CreateTweenCustom(0.2)
+		SetTweenCustomFloat1(SuckSoundFade_Tween,GetSoundInstanceVolume(SuckSoundInstance),100,TweenLinear())
+		PlayTweenCustom(SuckSoundFade_Tween,0)
 	else
-		player.state=0
+		player.state=0	
 	endif
+
+	If GetRawMouseRightReleased() // User has released the RMB
+		print("Got Here")
+		if GetTweenCustomExists(SuckSoundFade_Tween)
+			DeleteTween(SuckSoundFade_Tween)
+		endif
+		SuckSoundFade_Tween = CreateTweenCustom(0.8)
+		SetTweenCustomFloat1(SuckSoundFade_Tween,GetSoundInstanceVolume(SuckSoundInstance),0,TweenEaseout1())
+		PlayTweenCustom(SuckSoundFade_Tween,0)
+	endif
+
+	if GetTweenCustomExists(SuckSoundFade_Tween)
+		if GetTweenCustomPlaying(SuckSoundFade_Tween)
+			UpdateTweenCustom(SuckSoundFade_Tween,GetFrameTime())
+			SetSoundInstanceVolume(SuckSoundInstance,GetTweenCustomFloat1(SuckSoundFade_Tween))
+		endif
+	endif
+
+
 	
 	if GetTweenCustomPlaying(player.Boost_TweenID)
 		print("Boost")
