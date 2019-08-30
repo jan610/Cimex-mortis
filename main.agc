@@ -6,7 +6,8 @@ SetErrorMode(2)
 
 // set window properties
 SetWindowTitle( "Cimex mortis" )
-SetWindowSize( 1920, 1080, 1 )
+`SetWindowSize( 1920, 1080, 1 )
+SetWindowSize( 960, 540, 0 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 // set display properties
