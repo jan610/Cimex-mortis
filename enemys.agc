@@ -117,8 +117,10 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		LookDirVID=CreateVector3(sin(Player.Character.Rotation.y),0,cos(Player.Character.Rotation.y))
 		
 		if player.state=STATE_SUCK and GetVector3Dot(LookDirVID,EnemyDirVID)<-0.5 and Length#<=SUCK_DISTANCE
-			Enemy[Index].Position.x=Enemy[Index].Position.x-SUCK_POWER*EnemyDirX#
-			Enemy[Index].Position.z=Enemy[Index].Position.z-SUCK_POWER*EnemyDirZ#	
+			if Enemy[Index].style = 1
+				Enemy[Index].Position.x=Enemy[Index].Position.x+SUCK_POWER*EnemyDirX#
+				Enemy[Index].Position.z=Enemy[Index].Position.z+SUCK_POWER*EnemyDirZ#	
+			endif
 		else	
 			Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
 			Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
@@ -133,10 +135,10 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		HitOID=ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)
 		if HitOID>0
 			HitCount=0
-			if Grid[EnemyGridX,EnemyGridZ].Number>0
+		`	if Grid[EnemyGridX,EnemyGridZ].Number>0
 				Enemy[Index].Position.x=GetObjectRayCastSlideX(0)
 				Enemy[Index].Position.z=GetObjectRayCastSlideZ(0)
-			endif
+		`	endif
 			for i=0 to GetObjectRayCastNumHits()-1
 				HitOID=GetObjectRayCastHitID(i)
 				if HitOID=Player.Character.CollisionOID
