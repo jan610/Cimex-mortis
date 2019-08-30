@@ -231,6 +231,7 @@ function Game()
 endfunction GameState
 
 function IntroScreen()
+	TitleDrone=LoadMusicOGG("sound/title_drone.ogg")
 	FadeTween = CreateTweenSprite(1)
 	SetTweenSpriteAlpha(FadeTween,0,255,TweenLinear())
 	IntroScreenIID = loadimage("Intro_Screen.jpg")
@@ -240,6 +241,7 @@ function IntroScreen()
 	SetSpriteSize(IntroScreenSID,Width,Height)
 	SetSpritePositionByOffset(IntroScreenSID,50,50)
 	PlayTweenSprite(FadeTween,IntroScreenSID,0)
+	PlayMusicOGG(TitleDrone)
 	repeat
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
@@ -254,6 +256,14 @@ function IntroScreen()
 	PlayTweenSprite(FadeTween,IntroScreenSID,0)
 	while GetTweenSpritePlaying(FadeTween,IntroScreenSID)
 		UpdateTweenSprite(FadeTween,IntroScreenSID,GetFrameTime())
+		SetMusicVolumeOGG(TitleDrone,GetSpriteColorAlpha(IntroScreenSID)*0.39)
 		sync()
 	endwhile
+
+	StopMusicOGG(TitleDrone)
+	DeleteMusicOGG(TitleDrone)
+
+	DeleteSprite(IntroScreenSID)
+	DeleteImage(IntroScreenIID)
+	
 endfunction STATE_MAIN_MENU

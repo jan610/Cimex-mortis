@@ -55,6 +55,7 @@ function LoadGameMedia()
 	
 	global WallHitSoundID
 	WallHitSoundID=LoadSound("sound/low_dark_hit.wav")
+	
 endfunction
 
 
@@ -83,4 +84,6 @@ function DeleteGameMedia()
 	LaserSoundID.length=-1
 	
 	DeleteSound(AmbientSoundID)
+	DeleteSound(WallHitSoundID)
+
 endfunction
