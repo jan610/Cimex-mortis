@@ -12,6 +12,7 @@ Type Character		// can be Player and Enemy
 	MaxLife		as float
 	MaxSpeed		as float
 	MeleeDamage	as float
+	style			as integer
 endtype
 
 function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize as integer)
@@ -35,6 +36,12 @@ function EnemySpawn(Enemy ref as Character, Grid ref as PathGrid[][], GridSize a
 	Enemy.Position.z=SpawnY#
 	Enemy.Life=100.0
 	Enemy.MeleeDamage=17.0
+	Enemy.style = random2(0,1)
+	if Enemy.style = 0
+		SetObjectColor(Enemy.OID, 255,100,100,255)
+	else
+		SetObjectColor(Enemy.OID, 100,255,100,255)
+	endif
 endfunction
 
 function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer, Particles ref as Particle[])
@@ -93,7 +100,11 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		DistX#=(TargetX*GridSize)-Enemy[Index].Position.x
 		DistZ#=(TargetZ*GridSize)-Enemy[Index].Position.z
 		
-		NewAngle#=-atanfull(DistX#,DistZ#)
+		if Enemy[index].style=0
+			NewAngle#=-atanfull(DistX#,DistZ#)
+		else
+			NewAngle#=-atan2(DistX#,DistZ#)
+		endif
 		Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
 
 		JellyfishMovement#=pow(1.0+sin(Enemy[Index].Position.x*Enemy[Index].Position.z+Timer()*500)*0.5+0.5,2)/3
