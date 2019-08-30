@@ -108,25 +108,27 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		Enemy[Index].Rotation.y=CurveAngle(Enemy[Index].Rotation.y,NewAngle#,9.0)
 
 		JellyfishMovement#=pow(1.0+sin(Enemy[Index].Position.x*Enemy[Index].Position.z+Timer()*500)*0.5+0.5,2)/3
-		EnemyDirX#=sin(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#*JellyfishMovement#
-		EnemyDirZ#=cos(Enemy[Index].Rotation.y)*Enemy[Index].MaxSpeed*FrameTime#*JellyfishMovement#
+		EnemyDirX#=sin(Enemy[Index].Rotation.y)
+		EnemyDirZ#=cos(Enemy[Index].Rotation.y)
 
+		EnemySpeedX#=EnemyDirX#*Enemy[Index].MaxSpeed*JellyfishMovement#*FrameTime#
+		EnemySpeedZ#=EnemyDirZ#*Enemy[Index].MaxSpeed*JellyfishMovement#*FrameTime#
+		
 		EnemyDirVID=CreateVector3(Enemy[Index].Position.x-Player.Character.Position.x,0,Enemy[Index].Position.z-Player.Character.Position.z)
 		Length#=GetVector3Length(EnemyDirVID)
 		SetVector3(EnemyDirVID,GetVector3X(EnemyDirVID)/Length#,0,GetVector3Z(EnemyDirVID)/Length#)
 		LookDirVID=CreateVector3(sin(Player.Character.Rotation.y),0,cos(Player.Character.Rotation.y))
-		
-		if player.state=STATE_SUCK and GetVector3Dot(LookDirVID,EnemyDirVID)<-0.5 and Length#<=SUCK_DISTANCE
-			if Enemy[Index].style = 1
-				Enemy[Index].Position.x=Enemy[Index].Position.x+SUCK_POWER*EnemyDirX#
-				Enemy[Index].Position.z=Enemy[Index].Position.z+SUCK_POWER*EnemyDirZ#	
+		if Enemy[Index].style = 1
+			if Player.state=STATE_SUCK and GetVector3Dot(LookDirVID,EnemyDirVID)<-0.5 and Length#<=SUCK_DISTANCE
+				EnemySpeedX#=-(SUCK_POWER*EnemyDirX#*Enemy[Index].MaxSpeed*FrameTime#)
+				EnemySpeedZ#=-(SUCK_POWER*EnemyDirZ#*Enemy[Index].MaxSpeed*FrameTime#)
 			endif
-		else	
-			Enemy[Index].Position.x=Enemy[Index].Position.x-EnemyDirX#
-			Enemy[Index].Position.z=Enemy[Index].Position.z-EnemyDirZ#
 		endif
 		DeleteVector3(EnemyDirVID)
 		DeleteVector3(LookDirVID)
+		
+		Enemy[Index].Position.x=Enemy[Index].Position.x-EnemySpeedX#
+		Enemy[Index].Position.z=Enemy[Index].Position.z-EnemySpeedZ#
 		
 		OldEnemyX#=GetObjectX(Enemy[Index].OID)
 		OldEnemyY#=GetObjectY(Enemy[Index].OID)
