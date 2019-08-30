@@ -39,7 +39,7 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 	SetTweenCustomFloat1(TempBullet.Velocity_Tween,TempBullet.Velocity.x,0,TweenEaseIn2())
 	SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
 	PlayTweenCustom(TempBullet.Velocity_Tween,0.0)
-	TempBullet.Time = Timer()+3
+	TempBullet.Time = Timer()+1
 	BulletSoundInstanceID=PlaySound(LaserSoundID[random(0,1)],2)
 	Bullets.insert(TempBullet)
 endfunction
@@ -54,12 +54,12 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 	for Index=0 to Bullets.length
 		Delete=0
 		UpdateTweenCustom(Bullets[Index].Velocity_Tween,FrameTime#)
-		VelocityX#=GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)*FrameTime#
-		VelocityZ#=GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)*FrameTime#
+		//~ VelocityX#=GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)*FrameTime#
+		//~ VelocityZ#=GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)*FrameTime#
+		VelocityX#=Bullets[Index].Velocity.x*FrameTime#
+		VelocityZ#=Bullets[Index].Velocity.z*FrameTime#
 		Bullets[Index].Position.x=Bullets[Index].Position.x-VelocityX#
 		Bullets[Index].Position.z=Bullets[Index].Position.z-VelocityZ#
-`		Bullets[Index].Position.x=Bullets[Index].Position.x-GetTweenCustomFloat1(Bullets[Index].Velocity_Tween)
-`		Bullets[Index].Position.z=Bullets[Index].Position.z-GetTweenCustomFloat2(Bullets[Index].Velocity_Tween)
 		OldBulletX#=GetObjectX(Bullets[Index].OID)
 		OldBulletZ#=GetObjectZ(Bullets[Index].OID)
 		SetObjectPosition(Bullets[Index].OID,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z)
@@ -70,7 +70,6 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 		EndZ#=Bullets[Index].Position.z-DirZ#*BulletLength
 		SetObjectShaderConstantByName(Bullets[Index].OID,"start",Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z, 0)
 		SetObjectShaderConstantByName(Bullets[Index].OID,"end",EndX#,Bullets[Index].Position.y,EndZ#, 0)
-	
 		HitOID=ObjectRayCast(0,Bullets[Index].Position.x,Bullets[Index].Position.y,Bullets[Index].Position.z,EndX#,Bullets[Index].Position.y,EndZ#)
 		if HitOID>0 and HitOID<>Player.Character.CollisionOID
 			HitEnemy=0
@@ -86,25 +85,23 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 			if HitEnemy=0 
 				CamshakeShake(0.2)
 				PlaySound(WallHitSoundID,random2(20,50))
-				print("Bullet x:"+str(GetObjectx(Bullets[Index].OID))+"  y:"+str(getobjecty(Bullets[index].OID))+"  z:"+str(GetObjectz(Bullets[index].OID)))
-				
 			endif
-			
 			
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 			continue
 		endif
 		
-`		if Timer()>Bullets[Index].Time
-`			DeleteObject(Bullets[Index].OID)
-`			Bullets.remove(Index)
-`		endif
-		if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween)
+		if Timer()>Bullets[Index].Time
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)
 			continue
 		endif
+		//~ if not GetTweenCustomPlaying(Bullets[Index].Velocity_Tween)
+			//~ DeleteObject(Bullets[Index].OID)
+			//~ Bullets.remove(Index)
+			//~ continue
+		//~ endif
 	next Index
 endfunction
 
