@@ -82,6 +82,8 @@ function Debuging (Debug ref as Debuging)
         print ("  F10 to paste hex color value into clearcolor")
         print ("  F11 to paste hex color value into fogColor")
         print ("  F12 to paste hex color value into ambientColor")
+        print ("  Mouse X: " + str(GetRawMouseX()))
+        print ("  Mouse Y: " + str(GetRawMouseY()))
     endif
 endfunction
 

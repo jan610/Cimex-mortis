@@ -127,7 +127,22 @@ function Game()
 	crosshairIID = loadimage("crosshair.png")
 	crosshairSID = CreateSprite( crosshairIID ) 
 	setSpriteSize (crosshairSID, 7.0, 7.0)
-	SetRawMouseVisible( 0 ) 
+	SetRawMouseVisible( 0 )
+	
+	
+	hudLifeSID = CreateSprite( 0 )
+	setSpriteSize (hudLifeSID, 37.0, 2.0)
+	setSpriteColor (hudLifeSID, 143, 7, 40,255)
+	SetSpritePosition (hudLifeSID, GetScreenBoundsLeft()+4,4)
+	setSpriteDepth (hudLifeSID, 7)
+	
+	hudLifeBgSID = CreateSprite( 0 )
+	setSpriteSize (hudLifeBgSID,  37.0, 2.0)
+	setSpriteColor (hudLifeBgSID, 80, 14, 36,255)
+	SetSpritePosition (hudLifeBgSID, GetScreenBoundsLeft()+4,4)
+	setSpriteDepth (hudLifeBgSID, 8)
+	
+	
 	
 	Width=ScreenWidth()
 	Height=ScreenHeight()
@@ -184,6 +199,8 @@ function Game()
 	
 	do
 		basicInput()
+		SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
+		
 		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
 		
 		if ScreenWidth()<>Width or Height<>ScreenHeight()

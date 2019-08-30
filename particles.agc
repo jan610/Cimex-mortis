@@ -86,7 +86,7 @@ endfunction
 
 function DeleteParicles(Particles ref as Particle[])
 	for p=0 to Particles.length
-		DeleteParticles(Particles[p].PID)
+		Delete3DParticles(Particles[p].PID)
 	next p
 	Particles.length=-1
 endfunction
