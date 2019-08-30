@@ -10,23 +10,24 @@ endtype
 
 
 function Debuging (Debug ref as Debuging)
+	
     if GetRawKeyPressed (112)        // toggle cheat console and input with F1
         Debug.Enabled = 1 - Debug.Enabled 
     endif
     
     if Debug.Enabled = 1
-		
-        if GetRawKeyPressed (116)    // F5 to toggle path
-            Debug.ShaderEnabled = 1 - Debug.ShaderEnabled
-        endif
-        
-        if GetRawKeyPressed (115)    // F4 to toggle path
-            Debug.PathEnabled = 1 - Debug.PathEnabled
-        endif
-        
+		 
         if GetRawKeyPressed (114)    // F3 to toggle fog
             Debug.FogEnabled = 1 - Debug.FogEnabled
             SetFogMode( Debug.FogEnabled ) 
+        endif		 
+		 
+        if GetRawKeyPressed (115)    // F4 to toggle path
+            Debug.PathEnabled = 1 - Debug.PathEnabled
+        endif
+        		
+        if GetRawKeyPressed (116)    // F5 to toggle path
+            Debug.ShaderEnabled = 1 - Debug.ShaderEnabled
         endif
         
         if GetRawKeyPressed (117)    // F6 to toggle global light
@@ -34,17 +35,11 @@ function Debuging (Debug ref as Debuging)
             SetSunActive( Debug.globalLightEnabled ) 
         endif
         
-
-        
-        if GetRawKeyState (49)        // 1 is held down
-            Debug.FogMin = Debug.FogMin + debug_mousewheel (10.0)
-            SetFogRange( Debug.FogMin, Debug.FogMax ) 
-        endif
-        
-        if GetRawKeyState (50)        // 2 is held down
-            Debug.FogMax = Debug.FogMax + debug_mousewheel (10.0)
-            SetFogRange( Debug.FogMin, Debug.FogMax )
-        endif
+        if GetRawKeyPressed (119)		// F8 to paste hex color into fogcolor
+			   clipGet$ = GetClipboardText()
+			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
+			   setFogColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
+		  endif
         
         if GetRawKeyPressed (120)    // F9 to paste hex color into suncolor
 			   clipGet$ = GetClipboardText()
@@ -58,17 +53,23 @@ function Debuging (Debug ref as Debuging)
 			   setClearColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
 		  endif
         
-        if GetRawKeyPressed (122)		// F11 to paste hex color into fogcolor
-			   clipGet$ = GetClipboardText()
-			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
-			   setFogColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
-		  endif
+
         
         if GetRawKeyPressed (123)		// F12 to paste hex color into ambientcolor
 			   clipGet$ = GetClipboardText()
 			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
 			   SetAmbientColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
 		  endif
+		  
+        if GetRawKeyState (49)        // 1 is held down
+            Debug.FogMin = Debug.FogMin + debug_mousewheel (10.0)
+            SetFogRange( Debug.FogMin, Debug.FogMax ) 
+        endif
+        
+        if GetRawKeyState (50)        // 2 is held down
+            Debug.FogMax = Debug.FogMax + debug_mousewheel (10.0)
+            SetFogRange( Debug.FogMin, Debug.FogMax )
+        endif
         
 
         print ("  DEBUG CONSOLE" + chr(10))
@@ -78,9 +79,9 @@ function Debuging (Debug ref as Debuging)
         print ("  PathMode=" + str(Debug.PathEnabled) + "     F4 to toggle")
         print ("  ShaderMode=" + str(Debug.ShaderEnabled) + "     F5 to toggle")
         print ("  sun=" + str(Debug.globalLightEnabled) + "F6 to toggle")
+        print ("  F8 to paste hex color value into fogColor")        
         print ("  F9 to paste hex color value into suncolor")
         print ("  F10 to paste hex color value into clearcolor")
-        print ("  F11 to paste hex color value into fogColor")
         print ("  F12 to paste hex color value into ambientColor")
         print ("  Mouse X: " + str(GetRawMouseX()))
         print ("  Mouse Y: " + str(GetRawMouseY()))
