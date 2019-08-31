@@ -262,7 +262,7 @@ function Game()
 	
 	LoadGameMedia()
 	
-	/*
+	
 	hudLifeSID = CreateSprite( 0 )
 	setSpriteSize (hudLifeSID, 37.0, 2.0)
 	setSpriteColor (hudLifeSID, 143, 7, 40,255)
@@ -274,7 +274,20 @@ function Game()
 	setSpriteColor (hudLifeBgSID, 80, 14, 36,255)
 	SetSpritePosition (hudLifeBgSID, GetScreenBoundsLeft()+4,4)
 	setSpriteDepth (hudLifeBgSID, 8)
-	*/
+	
+	
+	hudEnergySID = CreateSprite( 0 )
+	setSpriteSize (hudEnergySID, 37.0, 2.0)
+	setSpriteColor (hudEnergySID, 87, 126, 75,255)
+	SetSpritePosition (hudEnergySID, GetScreenBoundsRight()-(4+37.0),4)
+	setSpriteDepth (hudEnergySID, 7)
+	
+	hudEnergyBgSID = CreateSprite( 0 )
+	setSpriteSize (hudEnergyBgSID,  37.0, 2.0)
+	setSpriteColor (hudEnergyBgSID, 33, 72, 66,255)
+	SetSpritePosition (hudEnergyBgSID, GetScreenBoundsRight()-(4+37.0),4)
+	setSpriteDepth (hudEnergyBgSID, 8)
+	
 	
 	
 	Width=ScreenWidth()
@@ -346,15 +359,18 @@ function Game()
 	do
 		Time#=Timer()
 		basicInput()
-		//SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
+		SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
+		SetSpriteSize( hudEnergySID, getSpriteWidth(hudEnergyBgSID)*Player.Energy*0.01, getSpriteHeight(hudEnergyBgSID) ) 
 		
 		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
 		
+		/*
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 		endif
 		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
 		SetTextString(InfoTID,String$)
+		*/
 
 		if Player.Character.Life < 0.0
 			if Player.alive = 1
