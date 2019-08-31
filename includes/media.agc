@@ -46,25 +46,18 @@ function LoadGameMedia()
 	global ParticleExplotionIID
 	ParticleExplotionIID=loadimage("particle_explotion.png")
 	
-	
 	// WALL IMAGE 1
-	global Gut2DiffuseIID
-	Gut2DiffuseIID = LoadImage("manscape1.png") 
-	global Gut2NormalIID
-	Gut2NormalIID = LoadImage("manscape1.nrm.png")
-
-	// WALL IMAGE 2
 	global GutDiffuseIID
-	GutDiffuseIID = LoadImage("manscape2.png")
+	GutDiffuseIID = LoadImage("wall_diffuse.png")
 	global GutNormalIID
-	GutNormalIID = LoadImage("manscape2.png")
+	GutNormalIID = LoadImage("wall_normal.png")
 	
 	global GutOID
 `	GutOID = LoadObject("ground.3ds")
 	GutOID = LoadObject("arena.fbx")
-	SetObjectImage(GutOID, Gut2DiffuseIID, 0)
+	SetObjectImage(GutOID, GutDiffuseIID, 0)
 	SetObjectUVScale(GutOID,0,5,5)
-	SetObjectNormalMap(GutOID,Gut2NormalIID)
+	SetObjectNormalMap(GutOID,GutNormalIID)
 	SetObjectPosition(GutOID,24,0,24)
 	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
 	RotateObjectLocalY(GutOID,30)
