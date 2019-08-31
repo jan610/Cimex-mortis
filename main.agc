@@ -48,9 +48,9 @@ do
 		case STATE_MAIN_MENU
 			GameState=MainMenu()
 		endcase
-		case STATE_GAME_MENU
-			GameState=GameMenu()
-		endcase
+		//~ case STATE_GAME_MENU
+			//~ GameState=GameMenu()
+		//~ endcase
 		case STATE_GAME
 			GameState=Game()
 		endcase
@@ -97,7 +97,8 @@ function MainMenu()
 		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
 			setTextColor(PlayTID, 195,78,68,255)
 			if GetPointerReleased()
-				GameState=STATE_GAME_MENU
+				//~ GameState=STATE_GAME_MENU
+				GameState=STATE_GAME
 				exit
 			endif
 		endif
@@ -204,9 +205,6 @@ function GameMenu()
 	SetCameraPosition(1,50,55,40)
 	SetCameraLookAt(1,50,0,50,0)
 	
-	
-
-	
 	SelectTID=CreateText("LEVEL SELECT")
 	SetTextSize(SelectTID,8.0)
 	setTextColor(SelectTID, 140,28,28,255)
@@ -293,13 +291,18 @@ function Game()
 	Grid as PathGrid[48,48]
 	
 	// create some random walls
-`	for t = 1 to 10
-`		wall = CreateObjectBox(random2(10,20),3,1.0)
-`		SetObjectTransparency(wall,1)
-`		SetObjectPosition(wall,random2(1,48),1.5,random2(1,48))
-`		RotateObjectLocalY(wall,random2(0,360))
-`		setobjectcolor(wall,0,255,0,155)
-`	next t
+	ArenaWallOID=LoadObject("wall.3ds")
+	SetObjectTransparency(ArenaWallOID,1)
+	SetObjectPosition(ArenaWallOID,random2(1,48),-3,random2(1,48))
+	RotateObjectLocalY(ArenaWallOID,random2(0,360))
+	SetObjectImage(ArenaWallOID, GutDiffuseIID, 0)
+	SetObjectUVScale(ArenaWallOID,0,5,5)
+	SetObjectNormalMap(ArenaWallOID,GutNormalIID)
+	for w = 1 to 10
+		wallOID = CloneObject(ArenaWallOID)
+		SetObjectPosition(wallOID,random2(1,48),-3,random2(1,48))
+		RotateObjectLocalY(wallOID,random2(0,360))
+	next w
 	
 	PathInit(Grid, 0.75, GridSize)
 	PathFinding(Grid, PlayerGrid, 0, 0, Grid.length, Grid[0].length)
@@ -332,26 +335,12 @@ function Game()
 	next
 
 	CamshakeInit()
-	
+	Player.alive = 1
 	
 	do
+		Time#=Timer()
 		basicInput()
 		//SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
-		
-
-		if Player.Character.Life < 0.0
-			if getObjectVisible(Player.Character.OID) = 1
-				ParticleCreate_playerExplosion(Particles, Player.Character.Position.x, Player.Character.Position.y, Player.Character.position.z)
-				changeVisibility (Player, 0)
-				eggTimer = timer() + 2.0
-			else
-				if timer() > eggTimer
-					SetRawMouseVisible( 1 ) 
-					GameState=STATE_GAME_MENU
-					exit
-				endif
-			endif
-		endif 
 		
 		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
 		
@@ -360,8 +349,24 @@ function Game()
 		endif
 		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
 		SetTextString(InfoTID,String$)
+
+		if Player.Character.Life < 0.0
+			if Player.alive = 1
+				ParticleCreate_playerExplosion(Particles, Player.Character.Position.x, Player.Character.Position.y, Player.Character.position.z)
+				changeVisibility (Player, 0)
+				eggTimer = Time# + 2.0
+				Player.alive = 0
+			else
+				if Time# > eggTimer
+					SetRawMouseVisible( 1 ) 
+					//~ GameState=STATE_GAME_MENU
+					GameState=STATE_MAIN_MENU
+					exit
+				endif
+			endif
+		endif 
 		
-		PlayerControll(Player, Bullets, Blasts, 10) // player speed set in PlayerInit (Velocity)
+		if Player.alive = 1 then PlayerControll(Player, Bullets, Blasts, 10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
 		
 		BulletUpdate(Bullets, Enemys, Particles, Player)
@@ -373,7 +378,8 @@ function Game()
 
 		if GetRawKeyReleased(27)
 			SetRawMouseVisible( 1 ) 
-			GameState=STATE_GAME_MENU
+			//~ GameState=STATE_GAME_MENU
+			GameState=STATE_MAIN_MENU
 			exit
 		endif
 		

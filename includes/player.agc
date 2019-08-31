@@ -10,6 +10,7 @@ type Player
 	ShootDelay		as float
 	BlastThreshold	as float
 	SuckTime		as float
+	alive				as integer
 endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
@@ -91,6 +92,7 @@ function PlayerControll(Player ref as Player, Bullets ref as Bullet[], Blasts re
 	
 	if GetRawMouseRightState()
 		if Time#>Player.BlastThreshold and Player.Energy>=50
+			Player.BlastThreshold=Time#+2
 			Player.Energy=0
 			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
 		endif
