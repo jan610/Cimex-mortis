@@ -76,6 +76,7 @@ function MainMenu()
 	helpStr = helpStr + "LEFT MOUSE to shoot" + chr(10)
 	helpStr = helpStr + "RIGHT MOUSE sucks" + chr(10)
 	helpStr = helpStr + "SPACE shockwave!" + chr(10)
+	helpStr = helpStr + "F11 fullscreen" + chr(10)
 	helpTID=CreateText(helpStr)
 	SetTextSize(helpTID,3.5)
 	setTextColor(helpTID, 140,28,28,255)
@@ -105,6 +106,7 @@ function MainMenu()
 	loop
 	DeleteText(PlayTID)
 	DeleteText(ExitTID)
+	DeleteText(helpTID)
 endfunction GameState
 
 	type MapCells
