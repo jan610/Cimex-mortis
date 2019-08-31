@@ -112,8 +112,11 @@ function LoadGameMedia()
 	SetObjectImage(VortexOID,VortexDiffuseID,0)
 	
 	global VSID as integer[]
-	VSID.length = 0
+	VSID.length = 3
 	VSID[0] = LoadSound("sound/v1.wav")
+	VSID[1] = LoadSound("sound/v2.wav")
+	VSID[2] = LoadSound("sound/v3.wav")
+	VSID[3] = LoadSound("sound/v4.wav")
 	
 	
 endfunction
@@ -150,6 +153,11 @@ function DeleteGameMedia()
 	if GetTweenExists(SuckSoundFade_Tween)
 		DeleteTween(SuckSoundFade_Tween)
 	endif
+	
+	for index = 0 to VSID.length
+		DeleteSound(VSID[index])
+	next index
+	
 endfunction
 
 function SetChildrenImage(id as integer, img as integer, stage as integer)
