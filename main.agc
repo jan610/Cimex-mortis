@@ -393,7 +393,7 @@ function Game()
 		SetObjectRotation(VortexOID,GetObjectAngleX(Player.Character.OID),GetObjectAngleY(Player.Character.OID),GetObjectAngleZ(Player.Character.OID))
 		SpinVortex# = SpinVortex# -0.05
 		SetObjectUVOffset(VortexOID,0,SpinVortex#,0)
-		SetObjectColor(VortexOID,255,255,255,GetSoundInstanceVolume(SuckSoundInstance))
+		SetObjectColor(VortexOID,255,255,255,GetSoundInstanceVolume(SuckSoundInstance)*10)
 		
 		
 		if Debug.ShaderEnabled=0
