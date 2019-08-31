@@ -90,6 +90,14 @@ function MainMenu()
 	setTextColor(helpTID, 140,28,28,255)
 	SetTextPosition(helpTID,GetScreenBoundsLeft()+5,95-GetTextTotalHeight(helpTID))
 	
+	helpStr = "You are in a Patients body" + chr(10)
+	helpStr = helpStr + "Kill all the Cells" + chr(10)
+	helpStr = helpStr + "to save the Patient" + chr(10)
+	storyTID=CreateText(helpStr)
+	SetTextSize(storyTID,3.5)
+	setTextColor(storyTID, 140,28,28,255)
+	SetTextPosition(storyTID,GetScreenBoundsLeft()+5,50)
+	
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
@@ -118,6 +126,7 @@ function MainMenu()
 	DeleteText(PlayTID)
 	DeleteText(ExitTID)
 	DeleteText(helpTID)
+	DeleteText(storyTID)
 endfunction GameState
 
 	type MapCells
