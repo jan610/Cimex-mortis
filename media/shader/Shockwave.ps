@@ -1,0 +1,21 @@
+uniform sampler2D texture0;
+
+varying highp vec3 posVarying;
+varying vec2 uvVarying;
+
+uniform float waveTime;
+
+const vec2 waveCenter = vec2(0.5);
+const float innerwidth = 0.1;
+const float outerwidth = 0.02;
+
+void main()
+{
+	float noise=texture2D(texture0, uvVarying).r;
+	float dist = distance(waveCenter,uvVarying)+outerwidth;
+	float wave = smoothstep(waveTime-innerwidth,waveTime,dist);
+	wave = wave * smoothstep(waveTime+outerwidth,waveTime,dist);
+	wave = wave * noise;
+
+    gl_FragColor = vec4(0.6,0.4,1.0,1.0)*wave;
+}

@@ -10,14 +10,14 @@ type Bullet
 	Velocity_Tween	as integer
 endtype
 
-function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer,Attack as float, Player ref as Player)
+function BulletCreate(Bullets ref as Bullet[], Player ref as Player, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer)
 	local MaxSpeed as float
 	MaxSpeed = 9
 	if Player.Energy > 0
 		local TempBullet as Bullet
 		TempBullet.OID=CreateObjectPlane(1,1)
-		SetObjectPosition(TempBullet.OID,X,Y,Z)
-		SetObjectRotation(TempBullet.OID,0,AngleY,0)
+		SetObjectPosition(TempBullet.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
+		SetObjectRotation(TempBullet.OID,0,Player.Character.Rotation.y,0)
 		SetObjectImage(TempBullet.OID,DiffuseIID,0)
 		//~ SetObjectNormalMap(TempBullet.OID,NormalIID)
 		SetObjectCollisionMode(TempBullet.OID,0)
@@ -26,16 +26,16 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 		SetObjectShaderConstantByName(TempBullet.OID,"thickness",0.2,0,0,0)
 		//~ SetObjectLightMode(TempBullet.OID,0)
 		//~ SetObjectCullMode(TempBullet.OID,0)
-		TempBullet.Position.x=X
-		TempBullet.Position.y=Y
-		TempBullet.Position.z=Z
-		TempBullet.Rotation.y=AngleY
+		TempBullet.Position.x=Player.Character.Position.x
+		TempBullet.Position.y=Player.Character.Position.y
+		TempBullet.Position.z=Player.Character.Position.z
+		TempBullet.Rotation.y=Player.Character.Rotation.y
 		TempBullet.ShaderID=ShaderID
 		TempBullet.DiffuseIID=DiffuseIID
 		TempBullet.NormalIID=NormalIID
-		TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
-		TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
-		TempBullet.Velocity_Tween = CreateTweenCustom(Attack)
+		TempBullet.Velocity.x=sin(Player.Character.Rotation.y)*MaxSpeed
+		TempBullet.Velocity.z=cos(Player.Character.Rotation.y)*MaxSpeed
+		TempBullet.Velocity_Tween = CreateTweenCustom(Player.Attack)
 		SetTweenCustomFloat1(TempBullet.Velocity_Tween,TempBullet.Velocity.x,0,TweenEaseIn2())
 		SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
 		PlayTweenCustom(TempBullet.Velocity_Tween,0.0)
@@ -107,3 +107,29 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 	next Index
 endfunction
 
+function BulletCreateBlast(Bullets ref as Bullet[], Player ref as Player, ShaderID as Integer, DiffuseIID as Integer)
+	local TempBullet as Bullet
+	TempBullet.OID=CreateObjectPlane(32,32)
+	RotateObjectLocalX(TempBullet.OID,90)
+	SetObjectPosition(TempBullet.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
+	SetObjectShader(TempBullet.OID,ShaderID)
+	SetObjectImage(TempBullet.OID,DiffuseIID,0)
+	SetObjectCollisionMode(TempBullet.OID,0)
+	SetObjectTransparency(TempBullet.OID,1)
+	TempBullet.Time = Timer()+1
+	Bullets.insert(TempBullet)
+endfunction
+
+function BulletUpdateBlast(Bullets ref as Bullet[])
+	Time#=Timer()
+	for Index=0 to Bullets.length
+		WaveTime#=Bullets[Index].Time-Time#
+		WaveTime#=(1.0 - WaveTime#)*0.5
+		SetObjectShaderConstantByName(Bullets[Index].OID,"waveTime",WaveTime#,0,0,0)
+		if Time#>Bullets[Index].Time
+			DeleteObject(Bullets[Index].OID)
+			Bullets.remove(Index)
+			continue
+		endif
+	next Index
+endfunction

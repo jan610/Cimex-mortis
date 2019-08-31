@@ -59,22 +59,44 @@ do
 loop
 
 function MainMenu()
-	PlayTID=CreateText("Play")
-	SetTextSize(PlayTID,12)
-	ExitTID=CreateText("Exit")
-	SetTextSize(ExitTID,12)
-	SetTextPosition(ExitTID,0,12)
+	setClearColor(26,6,13)
+	
+	PlayTID=CreateText("PLAY")
+	SetTextSize(PlayTID,8.0)
+	SetTextPosition(PlayTID,50-(GetTextTotalWidth( PlayTID )*0.5),45-(GetTextTotalHeight(PlayTID)*0.6))
+	setTextColor(PlayTID, 140,28,28,255)
+	
+	ExitTID=CreateText("EXIT")
+	SetTextSize(ExitTID,8.0)
+	SetTextPosition( ExitTID, GetTextX( PlayTID ),45+(GetTextTotalHeight(ExitTID)*0.6))
+	setTextColor(ExitTID, 140,28,28,255)
+	
+	helpStr as string
+	helpStr = helpStr + "WASD to move" + chr(10)
+	helpStr = helpStr + "LEFT MOUSE to shoot" + chr(10)
+	helpStr = helpStr + "RIGHT MOUSE sucks" + chr(10)
+	helpStr = helpStr + "SPACE shockwave!" + chr(10)
+	helpStr = helpStr + "F11 fullscreen" + chr(10)
+	helpTID=CreateText(helpStr)
+	SetTextSize(helpTID,3.5)
+	setTextColor(helpTID, 140,28,28,255)
+	SetTextPosition(helpTID,GetScreenBoundsLeft()+5,95-GetTextTotalHeight(helpTID))
+	
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
 		basicInput()
+		setTextColor(PlayTID, 140,28,28,255)
+		setTextColor(ExitTID, 140,28,28,255)
 		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
+			setTextColor(PlayTID, 195,78,68,255)
 			if GetPointerReleased()
 				GameState=STATE_GAME_MENU
 				exit
 			endif
 		endif
 		if GetTextHitTest(ExitTID,PointerX#,PointerY#)
+			setTextColor(ExitTID, 195,78,68,255)
 			if GetPointerReleased()
 				GameState=-1
 				end
@@ -84,6 +106,7 @@ function MainMenu()
 	loop
 	DeleteText(PlayTID)
 	DeleteText(ExitTID)
+	DeleteText(helpTID)
 endfunction GameState
 
 	type MapCells
@@ -95,10 +118,14 @@ endfunction GameState
 	endtype
 	
 function GameMenu()
+	
 	SetFogMode(0)
 	SetSunActive(0)
-	setClearColor(0,0,0)
+	//setClearColor(0,0,0)
+	setClearColor(26,6,13)
 	SetAmbientColor(146,146,146)
+	
+
 /*
 	// make some map cell objects
 	MapCells as MapCells[6]
@@ -169,24 +196,35 @@ function GameMenu()
 	SetCameraPosition(1,50,55,40)
 	SetCameraLookAt(1,50,0,50,0)
 	
-	SelectTID=CreateText("Level Select")
-	SetTextSize(SelectTID,12)
-	ExitTID=CreateText("Exit")
-	SetTextSize(ExitTID,12)
+	
+
+	
+	SelectTID=CreateText("LEVEL SELECT")
+	SetTextSize(SelectTID,8.0)
+	setTextColor(SelectTID, 140,28,28,255)
+	SetTextPosition(SelectTID,0,4)
+	ExitTID=CreateText("EXIT")
+	SetTextSize(ExitTID,8.0)
+	setTextColor(ExitTID, 140,28,28,255)
 	SetTextPosition(ExitTID,0,12)
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
 		
 		basicInput()
+		setTextColor(SelectTID, 140,28,28,255)
+		setTextColor(ExitTID, 140,28,28,255)
 		
 		if GetTextHitTest(SelectTID,PointerX#,PointerY#)
+			setTextColor(SelectTID, 195,78,68,255)			
 			if GetPointerReleased()
+
 				GameState=STATE_GAME
 				exit
 			endif
 		endif
 		if GetTextHitTest(ExitTID,PointerX#,PointerY#) or GetRawKeyState(27)
+			setTextColor(ExitTID, 195,78,68,255)			
 			if GetPointerReleased() or GetRawKeyPressed(27)
 				GameState=STATE_MAIN_MENU
 				exit
@@ -268,6 +306,7 @@ function Game()
 	VoicesInit(Voices,"Voices.json")
 
 	Bullets as Bullet[]
+	Blasts as Bullet[]
 	
 	Particles as Particle[]
 	
@@ -305,10 +344,12 @@ function Game()
 		
 		if GetPointerState() and Timer()>ShootDelay#
 			ShootDelay#=Timer()+0.1
-			BulletCreate(Bullets,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,Player.Character.Rotation.y, BulletShaderID, BulletDiffuseIID, -1, Player.Attack, Player)
+			BulletCreate(Bullets, Player, BulletShaderID, BulletDiffuseIID, -1)
+			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
 		endif	
 		
 		BulletUpdate(Bullets, Enemys, Particles, Player)
+		BulletUpdateBlast(Blasts)
 		ParticleUpdate(Particles)
 		VoiceDelay#=VoicesUpdate(Voices, VoiceDelay#)
 		
@@ -409,7 +450,7 @@ function basicInput()
 			end
 		endif
 	endif
-	
+	// F11 to toggle fullscreen
 	if GetRawKeyPressed (122) = 1
 		isItfullscreen = 1-isItfullscreen
 		SetWindowSize( 960, 540, isItfullscreen )
