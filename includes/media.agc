@@ -32,6 +32,9 @@ function LoadGameMedia()
 	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
 	SetShaderConstantByName(BlurVSID,"blurScale",6.0,0,0,0)
 	
+	global ParticleCloudIID
+	ParticleCloudIID=loadimage("cloud.png")
+	
 	global ParticleIID
 	ParticleIID=loadimage("particles2.png")
 	
