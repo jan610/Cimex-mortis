@@ -14,6 +14,12 @@ function LoadGameMedia()
 	global BulletDiffuseIID
 	BulletDiffuseIID=LoadImage("bullet.png")
 	
+	global BlastShaderID
+	BlastShaderID=LoadShader("shader/Shockwave.vs","shader/Shockwave.ps")
+	global NoiseIID
+	NoiseIID=LoadImage("noise.jpg")
+	
+	
 	global SceneIID
 	SceneIID=CreateRenderImage(width,height,0,0)
 	global BlurHIID

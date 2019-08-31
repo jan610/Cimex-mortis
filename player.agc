@@ -38,6 +38,7 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	Player.Character.Position.z=16
 	Player.Character.Life=100.0
 	Player.Character.MaxLife=100.0
+	Player.Energy=25.0
 	Player.Attack = 0.9
 	Player.LID = 1
 	SetObjectPosition(Player.Character.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
@@ -106,8 +107,6 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 			SetSoundInstanceVolume(SuckSoundInstance,GetTweenCustomFloat1(SuckSoundFade_Tween))
 		endif
 	endif
-
-
 	
 	if GetTweenCustomPlaying(player.Boost_TweenID)
 		print("Boost")

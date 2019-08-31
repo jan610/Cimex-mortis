@@ -107,3 +107,29 @@ function BulletUpdate(Bullets ref as Bullet[], Enemy ref as Character[], Particl
 	next Index
 endfunction
 
+function BulletCreateBlast(Bullets ref as Bullet[], Player ref as Player, ShaderID as Integer, DiffuseIID as Integer)
+	local TempBullet as Bullet
+	TempBullet.OID=CreateObjectPlane(48,48)
+	RotateObjectLocalX(TempBullet.OID,90)
+	SetObjectPosition(TempBullet.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
+	SetObjectShader(TempBullet.OID,ShaderID)
+	SetObjectImage(TempBullet.OID,DiffuseIID,0)
+	SetObjectCollisionMode(TempBullet.OID,0)
+	SetObjectTransparency(TempBullet.OID,1)
+	TempBullet.Time = Timer()+1
+	Bullets.insert(TempBullet)
+endfunction
+
+function BulletUpdateBlast(Bullets ref as Bullet[])
+	Time#=Timer()
+	for Index=0 to Bullets.length
+		WaveTime#=Bullets[Index].Time-Time#
+		WaveTime#=(1.0 - WaveTime#)
+		SetObjectShaderConstantByName(Bullets[Index].OID,"waveTime",WaveTime#,0,0,0)
+		if Time#>Bullets[Index].Time
+			DeleteObject(Bullets[Index].OID)
+			Bullets.remove(Index)
+			continue
+		endif
+	next Index
+endfunction

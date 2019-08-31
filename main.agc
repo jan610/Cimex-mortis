@@ -279,6 +279,7 @@ function Game()
 	VoicesInit(Voices,"Voices.json")
 
 	Bullets as Bullet[]
+	Blasts as Bullet[]
 	
 	Particles as Particle[]
 	
@@ -316,10 +317,12 @@ function Game()
 		
 		if GetPointerState() and Timer()>ShootDelay#
 			ShootDelay#=Timer()+0.1
-			BulletCreate(Bullets,Player, BulletShaderID, BulletDiffuseIID, -1)
+			BulletCreate(Bullets, Player, BulletShaderID, BulletDiffuseIID, -1)
+			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
 		endif	
 		
 		BulletUpdate(Bullets, Enemys, Particles, Player)
+		BulletUpdateBlast(Blasts)
 		ParticleUpdate(Particles)
 		VoiceDelay#=VoicesUpdate(Voices, VoiceDelay#)
 		
