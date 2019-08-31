@@ -48,9 +48,9 @@ do
 		case STATE_MAIN_MENU
 			GameState=MainMenu()
 		endcase
-		case STATE_GAME_MENU
-			GameState=GameMenu()
-		endcase
+		//~ case STATE_GAME_MENU
+			//~ GameState=GameMenu()
+		//~ endcase
 		case STATE_GAME
 			GameState=Game()
 		endcase
@@ -97,7 +97,8 @@ function MainMenu()
 		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
 			setTextColor(PlayTID, 195,78,68,255)
 			if GetPointerReleased()
-				GameState=STATE_GAME_MENU
+				//~ GameState=STATE_GAME_MENU
+				GameState=STATE_GAME
 				exit
 			endif
 		endif
@@ -378,7 +379,8 @@ function Game()
 
 		if GetRawKeyReleased(27)
 			SetRawMouseVisible( 1 ) 
-			GameState=STATE_GAME_MENU
+			//~ GameState=STATE_GAME_MENU
+			GameState=STATE_MAIN_MENU
 			exit
 		endif
 		
