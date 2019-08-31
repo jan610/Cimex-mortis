@@ -98,13 +98,13 @@ function PlayerControll(Player ref as Player, Bullets ref as Bullet[], Blasts re
 		endif
 		player.State=STATE_SUCK
 		if SuckSoundInstance = 0 
-			SuckSoundInstance = playsound(SuckSoundID,100,1) // loop forever
+			SuckSoundInstance = playsound(SuckSoundID,10,1) // loop forever
 		endif
 		if GetTweenCustomExists(SuckSoundFade_Tween)
 			DeleteTween(SuckSoundFade_Tween)
 		endif
 		SuckSoundFade_Tween = CreateTweenCustom(0.2)
-		SetTweenCustomFloat1(SuckSoundFade_Tween,GetSoundInstanceVolume(SuckSoundInstance),100,TweenLinear())
+		SetTweenCustomFloat1(SuckSoundFade_Tween,GetSoundInstanceVolume(SuckSoundInstance),10,TweenLinear())
 		PlayTweenCustom(SuckSoundFade_Tween,0)
 	else
 		player.state=0	
