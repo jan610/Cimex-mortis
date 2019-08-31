@@ -205,9 +205,6 @@ function GameMenu()
 	SetCameraPosition(1,50,55,40)
 	SetCameraLookAt(1,50,0,50,0)
 	
-	
-
-	
 	SelectTID=CreateText("LEVEL SELECT")
 	SetTextSize(SelectTID,8.0)
 	setTextColor(SelectTID, 140,28,28,255)
@@ -296,14 +293,14 @@ function Game()
 	// create some random walls
 	ArenaWallOID=LoadObject("wall.3ds")
 	SetObjectTransparency(ArenaWallOID,1)
-	SetObjectPosition(ArenaWallOID,random2(1,48),0,random2(1,48))
+	SetObjectPosition(ArenaWallOID,random2(1,48),-3,random2(1,48))
 	RotateObjectLocalY(ArenaWallOID,random2(0,360))
 	SetObjectImage(ArenaWallOID, GutDiffuseIID, 0)
 	SetObjectUVScale(ArenaWallOID,0,5,5)
 	SetObjectNormalMap(ArenaWallOID,GutNormalIID)
 	for w = 1 to 10
 		wallOID = CloneObject(ArenaWallOID)
-		SetObjectPosition(wallOID,random2(1,48),0,random2(1,48))
+		SetObjectPosition(wallOID,random2(1,48),-3,random2(1,48))
 		RotateObjectLocalY(wallOID,random2(0,360))
 	next w
 	
@@ -341,24 +338,9 @@ function Game()
 	Player.alive = 1
 	
 	do
+		Time#=Timer()
 		basicInput()
 		//SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
-		
-
-		if Player.Character.Life < 0.0
-			if Player.alive = 1
-				ParticleCreate_playerExplosion(Particles, Player.Character.Position.x, Player.Character.Position.y, Player.Character.position.z)
-				changeVisibility (Player, 0)
-				eggTimer = timer() + 2.0
-				Player.alive = 0
-			else
-				if timer() > eggTimer
-					SetRawMouseVisible( 1 ) 
-					GameState=STATE_MAIN_MENU
-					exit
-				endif
-			endif
-		endif 
 		
 		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
 		
@@ -367,6 +349,22 @@ function Game()
 		endif
 		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
 		SetTextString(InfoTID,String$)
+
+		if Player.Character.Life < 0.0
+			if Player.alive = 1
+				ParticleCreate_playerExplosion(Particles, Player.Character.Position.x, Player.Character.Position.y, Player.Character.position.z)
+				changeVisibility (Player, 0)
+				eggTimer = Time# + 2.0
+				Player.alive = 0
+			else
+				if Time# > eggTimer
+					SetRawMouseVisible( 1 ) 
+					//~ GameState=STATE_GAME_MENU
+					GameState=STATE_MAIN_MENU
+					exit
+				endif
+			endif
+		endif 
 		
 		if Player.alive = 1 then PlayerControll(Player, Bullets, Blasts, 10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)

@@ -103,9 +103,9 @@ function CamshakeShake(Amplitude as float)
 endfunction
 
 function CamshakeUpdate()
-		index = (timer()-Camshake.Start)*60
-		if index <=60
-			SetCameraPosition(1,getcamerax(1)+Camshake.Offset[index].x*Camshake.Amplitude,getcameray(1)+Camshake.Offset[index].y*Camshake.Amplitude,getcameraz(1)+Camshake.Offset[index].z*Camshake.Amplitude)
-		endif
+	index = (timer()-Camshake.Start)*60
+	if index <=60
+		SetCameraPosition(1,getcamerax(1)+Camshake.Offset[index].x*Camshake.Amplitude,getcameray(1)+Camshake.Offset[index].y*Camshake.Amplitude,getcameraz(1)+Camshake.Offset[index].z*Camshake.Amplitude)
+	endif
 endfunction
 
