@@ -293,17 +293,19 @@ function Game()
 	
 	// create some random walls
 	ArenaWallOID=LoadObject("wall.3ds")
+	ArenaWallOID=LoadObject("walls.3ds")
 	//~ SetObjectTransparency(ArenaWallOID,1)
-	SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
+	//~ SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
+	SetObjectPosition(ArenaWallOID,24,-2,24)
 	RotateObjectLocalY(ArenaWallOID,random2(0,360))
 	SetObjectImage(ArenaWallOID, GutDiffuseIID, 0)
 	SetObjectUVScale(ArenaWallOID,0,5,5)
 	SetObjectNormalMap(ArenaWallOID,GutNormalIID)
-	for w = 1 to 10
-		wallOID = CloneObject(ArenaWallOID)
-		SetObjectPosition(wallOID,random2(1,48),-2,random2(1,48))
-		RotateObjectLocalY(wallOID,random2(0,360))
-	next w
+	//~ for w = 1 to 15
+		//~ wallOID = CloneObject(ArenaWallOID)
+		//~ SetObjectPosition(wallOID,random2(1,48),-2,random2(1,48))
+		//~ RotateObjectLocalY(wallOID,random2(0,360))
+	//~ next w
 	
 	PathInit(Grid, 0.75, GridSize)
 	PathFinding(Grid, PlayerGrid, 0, 0, Grid.length, Grid[0].length)
