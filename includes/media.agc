@@ -19,7 +19,6 @@ function LoadGameMedia()
 	global NoiseIID
 	NoiseIID=LoadImage("noise.jpg")
 	
-	
 	global SceneIID
 	SceneIID=CreateRenderImage(width,height,0,0)
 	global BlurHIID

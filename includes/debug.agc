@@ -51,9 +51,7 @@ function Debuging (Debug ref as Debuging)
 			   clipGet$ = GetClipboardText()
 			   clipGet$ = ReplaceString( clipGet$, "#", "", -1 ) 
 			   setClearColor(Val(Mid(clipGet$,1, 2 ) ,16), Val(Mid(clipGet$,3, 2 ) ,16), Val(Mid(clipGet$,5, 2 ) ,16) )
-		  endif
-        
-
+		endif
         
         if GetRawKeyPressed (123)		// F12 to paste hex color into ambientcolor
 			   clipGet$ = GetClipboardText()

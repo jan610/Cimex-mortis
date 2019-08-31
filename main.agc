@@ -24,16 +24,16 @@ UseNewDefaultFonts( 1 ) // since version 2.0.22 we can use nicer default fonts
 SetDefaultWrapU(1)
 SetDefaultWrapV(1)
 
-#include "constants.agc"
-#include "common.agc"
-#include "bullets.agc"
-#include "enemys.agc"
-#include "path.agc"
-#include "player.agc"
-#include "debug.agc"
-#include "particles.agc"
-#include "media.agc"
-#include "voices.agc"
+#include "includes/constants.agc"
+#include "includes/common.agc"
+#include "includes/bullets.agc"
+#include "includes/enemys.agc"
+#include "includes/path.agc"
+#include "includes/player.agc"
+#include "includes/debug.agc"
+#include "includes/particles.agc"
+#include "includes/media.agc"
+#include "includes/voices.agc"
 
 global Camshake as Camshaker
 global isItfullscreen = 0
