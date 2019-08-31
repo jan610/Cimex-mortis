@@ -7,6 +7,7 @@
 #constant KEY_A				65
 #constant KEY_S				83
 #constant KEY_D				68
+#constant KEY_F            70
 #constant KEY_SPACE        32
 #constant STATE_FORWARD    1
 #constant STATE_BACKWARD   2
