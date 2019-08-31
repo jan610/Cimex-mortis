@@ -106,10 +106,14 @@ endfunction GameState
 	endtype
 	
 function GameMenu()
+	
 	SetFogMode(0)
 	SetSunActive(0)
-	setClearColor(0,0,0)
+	//setClearColor(0,0,0)
+	setClearColor(26,6,13)
 	SetAmbientColor(146,146,146)
+	
+
 /*
 	// make some map cell objects
 	MapCells as MapCells[6]
@@ -180,24 +184,35 @@ function GameMenu()
 	SetCameraPosition(1,50,55,40)
 	SetCameraLookAt(1,50,0,50,0)
 	
-	SelectTID=CreateText("Level Select")
-	SetTextSize(SelectTID,12)
-	ExitTID=CreateText("Exit")
-	SetTextSize(ExitTID,12)
+	
+
+	
+	SelectTID=CreateText("LEVEL SELECT")
+	SetTextSize(SelectTID,8.0)
+	setTextColor(SelectTID, 140,28,28,255)
+	SetTextPosition(SelectTID,0,4)
+	ExitTID=CreateText("EXIT")
+	SetTextSize(ExitTID,8.0)
+	setTextColor(ExitTID, 140,28,28,255)
 	SetTextPosition(ExitTID,0,12)
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
 		
 		basicInput()
+		setTextColor(SelectTID, 140,28,28,255)
+		setTextColor(ExitTID, 140,28,28,255)
 		
 		if GetTextHitTest(SelectTID,PointerX#,PointerY#)
+			setTextColor(SelectTID, 195,78,68,255)			
 			if GetPointerReleased()
+
 				GameState=STATE_GAME
 				exit
 			endif
 		endif
 		if GetTextHitTest(ExitTID,PointerX#,PointerY#) or GetRawKeyState(27)
+			setTextColor(ExitTID, 195,78,68,255)			
 			if GetPointerReleased() or GetRawKeyPressed(27)
 				GameState=STATE_MAIN_MENU
 				exit
