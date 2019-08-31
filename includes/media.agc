@@ -62,10 +62,9 @@ function LoadGameMedia()
 	SetObjectImage(GutOID, Gut2DiffuseIID, 0)
 	SetObjectUVScale(GutOID,0,5,5)
 	SetObjectNormalMap(GutOID,Gut2NormalIID)
-	SetObjectPosition(GutOID,24,-2,24)
+	SetObjectPosition(GutOID,24,0,24)
 	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
-	RotateObjectLocalY(GutOID,60)
-
+	RotateObjectLocalY(GutOID,30)
 	
 	global SelfilluminationSID
 	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
