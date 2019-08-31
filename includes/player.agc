@@ -15,7 +15,7 @@ endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
 	PlayerDiffuseIID=LoadImage("player0001.png")
-	PlayerIlluminationIID=LoadImage("player0002.png")
+	PlayerIlluminationIID=LoadImage("player0002a.png")
 	Player.Character.OID=LoadObjectWithChildren("player.3ds")
 	AnimationName$=GetObjectAnimationName(Player.Character.OID,1)
 	AnimationDurration#=GetObjectAnimationDuration(Player.Character.OID,AnimationName$)
