@@ -58,7 +58,7 @@ function LoadGameMedia()
 	SetObjectImage(GutOID, GutDiffuseIID, 0)
 	//~ SetObjectUVScale(GutOID,0,5,5)
 	SetObjectNormalMap(GutOID,GutNormalIID)
-	SetObjectPosition(GutOID,24,2,24)
+	SetObjectPosition(GutOID,24,0,24)
 	//~ SetObjectScalePermanent(GutOID,1.5,1.5,1.5)
 	//~ RotateObjectLocalY(GutOID,30)
 	
