@@ -376,7 +376,7 @@ function Game()
 		ParticleUpdate(Particles)
 		VoiceDelay#=VoicesUpdate(Voices, VoiceDelay#)
 		
-		Debuging(Debug)
+		Debuging(Debug, Player)
 
 		if GetRawKeyReleased(27)
 			SetRawMouseVisible( 1 ) 
