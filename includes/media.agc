@@ -32,6 +32,9 @@ function LoadGameMedia()
 	BlurVSID=LoadFullScreenShader("shader/BlurV.ps")
 	SetShaderConstantByName(BlurVSID,"blurScale",6.0,0,0,0)
 	
+	global ParticleCloudIID
+	ParticleCloudIID=loadimage("cloud.png")
+	
 	global ParticleIID
 	ParticleIID=loadimage("particles2.png")
 	
@@ -48,19 +51,19 @@ function LoadGameMedia()
 	
 	// WALL IMAGE 1
 	global GutDiffuseIID
-	GutDiffuseIID = LoadImage("wall_diffuse.png")
+	GutDiffuseIID = LoadImage("wall_small_diffuse.png")
 	global GutNormalIID
-	GutNormalIID = LoadImage("wall_normal.png")
+	GutNormalIID = LoadImage("wall_small_normal.png")
 	
 	global GutOID
 `	GutOID = LoadObject("ground.3ds")
 	GutOID = LoadObject("arena.3ds")
 	SetObjectImage(GutOID, GutDiffuseIID, 0)
-	SetObjectUVScale(GutOID,0,5,5)
+	//~ SetObjectUVScale(GutOID,0,5,5)
 	SetObjectNormalMap(GutOID,GutNormalIID)
 	SetObjectPosition(GutOID,24,0,24)
 	//~ SetObjectScalePermanent(GutOID,1.5,1.5,1.5)
-	RotateObjectLocalY(GutOID,30)
+	//~ RotateObjectLocalY(GutOID,30)
 	
 	global SelfilluminationSID
 	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
@@ -118,7 +121,7 @@ function DeleteGameMedia()
 	
 	DeleteImage(GutDiffuseIID)
 	DeleteImage(GutNormalIID)
-	DeleteObject(GutOID)
+	//~ DeleteObject(GutOID)
 	
 	DeleteShader(SelfilluminationSID)
 	

@@ -9,13 +9,14 @@ type Debuging
 endtype
 
 
-function Debuging (Debug ref as Debuging)
-	
-    if GetRawKeyPressed (112)        // toggle cheat console and input with F1
-        Debug.Enabled = 1 - Debug.Enabled 
-    endif
+function Debuging (Debug ref as Debuging, Player ref as player)
+						
+		 if GetRawKeyPressed (112)        // toggle cheat console and input with F1
+			  Debug.Enabled = 1 - Debug.Enabled 
+		 endif
     
     if Debug.Enabled = 1
+		 player.Character.life = 100.0
 		 
         if GetRawKeyPressed (114)    // F3 to toggle fog
             Debug.FogEnabled = 1 - Debug.FogEnabled
@@ -72,7 +73,7 @@ function Debuging (Debug ref as Debuging)
 
         print ("  DEBUG CONSOLE" + chr(10))
         print ("  FogMode=" + str(Debug.fogEnabled) + "     F3 to toggle")
-        print ("  FogMin=" + str(Debug.FogMin) + "     1 + mouse wheel")
+        print ("  FogMin=" + str(Debug.FogMin) + "     1 + mouse wheel (shift=increase, ctrl=decrease)")
         print ("  FogMax=" + str(Debug.FogMax) + "     2 + mouse wheel")
         print ("  PathMode=" + str(Debug.PathEnabled) + "     F4 to toggle")
         print ("  ShaderMode=" + str(Debug.ShaderEnabled) + "     F5 to toggle")
