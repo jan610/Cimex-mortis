@@ -1,4 +1,4 @@
-#include "constants.agc"
+
 type Particle
 	PID			as integer
 	Position	as vec3
