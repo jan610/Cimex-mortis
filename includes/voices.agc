@@ -25,13 +25,13 @@ endfunction
 function VoicesUpdate(Voices ref as Voice, VoiceDelay as float)
 	Time#=Timer()
 	if Time#>VoiceDelay
-		VoiceDelay=Time#+random(5,20)
-		Index=random(0,Voices.Text.length)
+		VoiceDelay=Time#+random2(6,20)
+		Index=random2(0,Voices.Text.length)
 		SetTextString(Voices.TID,Voices.Text[Index])
 		PlayTweenText(Voices.InTweenID,Voices.TID,0)
 		PlayTweenText(Voices.OutTweenID,Voices.TID,4)
-		if Index = 0
-			PlaySound(VSID[0])
+		if Index < 4 
+			PlaySound(VSID[Index])
 		endif
 	endif
 	UpdateTweenText(Voices.InTweenID,Voices.TID,GetFrameTime())
