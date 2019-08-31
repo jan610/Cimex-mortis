@@ -84,6 +84,12 @@ function LoadGameMedia()
 	
 	global SplorfSoundID
 	SplorfSoundID = LoadSound("sound/Splorf.wav")
+
+	global VPopSoundID
+	VPopSoundID = LoadSound("sound/viruspop.wav")
+
+	global ImpactSoundID
+	ImpactSoundID = LoadSound("sound/impact.wav")
 	
 	global SuckSoundID
 	SuckSoundID = LoadSound("sound/sucky.wav")

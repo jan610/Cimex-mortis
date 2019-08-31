@@ -98,6 +98,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 			ParticleCreate_explosion(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
 			ParticleCreate_realExplosion(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
 			ParticleCreate_bubbles(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
+			PlaySound(ImpactSoundID,random2(30,50))
 			EnemySpawn(Enemy[Index], Grid, GridSize)
 			continue
 		endif
@@ -170,10 +171,11 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 					if Enemy[Index].style = 0
 						Player.Character.Life = Player.Character.Life - Enemy[Index].MeleeDamage
 						ParticleCreate_meeleExplosion(Particles, Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
+						PlaySound(VPopSoundID,random2(20,40))
 						EnemySpawn(Enemy[Index], Grid, GridSize)
 					else
 						Player.Energy = Player.Energy + Enemy[Index].MeleeDamage
-						PlaySound(SplorfSoundID,25)
+						PlaySound(SplorfSoundID,random2(20,40))
 						EnemySpawn(Enemy[Index], Grid, GridSize)
 					endif
 				endif
