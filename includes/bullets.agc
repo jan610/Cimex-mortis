@@ -120,12 +120,25 @@ function BulletCreateBlast(Bullets ref as Bullet[], Player ref as Player, Shader
 	Bullets.insert(TempBullet)
 endfunction
 
-function BulletUpdateBlast(Bullets ref as Bullet[])
+function BulletUpdateBlast(Bullets ref as Bullet[], Enemy ref as Character[], Particles ref as Particle[])
+	Damage=1
 	Time#=Timer()
 	for Index=0 to Bullets.length
 		WaveTime#=Bullets[Index].Time-Time#
-		WaveTime#=(1.0 - WaveTime#)*0.5
-		SetObjectShaderConstantByName(Bullets[Index].OID,"waveTime",WaveTime#,0,0,0)
+		WaveTime#=(1.0 - WaveTime#)
+		SetObjectShaderConstantByName(Bullets[Index].OID,"waveTime",WaveTime#*0.5,0,0,0)
+		print(WaveTime#)
+		for e=0 to Enemy.length
+			//~ DistX#=Enemy[e].Position.x-Bullets[Index].Position.x
+			//~ DistZ#=Enemy[e].Position.z-Bullets[Index].Position.z
+			//~ Dist#=sqrt(DistX#*DistX#+DistZ#*DistZ#)
+			if Enemy[e].Life>0
+				//~ if Dist#>WaveTime#*32-2 and Dist#<WaveTime#*32+2
+					Enemy[e].Life=Enemy[e].Life-Damage
+				//~ endif
+			endif
+		next e
+		
 		if Time#>Bullets[Index].Time
 			DeleteObject(Bullets[Index].OID)
 			Bullets.remove(Index)

@@ -338,6 +338,8 @@ function Game()
 	CamshakeInit()
 	Player.alive = 1
 	
+	SpinVortex# = 0.0
+	
 	do
 		Time#=Timer()
 		basicInput()
@@ -371,7 +373,7 @@ function Game()
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
 		
 		BulletUpdate(Bullets, Enemys, Particles, Player)
-		BulletUpdateBlast(Blasts)
+		BulletUpdateBlast(Blasts, Enemys, Particles)
 		ParticleUpdate(Particles)
 		VoiceDelay#=VoicesUpdate(Voices, VoiceDelay#)
 		
@@ -386,6 +388,13 @@ function Game()
 		
 		CamshakeUpdate()
 		BuoyancyApply(Player.Character,0.2,150.0)
+		
+		SetObjectPosition(VortexOID,GetObjectX(Player.Character.OID),GetObjectY(Player.Character.OID),GetObjectZ(Player.Character.OID))
+		SetObjectRotation(VortexOID,GetObjectAngleX(Player.Character.OID),GetObjectAngleY(Player.Character.OID),GetObjectAngleZ(Player.Character.OID))
+		SpinVortex# = SpinVortex# -0.05
+		SetObjectUVOffset(VortexOID,0,SpinVortex#,0)
+		SetObjectColor(VortexOID,255,255,255,GetSoundInstanceVolume(SuckSoundInstance))
+		
 		
 		if Debug.ShaderEnabled=0
 			Update(0)

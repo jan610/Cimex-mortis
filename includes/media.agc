@@ -91,6 +91,20 @@ function LoadGameMedia()
 	SuckSoundInstance = 0
 	global SuckSoundFade_Tween as integer
 	SuckSoundFade_Tween = 0
+	
+	global VortexOID as integer
+	VortexOID = Loadobject("vortexcone.fbx")
+	SetObjectScalePermanent(VortexOID,0.02,0.02,0.02)
+	`RotateObjectLocalY(VortexOID,-90)
+	MoveObjectLocalz(VortexOID,-3.2)
+	MoveObjectLocalY(VortexOID,1.2)
+	FixObjectPivot(VortexOID)
+	SetObjectCollisionMode(VortexOID,0)
+	SetObjectTransparency(VortexOID,1)
+	global VortexDiffuseID as integer
+	VortexDiffuseID = Loadimage("vortex.png")
+	SetObjectImage(VortexOID,VortexDiffuseID,0)
+	
 endfunction
 
 
