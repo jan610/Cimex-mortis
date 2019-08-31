@@ -49,6 +49,29 @@ function ParticleCreate_explosion(Particles ref as Particle[], X#, Y#, Z#)
     Particles.insert(TempParticle)
 endfunction
 
+// player blows up!
+function ParticleCreate_playerExplosion(Particles ref as Particle[], X#, Y#, Z#)
+    pLife# as float = 3.0
+    local TempParticle as Particle
+    TempParticle.PID=Create3DParticles(X#,Y#,Z#)
+	Set3DParticlesLife(TempParticle.PID, pLife#)
+    Set3DParticlesMax(TempParticle.PID, 300)
+    Set3DParticlesSize(TempParticle.PID, 1.5)
+    Set3DParticlesFrequency(TempParticle.PID,10000)
+    Set3DParticlesDirectionRange(TempParticle.PID,180,180)
+    Set3DParticlesDirection(TempParticle.PID, 0.0, 1.3, 0.0, 1.3)
+    //Set3DParticlesStartZone( TempParticle.PID, -100.0, -50.0, -100.0, 100.0, 50.0, 100.0 )
+    Set3DParticlesStartZone( TempParticle.PID, -0.3, -0.3, -0.3, 0.3, 0.3, 0.3 )
+    Set3DParticlesPosition( TempParticle.PID, X#, Y#, Z# ) 
+    Set3DParticlesImage( TempParticle.PID, ParticleExplotionIID )
+    Set3DParticlesTransparency( TempParticle.PID, 2 ) 			// 0=none 1=alpha 2=addictive
+    Set3DParticlesColorInterpolation( TempParticle.PID, 1 ) // fade the particles out before they die
+    Add3DParticlesColorKeyFrame( TempParticle.PID, 0, 255, 255, 255,255 )
+    Add3DParticlesColorKeyFrame( TempParticle.PID, pLife#, 22, 15, 82, 0 ) // fade to transparence
+    Particles.insert(TempParticle)
+endfunction
+
+// Stuff blows up!
 function ParticleCreate_realExplosion(Particles ref as Particle[], X#, Y#, Z#)
     pLife# as float = 1.0
     local TempParticle as Particle
@@ -70,6 +93,7 @@ function ParticleCreate_realExplosion(Particles ref as Particle[], X#, Y#, Z#)
     Particles.insert(TempParticle)
 endfunction
 
+// Little puff when hitting enemies
 function ParticleCreate_cuteExplosion(Particles ref as Particle[], X#, Y#, Z#)
     pLife# as float = 0.3
     local TempParticle as Particle

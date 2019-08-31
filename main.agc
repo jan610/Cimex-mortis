@@ -333,9 +333,25 @@ function Game()
 
 	CamshakeInit()
 	
+	
 	do
 		basicInput()
 		//SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
+		
+
+		if Player.Character.Life < 0.0
+			if getObjectVisible(Player.Character.OID) = 1
+				ParticleCreate_playerExplosion(Particles, Player.Character.Position.x, Player.Character.Position.y, Player.Character.position.z)
+				changeVisibility (Player, 0)
+				eggTimer = timer() + 2.0
+			else
+				if timer() > eggTimer
+					SetRawMouseVisible( 1 ) 
+					GameState=STATE_GAME_MENU
+					exit
+				endif
+			endif
+		endif 
 		
 		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
 		
@@ -456,3 +472,12 @@ function basicInput()
 		SetWindowSize( 960, 540, isItfullscreen )
 	endif
 endfunction  
+
+
+function changeVisibility (Player ref as Player, mode as integer)
+	setObjectVisible(Player.Character.OID, mode)
+	for Index=1 to GetObjectNumChildren(Player.Character.OID)
+		setObjectVisible(GetObjectChildID(Player.Character.OID,Index), mode)
+	next
+	
+endfunction
