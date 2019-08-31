@@ -160,6 +160,8 @@ function DeleteGameMedia()
 		DeleteSound(VSID[index])
 	next index
 	
+	DeleteSound(AOESID)
+	
 endfunction
 
 function SetChildrenImage(id as integer, img as integer, stage as integer)
