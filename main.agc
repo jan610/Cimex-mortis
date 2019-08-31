@@ -371,7 +371,7 @@ function Game()
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
 		
 		BulletUpdate(Bullets, Enemys, Particles, Player)
-		BulletUpdateBlast(Blasts)
+		BulletUpdateBlast(Blasts, Enemys, Particles)
 		ParticleUpdate(Particles)
 		VoiceDelay#=VoicesUpdate(Voices, VoiceDelay#)
 		
