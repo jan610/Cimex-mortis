@@ -71,6 +71,17 @@ function MainMenu()
 	SetTextPosition( ExitTID, GetTextX( PlayTID ),45+(GetTextTotalHeight(ExitTID)*0.6))
 	setTextColor(ExitTID, 140,28,28,255)
 	
+	helpStr as string
+	helpStr = helpStr + "WASD to move" + chr(10)
+	helpStr = helpStr + "LEFT MOUSE to shoot" + chr(10)
+	helpStr = helpStr + "RIGHT MOUSE sucks" + chr(10)
+	helpStr = helpStr + "SPACE shockwave!" + chr(10)
+	helpStr = helpStr + "F11 fullscreen" + chr(10)
+	helpTID=CreateText(helpStr)
+	SetTextSize(helpTID,3.5)
+	setTextColor(helpTID, 140,28,28,255)
+	SetTextPosition(helpTID,GetScreenBoundsLeft()+5,95-GetTextTotalHeight(helpTID))
+	
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
@@ -95,6 +106,7 @@ function MainMenu()
 	loop
 	DeleteText(PlayTID)
 	DeleteText(ExitTID)
+	DeleteText(helpTID)
 endfunction GameState
 
 	type MapCells
