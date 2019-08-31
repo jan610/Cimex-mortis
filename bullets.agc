@@ -109,7 +109,7 @@ endfunction
 
 function BulletCreateBlast(Bullets ref as Bullet[], Player ref as Player, ShaderID as Integer, DiffuseIID as Integer)
 	local TempBullet as Bullet
-	TempBullet.OID=CreateObjectPlane(48,48)
+	TempBullet.OID=CreateObjectPlane(32,32)
 	RotateObjectLocalX(TempBullet.OID,90)
 	SetObjectPosition(TempBullet.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
 	SetObjectShader(TempBullet.OID,ShaderID)
@@ -124,7 +124,7 @@ function BulletUpdateBlast(Bullets ref as Bullet[])
 	Time#=Timer()
 	for Index=0 to Bullets.length
 		WaveTime#=Bullets[Index].Time-Time#
-		WaveTime#=(1.0 - WaveTime#)
+		WaveTime#=(1.0 - WaveTime#)*0.5
 		SetObjectShaderConstantByName(Bullets[Index].OID,"waveTime",WaveTime#,0,0,0)
 		if Time#>Bullets[Index].Time
 			DeleteObject(Bullets[Index].OID)

@@ -28,6 +28,8 @@ function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize 
 					Enemy[Index].NormalIID=Loadimage("virus1.nrm.png")
 					SetObjectImage(Enemy[Index].OID,Enemy[Index].DiffuseIID,0)
 					SetObjectNormalMap(Enemy[Index].OID,Enemy[Index].NormalIID)
+					SetObjectPosition(Enemy[Index].OID,0,-0.1,0)
+					FixObjectPivot(Enemy[Index].OID)
 					Original[Enemy[Index].style]=Index
 				else
 					OriginalIndex=Original[Enemy[Index].style]
@@ -48,7 +50,7 @@ function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize 
 				endif
 			endcase
 		endselect
-		
+	
 		Enemy[Index].MaxSpeed=random(20,50)/10.0
 		EnemySpawn(Enemy[Index],Grid,GridSize)	
 		SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
@@ -160,8 +162,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 		OldEnemyZ#=GetObjectZ(Enemy[Index].OID)
 		
 		HitOID=ObjectSphereSlide(0,OldEnemyX#,OldEnemyY#,OldEnemyZ#,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z,0.3)
-		if HitOID>0
-			HitCount=0
+		if HitOID>0 and HitOID<>Enemy[Index].OID
 		`	if Grid[EnemyGridX,EnemyGridZ].Number>0
 				Enemy[Index].Position.x=GetObjectRayCastSlideX(0)
 				Enemy[Index].Position.z=GetObjectRayCastSlideZ(0)
@@ -176,7 +177,6 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 						Player.Energy = Player.Energy + Enemy[Index].MeleeDamage
 						EnemySpawn(Enemy[Index], Grid, GridSize)
 					endif
-					
 				endif
 			next i
 		endif
