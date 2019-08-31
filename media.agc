@@ -52,16 +52,19 @@ function LoadGameMedia()
 	global GutNormalIID
 	GutNormalIID = LoadImage("abc_nrm3.jpg")
 	global GutOID
-	GutOID = LoadObject("ground.3ds")
+`	GutOID = LoadObject("ground.3ds")
+	GutOID = LoadObject("arena.fbx")
 	SetObjectImage(GutOID, Gut2DiffuseIID, 0)
+	SetObjectUVScale(GutOID,0,5,5)
 	SetObjectNormalMap(GutOID,Gut2NormalIID)
 	SetObjectPosition(GutOID,24,-2,24)
 	SetObjectScalePermanent(GutOID,0.022,0.022,0.022)
+	RotateObjectLocalY(GutOID,60)
+
 	
 	global SelfilluminationSID
 	SelfilluminationSID=LoadShader("shader/Normal.vs","shader/Slefillumination.ps")
 	SetShaderConstantByName(SelfilluminationSID,"glow",4.0,0,0,0)
-	
 	global LaserSoundID as integer[]
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot.wav"))
 	LaserSoundID.insert(LoadSound("sound/Laser_Shoot2.wav"))
