@@ -59,22 +59,33 @@ do
 loop
 
 function MainMenu()
-	PlayTID=CreateText("Play")
-	SetTextSize(PlayTID,12)
-	ExitTID=CreateText("Exit")
-	SetTextSize(ExitTID,12)
-	SetTextPosition(ExitTID,0,12)
+	setClearColor(26,6,13)
+	
+	PlayTID=CreateText("PLAY")
+	SetTextSize(PlayTID,8.0)
+	SetTextPosition(PlayTID,50-(GetTextTotalWidth( PlayTID )*0.5),45-(GetTextTotalHeight(PlayTID)*0.6))
+	setTextColor(PlayTID, 140,28,28,255)
+	
+	ExitTID=CreateText("EXIT")
+	SetTextSize(ExitTID,8.0)
+	SetTextPosition( ExitTID, GetTextX( PlayTID ),45+(GetTextTotalHeight(ExitTID)*0.6))
+	setTextColor(ExitTID, 140,28,28,255)
+	
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
 		basicInput()
+		setTextColor(PlayTID, 140,28,28,255)
+		setTextColor(ExitTID, 140,28,28,255)
 		if GetTextHitTest(PlayTID,PointerX#,PointerY#)
+			setTextColor(PlayTID, 195,78,68,255)
 			if GetPointerReleased()
 				GameState=STATE_GAME_MENU
 				exit
 			endif
 		endif
 		if GetTextHitTest(ExitTID,PointerX#,PointerY#)
+			setTextColor(ExitTID, 195,78,68,255)
 			if GetPointerReleased()
 				GameState=-1
 				end
@@ -409,7 +420,7 @@ function basicInput()
 			end
 		endif
 	endif
-	
+	// F11 to toggle fullscreen
 	if GetRawKeyPressed (122) = 1
 		isItfullscreen = 1-isItfullscreen
 		SetWindowSize( 960, 540, isItfullscreen )
