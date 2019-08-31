@@ -354,7 +354,7 @@ function Game()
 			else
 				if timer() > eggTimer
 					SetRawMouseVisible( 1 ) 
-					GameState=STATE_GAME_MENU
+					GameState=STATE_MAIN_MENU
 					exit
 				endif
 			endif
