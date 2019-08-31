@@ -293,13 +293,18 @@ function Game()
 	Grid as PathGrid[48,48]
 	
 	// create some random walls
-`	for t = 1 to 10
-`		wall = CreateObjectBox(random2(10,20),3,1.0)
-`		SetObjectTransparency(wall,1)
-`		SetObjectPosition(wall,random2(1,48),1.5,random2(1,48))
-`		RotateObjectLocalY(wall,random2(0,360))
-`		setobjectcolor(wall,0,255,0,155)
-`	next t
+	ArenaWallOID=LoadObject("wall.3ds")
+	SetObjectTransparency(ArenaWallOID,1)
+	SetObjectPosition(ArenaWallOID,random2(1,48),0,random2(1,48))
+	RotateObjectLocalY(ArenaWallOID,random2(0,360))
+	SetObjectImage(ArenaWallOID, GutDiffuseIID, 0)
+	SetObjectUVScale(ArenaWallOID,0,5,5)
+	SetObjectNormalMap(ArenaWallOID,GutNormalIID)
+	for w = 1 to 10
+		wallOID = CloneObject(ArenaWallOID)
+		SetObjectPosition(wallOID,random2(1,48),0,random2(1,48))
+		RotateObjectLocalY(wallOID,random2(0,360))
+	next w
 	
 	PathInit(Grid, 0.75, GridSize)
 	PathFinding(Grid, PlayerGrid, 0, 0, Grid.length, Grid[0].length)
