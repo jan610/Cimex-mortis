@@ -338,7 +338,7 @@ function Game()
 	next
 
 	CamshakeInit()
-	
+	Player.alive = 1
 	
 	do
 		basicInput()
@@ -346,10 +346,11 @@ function Game()
 		
 
 		if Player.Character.Life < 0.0
-			if getObjectVisible(Player.Character.OID) = 1
+			if Player.alive = 1
 				ParticleCreate_playerExplosion(Particles, Player.Character.Position.x, Player.Character.Position.y, Player.Character.position.z)
 				changeVisibility (Player, 0)
 				eggTimer = timer() + 2.0
+				Player.alive = 0
 			else
 				if timer() > eggTimer
 					SetRawMouseVisible( 1 ) 
@@ -367,7 +368,7 @@ function Game()
 		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
 		SetTextString(InfoTID,String$)
 		
-		PlayerControll(Player, Bullets, Blasts, 10) // player speed set in PlayerInit (Velocity)
+		if Player.alive = 1 then PlayerControll(Player, Bullets, Blasts, 10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
 		
 		BulletUpdate(Bullets, Enemys, Particles, Player)

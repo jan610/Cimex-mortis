@@ -10,6 +10,7 @@ type Player
 	ShootDelay		as float
 	BlastThreshold	as float
 	SuckTime		as float
+	alive				as integer
 endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
