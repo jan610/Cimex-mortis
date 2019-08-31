@@ -7,7 +7,7 @@ SetErrorMode(2)
 // set window properties
 SetWindowTitle( "Cimex mortis" )
 `SetWindowSize( 1920, 1080, 1 )
-SetWindowSize( 960, 540, 0 )
+SetWindowSize( 960, 540, 1 )
 SetWindowAllowResize( 1 ) // allow the user to resize the window
 
 // set display properties
@@ -293,17 +293,19 @@ function Game()
 	
 	// create some random walls
 	ArenaWallOID=LoadObject("wall.3ds")
+	ArenaWallOID=LoadObject("walls.3ds")
 	//~ SetObjectTransparency(ArenaWallOID,1)
-	SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
+	//~ SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
+	SetObjectPosition(ArenaWallOID,24,-2,24)
 	RotateObjectLocalY(ArenaWallOID,random2(0,360))
 	SetObjectImage(ArenaWallOID, GutDiffuseIID, 0)
 	SetObjectUVScale(ArenaWallOID,0,5,5)
 	SetObjectNormalMap(ArenaWallOID,GutNormalIID)
-	for w = 1 to 10
-		wallOID = CloneObject(ArenaWallOID)
-		SetObjectPosition(wallOID,random2(1,48),-2,random2(1,48))
-		RotateObjectLocalY(wallOID,random2(0,360))
-	next w
+	//~ for w = 1 to 15
+		//~ wallOID = CloneObject(ArenaWallOID)
+		//~ SetObjectPosition(wallOID,random2(1,48),-2,random2(1,48))
+		//~ RotateObjectLocalY(wallOID,random2(0,360))
+	//~ next w
 	
 	PathInit(Grid, 0.75, GridSize)
 	PathFinding(Grid, PlayerGrid, 0, 0, Grid.length, Grid[0].length)
@@ -393,7 +395,7 @@ function Game()
 		SetObjectRotation(VortexOID,GetObjectAngleX(Player.Character.OID),GetObjectAngleY(Player.Character.OID),GetObjectAngleZ(Player.Character.OID))
 		SpinVortex# = SpinVortex# -0.05
 		SetObjectUVOffset(VortexOID,0,SpinVortex#,0)
-		SetObjectColor(VortexOID,255,255,255,GetSoundInstanceVolume(SuckSoundInstance))
+		SetObjectColor(VortexOID,255,255,255,GetSoundInstanceVolume(SuckSoundInstance)*10)
 		
 		
 		if Debug.ShaderEnabled=0
