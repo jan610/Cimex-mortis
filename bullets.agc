@@ -10,14 +10,14 @@ type Bullet
 	Velocity_Tween	as integer
 endtype
 
-function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Float, AngleY as Float, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer,Attack as float, Player ref as Player)
+function BulletCreate(Bullets ref as Bullet[], Player ref as Player, ShaderID as Integer, DiffuseIID as Integer, NormalIID as Integer)
 	local MaxSpeed as float
 	MaxSpeed = 9
 	if Player.Energy > 0
 		local TempBullet as Bullet
 		TempBullet.OID=CreateObjectPlane(1,1)
-		SetObjectPosition(TempBullet.OID,X,Y,Z)
-		SetObjectRotation(TempBullet.OID,0,AngleY,0)
+		SetObjectPosition(TempBullet.OID,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z)
+		SetObjectRotation(TempBullet.OID,0,Player.Character.Rotation.y,0)
 		SetObjectImage(TempBullet.OID,DiffuseIID,0)
 		//~ SetObjectNormalMap(TempBullet.OID,NormalIID)
 		SetObjectCollisionMode(TempBullet.OID,0)
@@ -26,16 +26,16 @@ function BulletCreate(Bullets ref as Bullet[], X as Float, Y as Float, Z as Floa
 		SetObjectShaderConstantByName(TempBullet.OID,"thickness",0.2,0,0,0)
 		//~ SetObjectLightMode(TempBullet.OID,0)
 		//~ SetObjectCullMode(TempBullet.OID,0)
-		TempBullet.Position.x=X
-		TempBullet.Position.y=Y
-		TempBullet.Position.z=Z
-		TempBullet.Rotation.y=AngleY
+		TempBullet.Position.x=Player.Character.Position.x
+		TempBullet.Position.y=Player.Character.Position.y
+		TempBullet.Position.z=Player.Character.Position.z
+		TempBullet.Rotation.y=Player.Character.Rotation.y
 		TempBullet.ShaderID=ShaderID
 		TempBullet.DiffuseIID=DiffuseIID
 		TempBullet.NormalIID=NormalIID
-		TempBullet.Velocity.x=sin(AngleY)*MaxSpeed
-		TempBullet.Velocity.z=cos(AngleY)*MaxSpeed
-		TempBullet.Velocity_Tween = CreateTweenCustom(Attack)
+		TempBullet.Velocity.x=sin(Player.Character.Rotation.y)*MaxSpeed
+		TempBullet.Velocity.z=cos(Player.Character.Rotation.y)*MaxSpeed
+		TempBullet.Velocity_Tween = CreateTweenCustom(Player.Attack)
 		SetTweenCustomFloat1(TempBullet.Velocity_Tween,TempBullet.Velocity.x,0,TweenEaseIn2())
 		SetTweenCustomFloat2(TempBullet.Velocity_Tween,TempBullet.Velocity.z,0,TweenEaseIn2())
 		PlayTweenCustom(TempBullet.Velocity_Tween,0.0)

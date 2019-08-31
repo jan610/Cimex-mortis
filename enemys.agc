@@ -16,19 +16,39 @@ Type Character		// can be Player and Enemy
 endtype
 
 function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize as integer)
+	local Original as integer[1]
 	
 	for Index=0 to Enemy.length
-		If Index=0
-			Enemy[Index].OID=LoadObject("virus1.3ds")
-			Enemy[Index].DiffuseIID=Loadimage("virus1.png")
-			Enemy[Index].NormalIID=Loadimage("virus1.nrm.png")
-			SetObjectImage(Enemy[Index].OID,Enemy[Index].DiffuseIID,0)
-			SetObjectNormalMap(Enemy[Index].OID,Enemy[Index].NormalIID)
-	`		SetObjectPosition(Enemy[Index].OID,0,-0.1,0)
-	`		FixObjectPivot(Enemy[Index].OID)
-		else
-			Enemy[Index].OID=CloneObject(Enemy[0].OID)
-		endif
+		Enemy[Index].style = random2(0,Original.length)
+		select Enemy[Index].style
+			case 0
+				If Original[Enemy[Index].style]=0
+					Enemy[Index].OID=LoadObject("virus1.3ds")
+					Enemy[Index].DiffuseIID=Loadimage("virus1.png")
+					Enemy[Index].NormalIID=Loadimage("virus1.nrm.png")
+					SetObjectImage(Enemy[Index].OID,Enemy[Index].DiffuseIID,0)
+					SetObjectNormalMap(Enemy[Index].OID,Enemy[Index].NormalIID)
+					Original[Enemy[Index].style]=Index
+				else
+					OriginalIndex=Original[Enemy[Index].style]
+					Enemy[Index].OID=CloneObject(Enemy[OriginalIndex].OID)
+				endif
+			endcase
+			case 1
+				If Original[Enemy[Index].style]=0
+					Enemy[Index].OID=LoadObject("virus2.3ds")
+					Enemy[Index].DiffuseIID=Loadimage("virus2.png")
+					Enemy[Index].NormalIID=Loadimage("virus2.nrm.png")
+					SetObjectImage(Enemy[Index].OID,Enemy[Index].DiffuseIID,0)
+					SetObjectNormalMap(Enemy[Index].OID,Enemy[Index].NormalIID)
+					Original[Enemy[Index].style]=Index
+				else
+					OriginalIndex=Original[Enemy[Index].style]
+					Enemy[Index].OID=CloneObject(Enemy[OriginalIndex].OID)
+				endif
+			endcase
+		endselect
+		
 		Enemy[Index].MaxSpeed=random(20,50)/10.0
 		EnemySpawn(Enemy[Index],Grid,GridSize)	
 		SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
@@ -47,12 +67,6 @@ function EnemySpawn(Enemy ref as Character, Grid ref as PathGrid[][], GridSize a
 	Enemy.Position.z=SpawnY#
 	Enemy.Life=100.0
 	Enemy.MeleeDamage=17.0
-	Enemy.style = random2(0,1)
-	if Enemy.style = 0
-		SetObjectColor(Enemy.OID, 255,100,100,255)
-	else
-		SetObjectColor(Enemy.OID, 100,255,100,255)
-	endif
 endfunction
 
 function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref as PathGrid[][], GridSize as integer, Particles ref as Particle[])
