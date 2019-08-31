@@ -95,6 +95,8 @@ function PlayerControll(Player ref as Player, Bullets ref as Bullet[], Blasts re
 			Player.BlastThreshold=Time#+2
 			Player.Energy=10
 			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
+			CamshakeShake(2.0)
+			PlaySound(AOESID)
 		endif
 	endif
 	

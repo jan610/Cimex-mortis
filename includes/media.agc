@@ -118,6 +118,8 @@ function LoadGameMedia()
 	VSID[2] = LoadSound("sound/v3.wav")
 	VSID[3] = LoadSound("sound/v4.wav")
 	
+	global AOESID as integer
+	AOESID = LoadSound("sound/aoe.wav")
 	
 endfunction
 
