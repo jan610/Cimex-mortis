@@ -302,7 +302,7 @@ function Game()
 	Grid as PathGrid[48,48]
 	
 	// create some random walls
-	ArenaWallOID=LoadObject("wall.3ds")
+	//~ ArenaWallOID=LoadObject("wall.3ds")
 	ArenaWallOID=LoadObject("walls.3ds")
 	//~ SetObjectTransparency(ArenaWallOID,1)
 	//~ SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
