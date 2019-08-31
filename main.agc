@@ -345,14 +345,8 @@ function Game()
 		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
 		SetTextString(InfoTID,String$)
 		
-		PlayerControll(Player,10) // player speed set in PlayerInit (Velocity)
+		PlayerControll(Player, Bullets, Blasts, 10) // player speed set in PlayerInit (Velocity)
 		EnemyControll(Enemys, Player, Grid, GridSize, Particles)
-		
-		if GetPointerState() and Timer()>ShootDelay#
-			ShootDelay#=Timer()+0.1
-			BulletCreate(Bullets, Player, BulletShaderID, BulletDiffuseIID, -1)
-			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
-		endif	
 		
 		BulletUpdate(Bullets, Enemys, Particles, Player)
 		BulletUpdateBlast(Blasts)
