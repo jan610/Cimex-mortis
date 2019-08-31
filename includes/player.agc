@@ -86,16 +86,24 @@ function PlayerControll(Player ref as Player, Bullets ref as Bullet[], Blasts re
 		BulletCreate(Bullets, Player, BulletShaderID, BulletDiffuseIID, -1)
 	endif
 	
-	if GetRawMouseRightPressed()
-		Player.BlastThreshold=Time#+2
+	//if GetRawMouseRightPressed()
+	//	Player.BlastThreshold=Time#+2
+	//endif
+	
+	if GetRawKeyPressed(KEY_F)
+		if Player.Energy>=50
+			Player.BlastThreshold=Time#+2
+			Player.Energy=10
+			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
+		endif
 	endif
 	
 	if GetRawMouseRightState()
-		if Time#>Player.BlastThreshold and Player.Energy>=50
-			Player.BlastThreshold=Time#+2
-			Player.Energy=0
-			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
-		endif
+		// if Time#>Player.BlastThreshold and Player.Energy>=50
+		//		Player.BlastThreshold=Time#+2
+		//		Player.Energy=0
+		//		BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
+		// endif
 		player.State=STATE_SUCK
 		if SuckSoundInstance = 0 
 			SuckSoundInstance = playsound(SuckSoundID,10,1) // loop forever
