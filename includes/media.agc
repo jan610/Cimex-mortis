@@ -82,6 +82,9 @@ function LoadGameMedia()
 	//~ global GobalPlayerOID
 	//~ GobalPlayerOID=LoadObjectWithChildren("player.3ds")
 	
+	global SplorfSoundID
+	SplorfSoundID = LoadSound("sound/Splorf.wav")
+	
 	global SuckSoundID
 	SuckSoundID = LoadSound("sound/sucky.wav")
 	global SuckSoundInstance as integer
