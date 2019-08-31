@@ -132,6 +132,7 @@ function DeleteGameMedia()
 	DeleteSound(LaserSoundID[1])
 	LaserSoundID.length=-1
 	
+	DeleteSound(SplorfSoundID)
 	DeleteSound(AmbientSoundID)
 	DeleteSound(WallHitSoundID)
 	DeleteSound(SuckSoundID)
