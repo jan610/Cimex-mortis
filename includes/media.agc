@@ -82,6 +82,9 @@ function LoadGameMedia()
 	//~ global GobalPlayerOID
 	//~ GobalPlayerOID=LoadObjectWithChildren("player.3ds")
 	
+	global SplorfSoundID
+	SplorfSoundID = LoadSound("sound/Splorf.wav")
+	
 	global SuckSoundID
 	SuckSoundID = LoadSound("sound/sucky.wav")
 	global SuckSoundInstance as integer
@@ -129,6 +132,7 @@ function DeleteGameMedia()
 	DeleteSound(LaserSoundID[1])
 	LaserSoundID.length=-1
 	
+	DeleteSound(SplorfSoundID)
 	DeleteSound(AmbientSoundID)
 	DeleteSound(WallHitSoundID)
 	DeleteSound(SuckSoundID)

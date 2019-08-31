@@ -173,6 +173,7 @@ function EnemyControll(Enemy ref as Character[], Player ref as Player, Grid ref 
 						EnemySpawn(Enemy[Index], Grid, GridSize)
 					else
 						Player.Energy = Player.Energy + Enemy[Index].MeleeDamage
+						PlaySound(SplorfSoundID,25)
 						EnemySpawn(Enemy[Index], Grid, GridSize)
 					endif
 				endif
