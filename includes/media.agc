@@ -46,16 +46,19 @@ function LoadGameMedia()
 	global ParticleExplotionIID
 	ParticleExplotionIID=loadimage("particle_explotion.png")
 	
-	global Gut2DiffuseIID
-	Gut2DiffuseIID = LoadImage("3_dif.jpg")
-	global Gut2NormalIID
-	Gut2NormalIID = LoadImage("3_nrm.jpg")
-
 	
+	// WALL IMAGE 1
+	global Gut2DiffuseIID
+	Gut2DiffuseIID = LoadImage("manscape1.png") 
+	global Gut2NormalIID
+	Gut2NormalIID = LoadImage("manscape1.nrm.png")
+
+	// WALL IMAGE 2
 	global GutDiffuseIID
-	GutDiffuseIID = LoadImage("abc_dif2.jpg")
+	GutDiffuseIID = LoadImage("manscape2.png")
 	global GutNormalIID
-	GutNormalIID = LoadImage("abc_nrm3.jpg")
+	GutNormalIID = LoadImage("manscape2.png")
+	
 	global GutOID
 `	GutOID = LoadObject("ground.3ds")
 	GutOID = LoadObject("arena.fbx")
