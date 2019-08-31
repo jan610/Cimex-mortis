@@ -260,7 +260,7 @@ function Game()
 	PathInit(Grid, 0.5, GridSize)
 	PathFinding(Grid, PlayerGrid, 0, 0, Grid.length, Grid[0].length)
 	
-	Enemys as Character[100]
+	Enemys as Character[40]
 	EnemyInit(Enemys, Grid, GridSize)
 	
 	Voices as Voice
