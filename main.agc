@@ -240,8 +240,6 @@ function GameMenu()
 		DeleteObject(MapCells[index].OID)
 	next index
 	Deleteimage(Cell_DiffuseIID)
-	
-	
 endfunction GameState
 
 function Game()
@@ -295,7 +293,7 @@ function Game()
 `		setobjectcolor(wall,0,255,0,155)
 `	next t
 	
-	PathInit(Grid, 0.5, GridSize)
+	PathInit(Grid, 0.75, GridSize)
 	PathFinding(Grid, PlayerGrid, 0, 0, Grid.length, Grid[0].length)
 	
 	Enemys as Character[40]

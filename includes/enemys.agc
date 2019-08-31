@@ -26,13 +26,10 @@ function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize 
 					Enemy[Index].OID=LoadObject("virus1.3ds")
 					Enemy[Index].DiffuseIID=Loadimage("virus1.png")
 					Enemy[Index].NormalIID=Loadimage("virus1.nrm.png")
-					SetObjectImage(Enemy[Index].OID,Enemy[Index].DiffuseIID,0)
-					SetObjectNormalMap(Enemy[Index].OID,Enemy[Index].NormalIID)
-					SetObjectPosition(Enemy[Index].OID,0,-0.1,0)
-					FixObjectPivot(Enemy[Index].OID)
 					Original[Enemy[Index].style]=Index
 				else
 					OriginalIndex=Original[Enemy[Index].style]
+					Enemy[Index]=Enemy[OriginalIndex]
 					Enemy[Index].OID=CloneObject(Enemy[OriginalIndex].OID)
 				endif
 			endcase
@@ -41,16 +38,16 @@ function EnemyInit(Enemy ref as Character[], Grid ref as PathGrid[][], GridSize 
 					Enemy[Index].OID=LoadObject("virus2.3ds")
 					Enemy[Index].DiffuseIID=Loadimage("virus2.png")
 					Enemy[Index].NormalIID=Loadimage("virus2.nrm.png")
-					SetObjectImage(Enemy[Index].OID,Enemy[Index].DiffuseIID,0)
-					SetObjectNormalMap(Enemy[Index].OID,Enemy[Index].NormalIID)
 					Original[Enemy[Index].style]=Index
 				else
 					OriginalIndex=Original[Enemy[Index].style]
+					Enemy[Index]=Enemy[OriginalIndex]
 					Enemy[Index].OID=CloneObject(Enemy[OriginalIndex].OID)
 				endif
 			endcase
 		endselect
-	
+		SetObjectImage(Enemy[Index].OID,Enemy[Index].DiffuseIID,0)
+		SetObjectNormalMap(Enemy[Index].OID,Enemy[Index].NormalIID)
 		Enemy[Index].MaxSpeed=random(20,50)/10.0
 		EnemySpawn(Enemy[Index],Grid,GridSize)	
 		SetObjectPosition(Enemy[Index].OID,Enemy[Index].Position.x,Enemy[Index].Position.y,Enemy[Index].Position.z)
