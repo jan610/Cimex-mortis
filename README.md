@@ -1,4 +1,8 @@
-# A-TEAM
-A TEAM game jam reporitory
+# Cimex Mortis
+![alt text](https://github.com/fubarpk/Cimex-mortis/blob/master/media/development/screenie.png)
 
-Cimex Mortis(CM) is a 3D, ¾ camera view loot and shooter where you play an alien nano-bot tasked with destroying a human from the inside.  The game takes inspiration from games like Asteroids and Flow. The main gameplay loop consists of the player using the mouse and keyboard to move their virus character around an arena shooting enemies, collecting blob-loot pickups in order to charge it energy pack, and finally explode all the energy out, destroying the cell level. 
+# Genre & Setting
+Cimex Mortis(CM) is a 3D, ¾ camera view loot and shooter where you play an alien nano-bot tasked with destroying a human from the inside.  The game takes inspiration from games like Asteroids and Flow.  The main gameplay loop consists of the player using the mouse and keyboard to move their virus character around an arena shooting enemies, collecting blob-loot pickups in order to charge it energy pack, and finally explode all the energy out, destroying the cell level.
+
+# Project Description
+In Cimex Mortis you play as a highly advanced alien nano-bot sent to destroy a terrain body from the inside.  At least that’s what is actually happening.  From the very start, the player is tricked into thinking they are a human soldier, sent into an alien hive in order to eradicate the invaders and kill the queen.  Throughout play, the game will encourage the player to kill all alien bodies and absorb their own energy, in order to destroy the queen ship, piece by piece, until arriving at the queen to deliver the final blow.  The player will be tasked with destroying main ship systems, such as propulsion systems, energy converters, main energy delivery systems, and finally the main alien computer systems...but in actuality they are human body systems such as the heart, lungs, and brain.  Once the player has ended the alien menace and killed the queen, the final reveal will show the player they were the bad-guy all along, they were the alien, killing a human, and in short, helping start a microscopic alien invasion of earth.  In the end, all humans die, and long live the alien empire!
