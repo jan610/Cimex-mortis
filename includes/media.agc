@@ -111,6 +111,11 @@ function LoadGameMedia()
 	VortexDiffuseID = Loadimage("vortex.png")
 	SetObjectImage(VortexOID,VortexDiffuseID,0)
 	
+	global VSID as integer[]
+	VSID.length = 0
+	VSID[0] = LoadSound("sound/v1.wav")
+	
+	
 endfunction
 
 
