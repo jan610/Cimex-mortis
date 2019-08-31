@@ -30,6 +30,9 @@ function VoicesUpdate(Voices ref as Voice, VoiceDelay as float)
 		SetTextString(Voices.TID,Voices.Text[Index])
 		PlayTweenText(Voices.InTweenID,Voices.TID,0)
 		PlayTweenText(Voices.OutTweenID,Voices.TID,4)
+		if Index = 0
+			PlaySound(VSID[0])
+		endif
 	endif
 	UpdateTweenText(Voices.InTweenID,Voices.TID,GetFrameTime())
 	UpdateTweenText(Voices.OutTweenID,Voices.TID,GetFrameTime())
