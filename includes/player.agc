@@ -7,6 +7,9 @@ type Player
 	State 			as integer
 	LID				as integer
 	CameraPosition	as vec3
+	ShootDelay		as float
+	BlastThreshold	as float
+	SuckTime		as float
 endtype
 
 function PlayerInit(Player ref as Player, CameraDistance#)
@@ -46,7 +49,7 @@ function PlayerInit(Player ref as Player, CameraDistance#)
 	SetCameraLookAt(1,Player.Character.Position.x,Player.Character.Position.y,Player.Character.Position.z,0)
 	Player.Boost_TweenID = CreateTweenCustom(0.3)
 	SetTweenCustomFloat1(Player.Boost_TweenID,100,0,TweenSmooth2())
-	CreatePointLight(Player.LID,0,0,0,10,255,255,255)
+	CreatePointLight(Player.LID,0,0,0,15,128,255,128)
 	SetPointLightMode(Player.LID,1)
 endfunction
 
@@ -59,7 +62,8 @@ function BuoyancyApply(Character ref as Character,BuoyancyAmplitude as float,Buo
 	SetObjectPosition(Character.OID,GetObjectX(Character.OID),GetObjectY(Character.OID)+(sin(timer()*BuoyancySpeed)*BuoyancyAmplitude),GetObjectZ(Character.OID))
 endfunction
 
-function PlayerControll(Player ref as Player, CameraDistance#) // player speed is in the Player character type
+function PlayerControll(Player ref as Player, Bullets ref as Bullet[], Blasts ref as Bullet[], CameraDistance#) // player speed is in the Player character type
+	Time#=Timer()
 	FrameTime#=GetFrameTime()
 	CameraAngleY#=GetCameraAngleY(1)
 	CameraX#=GetCameraX(1)
@@ -76,7 +80,20 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 		PlayTweenCustom(Player.Boost_TweenID,0.0)
 	endif
 	
-	if GetRawMouseRightState() 
+	if GetPointerState() and Time#>Player.ShootDelay
+		Player.ShootDelay=Time#+0.1
+		BulletCreate(Bullets, Player, BulletShaderID, BulletDiffuseIID, -1)
+	endif
+	
+	if GetRawMouseRightPressed()
+		Player.BlastThreshold=Time#+2
+	endif
+	
+	if GetRawMouseRightState()
+		if Time#>Player.BlastThreshold and Player.Energy>=50
+			Player.Energy=0
+			BulletCreateBlast(Blasts, Player, BlastShaderID, NoiseIID)
+		endif
 		player.State=STATE_SUCK
 		if SuckSoundInstance = 0 
 			SuckSoundInstance = playsound(SuckSoundID,100,1) // loop forever
@@ -92,7 +109,6 @@ function PlayerControll(Player ref as Player, CameraDistance#) // player speed i
 	endif
 
 	If GetRawMouseRightReleased() // User has released the RMB
-		print("Got Here")
 		if GetTweenCustomExists(SuckSoundFade_Tween)
 			DeleteTween(SuckSoundFade_Tween)
 		endif
