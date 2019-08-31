@@ -90,6 +90,14 @@ function MainMenu()
 	setTextColor(helpTID, 140,28,28,255)
 	SetTextPosition(helpTID,GetScreenBoundsLeft()+5,95-GetTextTotalHeight(helpTID))
 	
+	helpStr = "You are in a Patients body" + chr(10)
+	helpStr = helpStr + "Kill all the Cells" + chr(10)
+	helpStr = helpStr + "to save the Patient" + chr(10)
+	storyTID=CreateText(helpStr)
+	SetTextSize(storyTID,3.5)
+	setTextColor(storyTID, 140,28,28,255)
+	SetTextPosition(storyTID,GetScreenBoundsLeft()+5,50)
+	
 	do
 		PointerX#=GetPointerX()
 		PointerY#=GetPointerY()
@@ -118,6 +126,7 @@ function MainMenu()
 	DeleteText(PlayTID)
 	DeleteText(ExitTID)
 	DeleteText(helpTID)
+	DeleteText(storyTID)
 endfunction GameState
 
 	type MapCells
@@ -262,7 +271,7 @@ function Game()
 	
 	LoadGameMedia()
 	
-	/*
+	
 	hudLifeSID = CreateSprite( 0 )
 	setSpriteSize (hudLifeSID, 37.0, 2.0)
 	setSpriteColor (hudLifeSID, 143, 7, 40,255)
@@ -274,7 +283,20 @@ function Game()
 	setSpriteColor (hudLifeBgSID, 80, 14, 36,255)
 	SetSpritePosition (hudLifeBgSID, GetScreenBoundsLeft()+4,4)
 	setSpriteDepth (hudLifeBgSID, 8)
-	*/
+	
+	
+	hudEnergySID = CreateSprite( 0 )
+	setSpriteSize (hudEnergySID, 37.0, 2.0)
+	setSpriteColor (hudEnergySID, 87, 126, 75,255)
+	SetSpritePosition (hudEnergySID, GetScreenBoundsRight()-(4+37.0),4)
+	setSpriteDepth (hudEnergySID, 7)
+	
+	hudEnergyBgSID = CreateSprite( 0 )
+	setSpriteSize (hudEnergyBgSID,  37.0, 2.0)
+	setSpriteColor (hudEnergyBgSID, 33, 72, 66,255)
+	SetSpritePosition (hudEnergyBgSID, GetScreenBoundsRight()-(4+37.0),4)
+	setSpriteDepth (hudEnergyBgSID, 8)
+	
 	
 	
 	Width=ScreenWidth()
@@ -293,7 +315,7 @@ function Game()
 	Grid as PathGrid[48,48]
 	
 	// create some random walls
-	ArenaWallOID=LoadObject("wall.3ds")
+	//~ ArenaWallOID=LoadObject("wall.3ds")
 	ArenaWallOID=LoadObject("walls.3ds")
 	//~ SetObjectTransparency(ArenaWallOID,1)
 	//~ SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
@@ -346,15 +368,18 @@ function Game()
 	do
 		Time#=Timer()
 		basicInput()
-		//SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
+		SetSpriteSize( hudLifeSID, getSpriteWidth(hudLifeBgSID)*Player.Character.Life*0.01, getSpriteHeight(hudLifeBgSID) ) 
+		SetSpriteSize( hudEnergySID, getSpriteWidth(hudEnergyBgSID)*Player.Energy*0.01, getSpriteHeight(hudEnergyBgSID) ) 
 		
 		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
 		
+		/*
 		if ScreenWidth()<>Width or Height<>ScreenHeight()
 			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
 		endif
 		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
 		SetTextString(InfoTID,String$)
+		*/
 
 		if Player.Character.Life < 0.0
 			if Player.alive = 1
