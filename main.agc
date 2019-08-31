@@ -23,6 +23,7 @@ UseNewDefaultFonts( 1 ) // since version 2.0.22 we can use nicer default fonts
 //~ SetAntialiasMode(1)
 SetDefaultWrapU(1)
 SetDefaultWrapV(1)
+SetCameraRange(1,1,38)
 
 #include "includes/constants.agc"
 #include "includes/common.agc"
@@ -292,15 +293,15 @@ function Game()
 	
 	// create some random walls
 	ArenaWallOID=LoadObject("wall.3ds")
-	SetObjectTransparency(ArenaWallOID,1)
-	SetObjectPosition(ArenaWallOID,random2(1,48),-3,random2(1,48))
+	//~ SetObjectTransparency(ArenaWallOID,1)
+	SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
 	RotateObjectLocalY(ArenaWallOID,random2(0,360))
 	SetObjectImage(ArenaWallOID, GutDiffuseIID, 0)
 	SetObjectUVScale(ArenaWallOID,0,5,5)
 	SetObjectNormalMap(ArenaWallOID,GutNormalIID)
 	for w = 1 to 10
 		wallOID = CloneObject(ArenaWallOID)
-		SetObjectPosition(wallOID,random2(1,48),-3,random2(1,48))
+		SetObjectPosition(wallOID,random2(1,48),-2,random2(1,48))
 		RotateObjectLocalY(wallOID,random2(0,360))
 	next w
 	
