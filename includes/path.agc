@@ -26,11 +26,11 @@ function PathInit(Grid ref as PathGrid[][], ScanSize as float, GridSize as integ
 		PathSetCell(Grid,x,y,x,y,0,-1)
 	next x
 	x=0
-	for y=0 to Grid.length
+	for y=1 to Grid.length-1
 		PathSetCell(Grid,x,y,x,y,0,-1)
 	next y
 	x=Grid.length
-	for y=0 to Grid.length
+	for y=1 to Grid.length-1
 		PathSetCell(Grid,x,y,x,y,0,-1)
 	next y
 endfunction

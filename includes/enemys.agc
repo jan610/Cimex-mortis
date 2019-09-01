@@ -61,7 +61,7 @@ function EnemySpawn(Enemy ref as Character, Grid ref as PathGrid[][], GridSize a
 		
 		SpawnGridX=round(SpawnX#/GridSize)
 		SpawnGridY=round(SpawnY#/GridSize)
-	until Grid[SpawnGridX,SpawnGridY].Number>0
+	until Grid[SpawnGridX,SpawnGridY].Number>6
 	Enemy.Position.x=SpawnX#
 	Enemy.Position.z=SpawnY#
 	Enemy.Life=100.0

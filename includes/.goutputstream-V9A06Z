@@ -86,7 +86,8 @@ function PlayerControll(Player ref as Player, Bullets ref as Bullet[], Blasts re
 		BulletCreate(Bullets, Player, BulletShaderID, BulletDiffuseIID, -1)
 	endif
 	
-	Player.Character.Life=Clamp(Player.Character.Life+1*FrameTime#,0,100)
+	Player.Character.Life=Player.Character.Life+1*FrameTime#
+	Player.Character.Life=Clamp(Player.Character.Life,0,100)
 	
 	//if GetRawMouseRightPressed()
 	//	Player.BlastThreshold=Time#+2
