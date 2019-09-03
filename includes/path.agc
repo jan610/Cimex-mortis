@@ -89,7 +89,7 @@ function PathFinding(Grid ref as PathGrid[][], Start as int2, MinX as integer, M
 	Grid[Start.x,Start.y].Position.x=Start.x
 	Grid[Start.x,Start.y].Position.y=Start.y
 	Grid[Start.x,Start.y].Number=0
-	Grid[Start.x,Start.y].Visited=1
+	if Grid[Start.x,Start.y].Visited>0 then Grid[Start.x,Start.y].Visited=1
 	
 	while Frontier.length>=0
 		x=Frontier[0].x

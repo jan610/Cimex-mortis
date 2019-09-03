@@ -315,10 +315,7 @@ function Game()
 	Grid as PathGrid[48,48]
 	
 	// create some random walls
-	//~ ArenaWallOID=LoadObject("wall.3ds")
 	ArenaWallOID=LoadObject("walls.3ds")
-	//~ SetObjectTransparency(ArenaWallOID,1)
-	//~ SetObjectPosition(ArenaWallOID,random2(1,48),-2,random2(1,48))
 	SetObjectPosition(ArenaWallOID,24,-2,24)
 	RotateObjectLocalY(ArenaWallOID,random2(0,360))
 	SetObjectImage(ArenaWallOID, GutDiffuseIID, 0)
@@ -372,14 +369,6 @@ function Game()
 		SetSpriteSize( hudEnergySID, getSpriteWidth(hudEnergyBgSID)*Player.Energy*0.01, getSpriteHeight(hudEnergyBgSID) ) 
 		
 		setSpritePosition(crosshairSID, GetRawMouseX()-(getSpriteWidth(crosshairSID)*0.5), GetRawMouseY()-(getSpriteHeight(crosshairSID)*0.5))  
-		
-		/*
-		if ScreenWidth()<>Width or Height<>ScreenHeight()
-			SetTextPosition(InfoTID,GetScreenBoundsLeft(),GetScreenBoundsTop())
-		endif
-		String$="FPS: "+str(ScreenFPS(),0)+chr(10)+"Energy: "+str(Player.Energy,0)+chr(10)+"Life: "+str(Player.Character.Life,0)
-		SetTextString(InfoTID,String$)
-		*/
 
 		if Player.Character.Life < 0.0
 			if Player.alive = 1
